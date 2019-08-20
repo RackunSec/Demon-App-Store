@@ -237,6 +237,19 @@ installApp () {
           cd /tmp
           dpkg -i discord-0.0.9.deb
           apt -f install -y
+      ### Graphana
+      elif [ "$arg" == "Graphana" ]
+        then
+          LOCALAREA=/tmp/grafana_6.3.3_amd64.deb
+          downloadFile https://dl.grafana.com/oss/release/grafana_6.3.3_amd64.deb $arg $LOCALAREA
+          progressBar "Installing $arg ...   "
+          cd /tmp
+          dpkg -i grafana_6.3.3_amd64.deb
+          apt -f install -y
+          echo "#!/bin/bash" > /usr/local/sbin/graphana
+          echo "service grafana-server start" >> /usr/local/sbin/graphana
+          echo "/opt/firefox/firefox-bin http://127.0.0.1:3000" >> /usr/local/sbin/graphana
+          chmod +x /usr/local/sbin/graphana
       ### AnyDesk
       elif [ "$arg" == "AnyDesk" ]
         then
@@ -252,7 +265,7 @@ installApp () {
           LOCALAREA=/tmp/stacer_1.1.0_amd64.deb
           downloadFile 'https://github.com/oguzhaninan/Stacer/releases/download/v1.1.0/stacer_1.1.0_amd64.deb' $arg $LOCALAREA
           cd /tmp
-          progressBar "Installing $arg"
+          progressBar "Installing $arg ... "
           dpkg -i stacer_1.1.0_amd64.deb
           apt -f install -y
       else
@@ -272,6 +285,7 @@ main () {
    --window-icon=$WINDOWICON \
    --text=$APPTEXT \
    $(if [[ $(which spotify|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Spotify" "Spotify desktop app" \
+   $(if [[ $(which graphana|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Graphana" "open platform for beautiful analytics and monitoring" \
    $(if [[ $(which slack|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Slack" "Slack collaboration tool" \
    $(if [[ $(which discord|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Discord" "Voice and text chat for gamers" \
    $(if [[ $(which tor-browser|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Tor-Browser" "The Tor Project Browser"  \
