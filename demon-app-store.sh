@@ -237,6 +237,15 @@ installApp () {
           cd /tmp
           dpkg -i discord-0.0.9.deb
           apt -f install -y
+      ### CherryTree
+      elif [ "$arg" == "CherryTree" ]
+        then
+          LOCALAREA=/tmp/cherrytree_0.38.9-0_all.deb
+          downloadFile http://www.giuspen.com/software/cherrytree_0.38.9-0_all.deb $arg $LOCALAREA
+          progressBar "Installing $arg ...    "
+          cd /tmp
+          dpkg -i cherrytree_0.38.9-0_all.deb
+          apt -f install -y
       ### Graphana
       elif [ "$arg" == "Graphana" ]
         then
@@ -286,6 +295,7 @@ main () {
    --text=$APPTEXT \
    $(if [[ $(which spotify|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Spotify" "Spotify desktop app" \
    $(if [[ $(which graphana|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Graphana" "open platform for beautiful analytics and monitoring" \
+   $(if [[ $(which cherrytree|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "CherryTree" "A hierarchical note taking application" \
    $(if [[ $(which slack|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Slack" "Slack collaboration tool" \
    $(if [[ $(which discord|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Discord" "Voice and text chat for gamers" \
    $(if [[ $(which tor-browser|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Tor-Browser" "The Tor Project Browser"  \
