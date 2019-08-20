@@ -237,6 +237,15 @@ installApp () {
           cd /tmp
           dpkg -i discord-0.0.9.deb
           apt -f install -y
+      ### AnyDesk
+      elif [ "$arg" == "AnyDesk" ]
+        then
+          LOCALAREA=/tmp/anydesk_5.1.1-1_amd64.deb
+          downloadFile http://www.demonlinux.com/download/packages/anydesk_5.1.1-1_amd64.deb $arg $LOCALAREA
+          progressBar "Installing $arg ...   "
+          cd /tmp
+          dpkg -i anydesk_5.1.1-1_amd64.deb
+          apt -f install -y
       ### Stacer:
       elif [ "$arg" == "Stacer" ]
         then
@@ -274,6 +283,7 @@ main () {
    $(if [[ $(which atom|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Atom" "Atom IDE" \
    $(if [[ $(which eclipse|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Eclipse" "Eclipse IDE for Java" \
    $(if [[ $(which vlc|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "VLC" "Multimedia player and framework" \
+   $(if [[ $(which anydesk|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "AnyDesk" "Remote Desktop App" \
    $(if [[ $(which brave-browser|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Brave-Browser" "Much more than a web browser" \
    $(if [[ $(which google-chrome|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Google-Chrome" "Google's web browser" \
    $(if [[ $(which sublime_text|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Sublime_Text" "Sublime text editor" \
