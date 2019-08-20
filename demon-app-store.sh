@@ -228,6 +228,15 @@ installApp () {
           cd /tmp
           dpkg -i dbeaver-ce_latest_amd64.deb
           apt -f install -y
+      ### Discord:
+      elif [ "$arg" == "Discord" ]
+        then
+          LOCALAREA=/tmp/discord-0.0.9.deb
+          downloadFile 'https://discordapp.com/api/download?platform=linux&format=deb' $arg $LOCALAREA
+          progressBar "Installing $arg ...   "
+          cd /tmp
+          dpkg -i discord-0.0.9.deb
+          apt -f install -y
       ### Stacer:
       elif [ "$arg" == "Stacer" ]
         then
@@ -255,6 +264,7 @@ main () {
    --text=$APPTEXT \
    $(if [[ $(which spotify|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Spotify" "Spotify desktop app" \
    $(if [[ $(which slack|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Slack" "Slack collaboration tool" \
+   $(if [[ $(which discord|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Discord" "Voice and text chat for gamers" \
    $(if [[ $(which tor-browser|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Tor-Browser" "The Tor Project Browser"  \
    $(if [[ $(which pycharm.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PyCharm" "The Python IDE for Professional Developers"  \
    $(if [[ $(which ptf|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PTF" "TrustedSec's Pentester's Framework" \
