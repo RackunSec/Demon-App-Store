@@ -8,3 +8,13 @@ Finally, the Demon LINUX App Store is here! This, technically, should work with 
 
 ## Installation
 To install, please run the ```./install-app-store.sh``` file.
+#### Dependencies
+* wget
+* awk, sed, grep
+* apt
+* git
+* yad
+* tail
+* dpkg
+* curl
+* add-apt-repository
