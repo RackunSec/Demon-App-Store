@@ -84,7 +84,7 @@ installApp () {
           progressBar "Installing $arg"
           cd /tmp
           dpkg -i atom-amd64.deb
-          apt -f install # just in case-icles
+          apt -f install -y # just in case-icles
       ### Eclipse for Java Devs:
       elif [ "$arg" == "Eclipse" ]
         then
@@ -205,7 +205,7 @@ installApp () {
           progressBar "Installing $arg ... "
           cd /tmp
           dpkg -i slack-desktop-4.0.1-amd64.deb
-          apt -f install
+          apt -f install -y
       ### PyCharm (FREE)
       elif [ "$arg" == "PyCharm" ]
         then
@@ -219,6 +219,15 @@ installApp () {
             then
               echo "PATH=\$PATH:/opt/pycharm-2019.2/bin" >> ~/.bashrc
           fi
+      ### DBeaver
+      elif [ "$arg" == "DBeaver" ]
+        then
+          LOCALAREA=/tmp/dbeaver-ce_latest_amd64.deb
+          downloadFile https://dbeaver.io/files/dbeaver-ce_latest_amd64.deb $arg $LOCALAREA
+          progressBar "Installing $arg ...   "
+          cd /tmp
+          dpkg -i dbeaver-ce_latest_amd64.deb
+          apt -f install -y
       ### Stacer:
       elif [ "$arg" == "Stacer" ]
         then
@@ -249,8 +258,9 @@ main () {
    $(if [[ $(which tor-browser|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Tor-Browser" "The Tor Project Browser"  \
    $(if [[ $(which pycharm.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PyCharm" "The Python IDE for Professional Developers"  \
    $(if [[ $(which ptf|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PTF" "TrustedSec's Pentester's Framework" \
+   $(if [[ $(which dbeaver|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "DBeaver" "Database tool for developers" \
    $(if [[ $(which maltego|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Maltego" "Paterva's information gathering tool" \
-   $(if [[ $(which Cutter|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Cutter" "Cutter reverse engineering tool" \
+   $(if [[ $(which Cutter|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Cutter" "Reverse engineering tool" \
    $(if [[ $(which atom|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Atom" "Atom IDE" \
    $(if [[ $(which eclipse|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Eclipse" "Eclipse IDE for Java" \
    $(if [[ $(which vlc|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "VLC" "Multimedia player and framework" \
@@ -261,7 +271,7 @@ main () {
    $(if [[ $(which kdenlive|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Kdenlive" "Video editor program" \
    $(if [[ $(which shotcut|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Shotcut" "Video editor program" \
    $(if [[ $(which franz|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Franz" "Messaging client app" \
-   $(if [[ $(which VisualStudio|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "VisualStudio" "Microsoft's code editor" \
+   $(if [[ $(which VisualStudio|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "VisualStudio" "Microsoft's Visual Studio code editor" \
    $(if [[ $(which stacer|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Stacer" "System optimizer app" ); do installApp $app; done
   # All done!
 }
