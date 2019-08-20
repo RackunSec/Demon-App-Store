@@ -186,6 +186,8 @@ installApp () {
           add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
           apt update
           apt install code -y
+          echo "code --user-data-dir" >/usr/local/bin/VisualStudio
+          chmod +x /usr/local/bin/VisualStudio
       ### Maltego CE:
       elif [ "$arg" == "Maltego" ]
         then
@@ -259,7 +261,7 @@ main () {
    $(if [[ $(which kdenlive|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Kdenlive" "Video editor program" \
    $(if [[ $(which shotcut|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Shotcut" "Video editor program" \
    $(if [[ $(which franz|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Franz" "Messaging client app" \
-   $(if [[ $(which VisualStudio|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Visual Studio Code" "Microsoft's code editor" \
+   $(if [[ $(which VisualStudio|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "VisualStudio" "Microsoft's code editor" \
    $(if [[ $(which stacer|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Stacer" "System optimizer app" ); do installApp $app; done
   # All done!
 }
