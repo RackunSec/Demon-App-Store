@@ -9,7 +9,7 @@ fi
 cp demon-app-store.sh /usr/local/sbin/
 chmod +x /usr/local/sbin/demon-app-store.sh
 ### Update all icons:
-if ![ -d /usr/share/demon/images/icons ]
+if [ ! -d /usr/share/demon/images/icons ]
   then
     mkdir -p /usr/share/demon/images/icons 2>/dev/null
 fi
