@@ -38,6 +38,7 @@ updateMe () {
  cd /appdev
  git clone https://github.com/weaknetlabs/Demon-App-Store/
  cd /appdev/Demon-App-Store && ./install-app-store.sh
+ killBar
 }
 
 installApp () {
