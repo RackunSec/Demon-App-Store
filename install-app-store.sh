@@ -14,5 +14,5 @@ if [ ! -d /usr/share/demon/images/icons ]
     mkdir -p /usr/share/demon/images/icons 2>/dev/null
 fi
 cp icons/* /usr/share/demon/images/icons
-printf "[!] The patest version is now installed ... \n";
+printf "[!] The latest version is now installed ... \n";
 #    cp Demon\ App\ Store.desktop /root/Desktop/ # Terrible XFCE4 and Thunar BUG prevents this sadly
