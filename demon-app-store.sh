@@ -6,8 +6,8 @@
 IFS=$'\n' # required for for() loop
 SPANFONT="<span font='Ubuntu Condensed 11'>"
 #WINDOWICON="/usr/share/demon/images/icons/64-icon.png"
-WINDOWICON="/usr/share/demon/images/icons/64-icon-padded.png"
-WINDOWIMAGE="/usr/share/demon/images/icons/64-icon-padded.png"
+WINDOWICON="/usr/share/demon/images/icons/demon-64-white.png"
+WINDOWIMAGE="/usr/share/demon/images/icons/demon-64-padded-white.png"
 APPNAME="Demon Linux App Store"
 APPTEXT="\n\nWelcome to the Demon Linux App Store - where everything's free. Simply select an app below by checking it.\n"
 # start the "installing app: XYZ" progress bar dialog:
