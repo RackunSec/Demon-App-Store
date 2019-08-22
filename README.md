@@ -3,8 +3,8 @@ Finally, the Demon LINUX App Store is here! This, technically, should work with 
 ## The Store UI
 ![Demon App Store Screenshot](images/screenshot-app-store.png)
 
-## The Desktop Launcher
-![Demon Desktop Launcher Screenshot](images/demon-desktop-icon.png)
+## Self Maintaining
+The Demon App Store will update itself in /appdev/ before each run.
 
 ## Installation
 To install, please run the ```./install-app-store.sh``` file.
