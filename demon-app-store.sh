@@ -31,6 +31,15 @@ complete () { # "--fixed" actually fixes a height issue BUG here:
   yad --text="\nThank you for visting the Demon Linux App Store.  " --height=10 --fixed --title=$APPNAME --image=$WINDOWIMAGE --window-icon=$WINDOWICON --button=Exit:1
 }
 
+updateMe () {
+ progressBar "Updating the App Store ... "
+ mkdir -p /appdev/ 2>/dev/null
+ rm -rf /appdev/Demon-App-Store
+ cd /appdev
+ git clone https://github.com/weaknetlabs/Demon-App-Store/
+ cd /appdev/Demon-App-Store && ./install-app-store.sh
+}
+
 installApp () {
   arg=$1;
   arg=$(echo $arg|sed -r 's/TRUE\|([^|]+)\|.*/\1/');
@@ -240,6 +249,11 @@ installApp () {
       ### CherryTree
       elif [ "$arg" == "CherryTree" ]
         then
+          LOCALAREA=/tmp/python-gtksourceview2_2.10.1-3_amd64.deb
+          downloadFile http://ftp.de.debian.org/debian/pool/main/p/pygtksourceview/python-gtksourceview2_2.10.1-3_amd64.deb "CherryTree Dependency" $LOCALAREA
+          cd /tmp
+          dpkg -i python-gtksourceview2_2.10.1-3_amd64.deb
+          apt -f install -y
           LOCALAREA=/tmp/cherrytree_0.38.9-0_all.deb
           downloadFile http://www.giuspen.com/software/cherrytree_0.38.9-0_all.deb $arg $LOCALAREA
           progressBar "Installing $arg ...    "
@@ -286,6 +300,8 @@ installApp () {
 }
 
 main () {
+ # Update Me:
+ updateMe # This will pull the latest version each time.
   # This may seem crazy, but it's for the UI/UX sake:
   for app in $(yad --width=600 --height=400 --title=$APPNAME\
     --button=Exit:1 --button=Install:0\
