@@ -52,7 +52,7 @@ installApp () {
       if [ "$arg" == "Spotify" ]
         then # Install Spotify:
           progressBar "Installing $arg"
-          apt install snapd
+          apt install snapd -y
           snap install spotify
           if [ $(grep /snap/bin ~/.bashrc|wc -l) -eq 0 ]
             then
