@@ -10,6 +10,11 @@ WINDOWICON="/usr/share/demon/images/icons/demon-64-white.png"
 WINDOWIMAGE="/usr/share/demon/images/icons/demon-store-icon-64-padded.png"
 APPNAME="Demon Linux App Store"
 APPTEXT="\n\nWelcome to the Demon Linux App Store - where everything's free. Simply select an app below by checking it.\n"
+# Generate working directories if not present:
+if [ ! -d "/usr/share/demon/" ]
+  then
+    mkdir -p /usr/share/demon/images/icons/
+fi
 # start the "installing app: XYZ" progress bar dialog:
 progressBar () {
  tail -f /etc/issue |yad --progress --pulsate --auto-close --text="\n$SPANFONT $1 </span>\n" --width=350 --center\
@@ -66,6 +71,16 @@ installApp () {
           apt install python-pexpect
           cd /infosec && git clone https://github.com/trustedsec/ptf
           echo "PATH=\$PATH:/infosec/ptf"
+      ### Burp Suite
+      elif [ "$arg" == "Burp Suite" ]
+        then
+          downloadFile https://demonlinux.com/download/packages/burpsuite.sh $arg "/opt/burpsuite.sh"
+          progressBar "Installing $arg"
+          cd /opt/ && chmod +x burpsuite.sh
+          cp /appdev/Demon-App-Store/desktop/burp.desktop /usr/share/applications
+          cp /appdev/Demon-App-Store/icons/burp.png /usr/share/demon/images/icons/
+          killBar
+          ./burpsuite.sh
       ### TorBrowser
       elif [ "$arg" == "Tor-Browser" ]
         then
@@ -312,6 +327,7 @@ main () {
    --text=$APPTEXT \
    $(if [[ $(which spotify|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Spotify" "Spotify desktop app" \
    $(if [[ $(which graphana|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Graphana" "open platform for beautiful analytics and monitoring" \
+   $(if [[ $(which BurpSuite|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Burp Suite" "Web vulnerability scanner and proxy." \
    $(if [[ $(which cherrytree|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "CherryTree" "A hierarchical note taking application" \
    $(if [[ $(which slack|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Slack" "Slack collaboration tool" \
    $(if [[ $(which discord|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Discord" "Voice and text chat for gamers" \

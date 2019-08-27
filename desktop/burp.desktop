@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Burp Suite
+Comment=Portswigger Burp Suite, Web Application Vulnerability Scanner and Proxy
+Exec=BurpSuiteCommunity
+Icon=/usr/share/demon/images/icons/burp.png
+StartupNotify=false
+Categories=www
