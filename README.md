@@ -1,6 +1,6 @@
 ![Demon App Store Logo](images/app-store-logo.png)
 
-Finally, the Demon LINUX App Store is here! This, technically, should work with any Debian 10 distribution.
+Finally, the Demon App Store is here! This, technically, should work with any Debian 10 distribution.
 ## The Store UI
 ![Demon App Store Screenshot](images/screenshot-app-store.png)
 
