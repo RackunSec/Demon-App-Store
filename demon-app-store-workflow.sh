@@ -6,58 +6,72 @@
 source ~/.bashrc # Testing this as there seems to be an issue with the $PATH for Spotifail.
 
 IFS=$'\n' # required for for() loop
-SPANFONT="<span font='Ubuntu Condensed 11'>"
-WINDOWICON="/usr/share/demon/images/icons/demon-64-white.png"
-WINDOWIMAGE="/usr/share/demon/images/icons/demon-store-icon-64-padded.png"
-APPNAME="Demon App Store"
-APPTEXT="\n\nWelcome to the Demon App Store - where everything's free.\n"
+# I chose "DAS_" as a prefix for exportation purposes, "(D)emon (A)pp (S)tore"
+# This way I don't accidentally overwrite anything else (hoopefully) in the environment.
+export DAS_SPANFONT="<span font='Ubuntu Condensed 11'>"
+export DAS_WINDOWICON="/usr/share/demon/images/icons/demon-64-white.png"
+export DAS_WINDOWIMAGE="/usr/share/demon/images/icons/demon-store-icon-64-padded.png"
+export DAS_APPNAME="Demon App Store"
+export DAS_APPTEXT="\n\nWelcome to the Demon App Store - where everything's free.\n"
+export DAS_APPCACHE=/var/demon/store/app-cache
 
-# HELP Dialog needs exported to be called from button press:
+### Fail gracefully if ran alone (should be called by demon-app-store.sh):
+if [ ! -d /var/demon/store/app-cache ]
+  then
+    yad --center --window-icon=$DAS_WINDOWICON --image=$DAS_WINDOWIMAGE --text="\nERROR: '<b>demon-app-store-workflow.sh</b>' should not be ran alone.\nPlease run '<b>demon-app-store.sh</b>' instead.\n" \
+    --button=Exit:0 --title="!! FATAL !!" --width=480 --fixed
+    exit 1337;
+fi
+
+### HELP Dialog needs exported to be called from button press:
 help () {
-  WINDOWICON="/usr/share/demon/images/icons/demon-64-white.png"
-  WINDOWIMAGE="/usr/share/demon/images/icons/demon-store-icon-64-padded.png"
-  yad --on-top --center --width=550 --height=100 --title="Demon App Store HELP" --fixed --button=Exit:0 --image=$WINDOWIMAGE --window-icon=$WINDOWICON \
+  yad --on-top --center --width=550 --height=100 --title="Demon App Store HELP" --fixed --button=Exit:0 --image=$DAS_WINDOWIMAGE --window-icon=$DAS_WINDOWICON \
   --text="\n<b>To install an app:</b> simply click the checkbox under the 'Install' column.\n\n<b>To uninstall an app:</b> simply click the checkbox under the 'Uninstall' column.\n"
 }
 export -f help # kinda cool. We basically temporarily make a command in our $PATH out of a function.
 
-# start the "installing app: XYZ" progress bar dialog:
+### start the "installing app: XYZ" progress bar dialog:
 progressBar () {
- tail -f /etc/issue |yad --progress --pulsate --auto-close --text="\n$SPANFONT $1 </span>\n" --width=350 --center\
- --title=$APPNAME --window-icon=$WINDOWICON --percentage=13 --progress-text="Please wait ..." --image=$WINDOWIMAGE --undecorated --no-buttons &
+   tail -f /etc/issue |yad --progress --pulsate --auto-close --text="\n$DAS_SPANFONT $1 </span>\n" --width=350 --center\
+   --title=$DAS_APPNAME --window-icon=$DAS_WINDOWICON --percentage=13 --progress-text="Please wait ..." --image=$DAS_WINDOWIMAGE --undecorated --no-buttons &
 }
+export -f progressBar
 
-# This function stops the loading bar message box by killing tail:
+### This function stops the loading bar message box by killing tail:
 killBar () {
  killall -KILL tail 2>/dev/null
 }
+export -f killBar
 
+### Clean App-Cache:
+cleanCache () {
+  progressBar "Cleaning out cache directory ... "
+  rm -rf /var/demon/store/app-cache/*
+  bash -c killBar
+  yad --on-top --center --width=550 --height=100 --title="Demon App Store - Cache Cleanup" --fixed --button=Exit:0 --image=$DAS_WINDOWIMAGE --window-icon=$DAS_WINDOWICON \
+  --text="\nApp cache area is now clean. \n"
+}
+export -f cleanCache # now it's a command, so-to-speak.
+
+### Downloading files with progress:
 downloadFile () { # pass to me "URI,Title,OutputFile" :)
   wget $1 --no-check-certificate -U mozilla -O $3  2>&1 | sed -u 's/^[a-zA-Z\-].*//; s/.* \{1,2\}\([0-9]\{1,3\}\)%.*/\1\n#Downloading ...\1%/; s/^20[0-9][0-9].*/#Done./'\
-  | yad --progress --title="Download in Progress" --window-icon=$WINDOWICON --image=$WINDOWIMAGE --width=350 --center --text="\nDownloading $2 ... " --auto-close --no-buttons --undecorated
+  | yad --progress --title="Download in Progress" --window-icon=$DAS_WINDOWICON --image=$DAS_WINDOWIMAGE --width=350 --center --text="\nDownloading $2 ... " --auto-close --no-buttons --undecorated
 }
 
+### All done?
 complete () { # "--fixed" actually fixes a height issue BUG here:
   # I'm aaaalll duuuhhhhh-uuuuhhhnnnnnnne!
-  yad --text="\nThank you for visting the Demon Linux App Store.  " --height=10 --fixed --title=$APPNAME --image=$WINDOWIMAGE --window-icon=$WINDOWICON --button=Exit:1
+  yad --text="\nThank you for visting the Demon Linux App Store.  " --height=10 --fixed --title=$DAS_APPNAME --image=$DAS_WINDOWIMAGE --window-icon=$DAS_WINDOWICON --button=Exit:1
 }
 
-updateMe () { # update one's self. TODO - move to a separate binary.
- progressBar "Updating the App Store ... "
- mkdir -p /appdev/ 2>/dev/null
- rm -rf /appdev/Demon-App-Store
- cd /appdev
- git clone https://github.com/weaknetlabs/Demon-App-Store/
- cd /appdev/Demon-App-Store && ./install-app-store.sh
- killBar
-}
-
+### Uninstall code blocks for EACH app.
 uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exists (even "apt remove $app") then run it.
   app=$1
-  appName=$(echo $app | awk -F'|' '{print $2}')
-  #printf "[+] \$appName: $appName\n" # DEBUG
+  DAS_APPNAME=$(echo $app | awk -F'|' '{print $2}')
+  #printf "[+] \$DAS_APPNAME: $DAS_APPNAME\n" # DEBUG
   #printf "[+] \$app: \"$app\"\n" # DEBUG
-  progressText="Removing  $appName ... "
+  progressText="Removing  $DAS_APPNAME ... "
 
   progressBar $progressText
   # Spotifail:
@@ -153,6 +167,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
   killBar
 }
 
+### Install code blocks for EACH App:
 installApp () { # All of the blocks of code to install each app individually:
   app=$1
   if [[ "$app" =~ \|TRUE\|$ ]]
@@ -166,7 +181,8 @@ installApp () { # All of the blocks of code to install each app individually:
     printf "[+] Checking if "$app" is already installed ... \n";
     if [ $(which "${app,,}"|wc -l) -ne 1 ] && [ $(which $app|wc -l) -ne 1 ] # uses syntax sugar to lowercase the name
       then
-        ### Spotify:
+
+        ### Spotify ###
         if [ "$app" == "Spotify" ]
           then # Install Spotify:
             progressBar $progressText
@@ -176,7 +192,8 @@ installApp () { # All of the blocks of code to install each app individually:
               then
                 echo "export PATH=\$PATH:/snap/bin:/snap/sbin" >> ~/.bashrc # update our PATH
             fi
-        ### Pentester's Framework from TrustedSec:
+
+        ### Pentester's Framework from TrustedSec ###
         elif [ "$app" == "PTF" ]
           then
             progressBar $progressText
@@ -186,35 +203,39 @@ installApp () { # All of the blocks of code to install each app individually:
               then
                 echo "PATH=\$PATH:/infosec/ptf" >> ~/.bashrc # update our PATH
             fi
-        ### Burp Suite
+
+        ### Burp Suite ###
         elif [ "$app" == "Burp Suite" ]
           then
-            downloadFile https://demonlinux.com/download/packages/burpsuite.sh $app "/opt/burpsuite.sh"
+            LOCALAREA="$DAS_APPCACHE/burpsuite.sh" # /var/demon/store/app-cache/burpsuite.sh
+            downloadFile https://demonlinux.com/download/packages/burpsuite.sh $app $LOCALAREA
             progressBar $progressText
-            cd /opt/ && chmod +x burpsuite.sh
-            cp /appdev/Demon-App-Store/desktop/burp.desktop /usr/share/applications
-            cp /appdev/Demon-App-Store/icons/burp.png /usr/share/demon/images/icons/
-            killBar
-            ./burpsuite.sh
-        ### TorBrowser
+            chmod +x $DAS_APPCACHE/burpsuite.sh
+            killBar # the installer will take over
+            $DAS_APPCACHE/burpsuite.sh
+
+        ### TorBrowser, OK ###
         elif [ "$app" == "Tor-Browser" ]
           then
-            downloadFile https://www.torproject.org/dist/torbrowser/8.5.4/tor-browser-linux64-8.5.4_en-US.tar.xz "Tor-Browser" "/opt/tor-browser-linux64-8.5.4_en-US.tar.xz"
-            cd /opt
+            LOCALAREA="$DAS_APPCACHE/tor-browser-linux64-8.5.4_en-US.tar.xz"
+            downloadFile https://www.torproject.org/dist/torbrowser/8.5.4/tor-browser-linux64-8.5.4_en-US.tar.xz "Tor-Browser" $LOCALAREA
             progressBar $progressText
-            xz -d tor-browser-linux64-8.5.4_en-US.tar.xz
-            tar vxf tor-browser-linux64-8.5.4_en-US.tar
-            rm tor-browser-linux64-8.5.4_en-US.tar
+            cd $DAS_APPCACHE
+            xz -d tor-browser-linux64-8.5.4_en-US.tar.xz && tar vxf tor-browser-linux64-8.5.4_en-US.tar && rm tor-browser-linux64-8.5.4_en-US.tar
             sed -ie 's/`" -eq 0/`" -ne 0/' tor-browser_en-US/Browser/start-tor-browser # whoopsey daisey!
-            echo "cd /opt/tor-browser_en-US/Browser && ./start-tor-browser" > /usr/local/sbin/tor-browser
-            chmod +x /usr/local/sbin/tor-browser
-        ### Cutter
+            # We do the below in lieu of altering the .profile or .bashrc. This process will be used throughout this app:
+            echo "cd /opt/tor-browser_en-US/Browser && ./start-tor-browser" > /usr/local/sbin/tor-browser # Create binary pointer for app
+            chmod +x /usr/local/sbin/tor-browser # make binary executable
+            cp -R tor-browser_en-US /opt/ # copy it from the $DAS_APPCACHE into the $PATH
+
+        ### Cutter ###
         elif [ "$app" == "Cutter" ]
           then # Install Cutter:
             downloadFile https://github.com/radareorg/cutter/releases/download/v1.8.3/Cutter-v1.8.3-x64.Linux.AppImage $app /usr/local/sbin/Cutter
             killBar
             progressBar $progressText
             chmod +x /usr/local/sbin/Cutter
+
         ### Atom "IDE":
         elif [ "$app" == "Atom" ]
           then
@@ -440,13 +461,13 @@ main () {
  # Update Me:
   #updateMe # This will pull the latest version each time. # comment out during development
   # This may seem crazy, but it's for the UI/UX sake:
-  for app in $(yad --width=685 --height=400 --title=$APPNAME\
-    --button=Help:"bash -c help" --button=Cancel:1 --button="Make Changes:0"\
+  for app in $(yad --width=685 --height=400 --title=$DAS_APPNAME\
+    --button="Clean Cache:bash -c cleanCache" --button=Help:"bash -c help" --button=Cancel:1 --button="Make Changes:0"\
    --list --column=Install:CHK --column="App Name" --column=Description \
    --column="Uninstall:CHK" \
-   --image=$WINDOWIMAGE \
-   --window-icon=$WINDOWICON \
-   --text=$APPTEXT \
+   --image=$DAS_WINDOWIMAGE \
+   --window-icon=$DAS_WINDOWICON \
+   --text=$DAS_APPTEXT \
    $(if [[ $(which spotify|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Spotify" "Spotify desktop app" false \
    $(if [[ $(which graphana|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Graphana" "open platform for beautiful analytics and monitoring" false \
    $(if [[ $(which BurpSuiteCommunity|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Burp Suite" "Web vulnerability scanner and proxy." false \
