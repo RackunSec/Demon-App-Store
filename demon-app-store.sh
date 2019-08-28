@@ -149,6 +149,9 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
     then
       apt remove graphana
       rm /usr/local/sbin/graphana # remove the pointer-binary that we made
+  elif [[ "$app" =~ Stacer ]]
+    then
+      apt -y remove stacer
   else
     printf "[+] Recieved $app\n";
   fi
@@ -434,7 +437,7 @@ installApp () { # All of the blocks of code to install each app individually:
 
 main () {
  # Update Me:
- #updateMe # This will pull the latest version each time. # comment out during development
+  updateMe # This will pull the latest version each time. # comment out during development
   # This may seem crazy, but it's for the UI/UX sake:
   for app in $(yad --width=630 --height=400 --title=$APPNAME\
     --button=Help:"bash -c help" --button=Exit:1 --button="Make Changes:0"\
