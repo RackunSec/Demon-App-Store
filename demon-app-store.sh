@@ -40,6 +40,7 @@ if [ -f /usr/local/sbin/demon-app-store-worklflkow.sh ]
 fi
 
 ### Copy the new executable:
+cd /appdev/Demon-App-Store
 cp demon-app-store.sh /usr/local/sbin/
 cp demon-app-store-workflow.sh /usr/local/sbin/
 chmod +x /usr/local/sbin/demon-app-store.sh
