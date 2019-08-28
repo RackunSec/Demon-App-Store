@@ -426,6 +426,12 @@ installApp () { # All of the blocks of code to install each app individually:
             progressBar $progressText
             dpkg -i stacer_1.1.0_amd64.deb
             apt -f install -y
+        elif [[ "$app" =~ IntelliJ ]]
+          then
+            progressBar $progressText
+            apt install snapd -y
+            snap install spotify
+            snap install intellij-idea-community --classic
         else
             printf "[!] Unknown app was requested! $app\n\n"
         fi
@@ -454,6 +460,7 @@ main () {
    $(if [[ $(which discord|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Discord" "Voice and text chat for gamers" false \
    $(if [[ $(which tor-browser|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Tor-Browser" "The Tor Project Browser"  false \
    $(if [[ $(which pycharm|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PyCharm" "The Python IDE for Professional Developers"  false \
+   $(if [[ $(which intellij-idea-community|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "IntelliJ IDEA Community" "Java IDE for Developers"  false \
    $(if [[ $(which ptf|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PTF" "TrustedSec's Pentester's Framework" false \
    $(if [[ $(which dbeaver|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "DBeaver" "Database tool for developers" false \
    $(if [[ $(which maltego|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Maltego" "Paterva's information gathering tool" false \
