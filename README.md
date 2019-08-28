@@ -5,10 +5,8 @@ Finally, the Demon LINUX App Store is here! This, technically, should work with 
 ![Demon App Store Screenshot](images/app-store-new.png)
 
 ## Self Maintaining
-The Demon App Store will update itself in /appdev/ before each run.
+The Demon App Store will update itself in /appdev/ before each run. This is due to the ```demon-app-store-workflow.sh``` file which is stored in ```/usr/local/sbin/``` which holds all of the working code.
 
-## Installation
-To install, please run the ```./install-app-store.sh``` file.
 #### Dependencies
 * wget
 * awk, sed, grep
