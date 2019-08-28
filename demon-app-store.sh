@@ -12,7 +12,7 @@ if [ ! -d "/usr/share/demon/store/app-cache" ] # Store app icons, etc
 fi
 if [ ! -d "/var/demon/" ] # Store all apps in cache area
   then
-    mkdir -p /var/demon/app-cache
+    mkdir -p /var/demon/store/app-cache/
 fi
 
 ### Update to the latest workflow app:
