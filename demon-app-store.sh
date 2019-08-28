@@ -1,11 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
 ## Demon Linux App Store - ^vv^
 ## 2019 WeakNet Labs
 ## Douglas Berdeaux
 
+source ~/.bashrc # Testing this as there seems to be an issue with the $PATH for Spotifail.
+
 IFS=$'\n' # required for for() loop
 SPANFONT="<span font='Ubuntu Condensed 11'>"
-#WINDOWICON="/usr/share/demon/images/icons/64-icon.png"
 WINDOWICON="/usr/share/demon/images/icons/demon-64-white.png"
 WINDOWIMAGE="/usr/share/demon/images/icons/demon-store-icon-64-padded.png"
 APPNAME="Demon Linux App Store"
