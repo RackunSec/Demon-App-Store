@@ -29,7 +29,6 @@ else
       cd /appdev && git clone https://github.com/weaknetlabs/Demon-App-Store
   fi
 fi
-cd /appdev/ && ./install-app-store # get the latest version into $PATH
 
 if [ -f /usr/local/sbin/demon-app-store.sh ]
   then
