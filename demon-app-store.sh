@@ -40,9 +40,8 @@ if [ -f /usr/local/sbin/demon-app-store-worklflkow.sh ]
 fi
 
 ### Copy the new executable:
-cd /appdev/Demon-App-Store
-cp demon-app-store.sh /usr/local/sbin/
-cp demon-app-store-workflow.sh /usr/local/sbin/
+cp /appdev/Demon-App-Store/demon-app-store.sh /usr/local/sbin/
+cp /appdev/Demon-App-Store/demon-app-store-workflow.sh /usr/local/sbin/
 chmod +x /usr/local/sbin/demon-app-store.sh
 chmod +x /usr/local/sbin/demon-app-store-workflow.sh
 
@@ -57,4 +56,4 @@ cp icons/* /usr/share/demon/images/icons
 printf "[!] The latest version is now installed ... \n";
 
 ### start Workflow:
-demon-app-store-workflow.sh
+/usr/local/sbin/demon-app-store-workflow.sh
