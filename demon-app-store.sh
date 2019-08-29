@@ -4,7 +4,7 @@
 ## Douglas Berdeaux
 
 source ~/.bashrc # Testing this as there seems to be an issue with the $PATH for Spotifail.
-APPDEV="/appdev"
+APPDEV="/var/demon/store/code/"
 DAS="Demon-App-Store"
 APPDEVDAS="$APPDEV/$DAS"
 ### Generate working directories if not present:
