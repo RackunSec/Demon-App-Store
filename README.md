@@ -2,6 +2,8 @@
 
 Finally, the Demon App Store is here! This, technically, should work with any Debian 10 distribution.
 ## The Store UI
+The store UI is very simple to use. If you want an application installed, simply make sure that it is checked under the "Install" column. If you would like to uninstall an application, just maked sure that it is checked under the "uninstall" column. Then, hit the "Make Changes" button.
+
 ![Demon App Store Screenshot](images/screenshot-app-store.png)
 
 ## Self Maintaining
