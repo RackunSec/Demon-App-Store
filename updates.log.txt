@@ -16,3 +16,4 @@
   * IntelliJ
 * Updated store logo image
 * Updated screenshot of store
+* Completed all integrity checking of all cached/downloaded files.
