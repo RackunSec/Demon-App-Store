@@ -1,4 +1,4 @@
-![Demon App Store Logo](images/app-store-logo.png)
+![Demon App Store Logo](images/app-store-logo-new.png)
 
 Finally, the Demon App Store is here! This, technically, should work with any Debian 10 distribution.
 ## The Store UI
