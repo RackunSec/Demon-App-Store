@@ -6,7 +6,7 @@
 source ~/.bashrc # Testing this as there seems to be an issue with the $PATH for Spotifail.
 
 ### Generate working directories if not present:
-if [ ! -d "/usr/share/demon/store/app-cache" ] # Store app icons, etc
+if [ ! -d "/usr/share/demon/images/icons" ] # Store app icons, etc
   then
     mkdir -p /usr/share/demon/images/icons/
 fi
