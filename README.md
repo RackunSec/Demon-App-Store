@@ -8,7 +8,9 @@ Finally, the Demon App Store is here! This, technically, should work with any De
 The Demon App Store will update itself in /appdev/ before each run. This is due to the ```demon-app-store-workflow.sh``` file which is stored in ```/usr/local/sbin/``` which holds all of the working code.
 
 ## Caching
-All installation fies will be cached and checked-in `/var/demon/store/app-cache`
+All installation fies will be cached and checked-in `/var/demon/store/app-cache`. To clean up the cache area, simply hit the "Clean Cache" button in the UI.
+
+![Demon App Store Screenshot](images/store-cleanup.png)
 
 ## Integrity
 All application files are checked for integrity before re-downloading using hard-coded md5 hashes,
