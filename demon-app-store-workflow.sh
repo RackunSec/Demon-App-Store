@@ -184,6 +184,9 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
   elif [[ "$app" =~ APKTool ]]
     then
       apt remove apktool -y
+  elif [[ "$app" =~ Glances ]]
+    then
+      apt remove glances -y
   else
     printf "[+] Recieved $app\n";
   fi
@@ -535,36 +538,62 @@ installApp () { # All of the blocks of code to install each app individually:
             apt -f install -y
 
         ### Graphana
+        ### Installer, No apt, HTTP, Checksum Required
         elif [ "$app" == "Graphana" ]
           then
-            LOCALAREA=/tmp/grafana_6.3.3_amd64.deb
-            downloadFile https://dl.grafana.com/oss/release/grafana_6.3.3_amd64.deb $app $LOCALAREA
+            FILE=grafana_6.3.3_amd64.deb
+            LOCALAREA=$DAS_APPCACHE/$FILE
+            CHECKSUM=bb2f244c968b9bfca9b6c5763e9df698
+            BINFILE=/usr/local/sbin/graphana
+            URL=https://dl.grafana.com/oss/release/grafana_6.3.3_amd64.deb
+            checksumCheck $LOCALAREA $CHECKSUM $URL $app
             progressBar $progressText
-            cd /tmp
-            dpkg -i grafana_6.3.3_amd64.deb
+            dpkg -i $LOCALAREA
             apt -f install -y
-            echo "#!/bin/bash" > /usr/local/sbin/graphana
-            echo "service grafana-server start" >> /usr/local/sbin/graphana
-            echo "/opt/firefox/firefox-bin http://127.0.0.1:3000" >> /usr/local/sbin/graphana
-            chmod +x /usr/local/sbin/graphana
+            echo "#!/bin/bash" > $BINFILE
+            echo "service grafana-server start" >> $BINFILE
+            echo "/opt/firefox/firefox-bin http://127.0.0.1:3000" >> $BINFILE
+            chmod +x $BINFILE
+
         ### AnyDesk
+        ### Installer, No apt, HTTP, Checksum Required
         elif [ "$app" == "AnyDesk" ]
           then
-            LOCALAREA=/tmp/anydesk_5.1.1-1_amd64.deb
-            downloadFile http://www.demonlinux.com/download/packages/anydesk_5.1.1-1_amd64.deb $app $LOCALAREA
+            CHECKSUM=32f6c378194f0de88a759aa651a3b748
+            FILE=anydesk_5.1.1-1_amd64.deb
+            URL=http://www.demonlinux.com/download/packages/anydesk_5.1.1-1_amd64.deb
+            INSTALLAREA=
+            BINFILE=
+            LOCALAREA=$DAS_APPCACHE/$FILE
+            checksumCheck $LOCALAREA $CHECKSUM $URL $app
             progressBar $progressText
-            cd /tmp
-            dpkg -i anydesk_5.1.1-1_amd64.deb
+            dpkg -i $LOCALAREA
             apt -f install -y
-        ### Stacer:
+
+        ### Stacer
+        ### Installer, No Apt, HTTP, Checksum Required
         elif [ "$app" == "Stacer" ]
           then
-            LOCALAREA=/tmp/stacer_1.1.0_amd64.deb
-            downloadFile 'https://github.com/oguzhaninan/Stacer/releases/download/v1.1.0/stacer_1.1.0_amd64.deb' $app $LOCALAREA
-            cd /tmp
+            FILE=stacer_1.1.0_amd64.deb
+            LOCALAREA=$DAS_APPCACHE/$FILE
+            URL='https://github.com/oguzhaninan/Stacer/releases/download/v1.1.0/stacer_1.1.0_amd64.deb'
+            CHECKSUM=66d9e37ff39ad7b97557eb903386d848
+            INSTALLAREA=
+            BINFILE=
+            checksumCheck $LOCALAREA $CHECKSUM $URL $app
             progressBar $progressText
-            dpkg -i stacer_1.1.0_amd64.deb
+            dpkg -i $LOCALAREA
             apt -f install -y
+
+        ### Glances
+        ### Installer, apt
+        elif [[ "$app" =~ Glances ]]
+          then
+            progressBar "Installing $app ... "
+            apt install glances -y
+
+        ### IntelliJ
+        ### Install, snap
         elif [[ "$app" =~ IntelliJ ]]
           then
             progressBar $progressText
@@ -574,6 +603,7 @@ installApp () { # All of the blocks of code to install each app individually:
         else
             printf "[!] Unknown app was requested! $app\n\n"
         fi
+
         killBar
     fi
   fi
@@ -590,10 +620,12 @@ main () {
     --image=$DAS_WINDOWIMAGE \
     --window-icon=$DAS_WINDOWICON \
    $(if [[ $(which graphana|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Graphana" "open platform for beautiful analytics and monitoring" false \
-   $(if [[ $(which stacer|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Stacer" "System optimizer app" false \
    $(if [[ $(which BurpSuiteCommunity|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Burp Suite" "Web vulnerability scanner and proxy." false \
    $(if [[ $(which maltego|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Maltego" "Paterva's information gathering tool" false \
    $(if [[ $(which ptf|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PTF" "TrustedSec's Pentester's Framework" false \
+   \
+   $(if [[ $(which stacer|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Stacer" "System optimizer app" false \
+   $(if [[ $(which glances|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Glances" "Curses-based monitoring tool" false \
    \
    $(if [[ $(which Cutter|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Cutter" "Reverse engineering tool" false \
    $(if [[ $(which apktool|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "APKTool" "Reverse engineering Android APK tool" false \
