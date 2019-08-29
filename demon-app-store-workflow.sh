@@ -191,6 +191,10 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
   elif [[ "$app" =~ Glances ]]
     then
       apt remove glances -y
+  elif [[ "$app" =~ SonarQube ]]
+    then
+      rm -rf /usr/local/sbin/sonarqube
+      rm -rf /opt/sonarqube-7.9.1
   else
     printf "[+] Recieved $app\n";
   fi
@@ -616,6 +620,29 @@ installApp () { # All of the blocks of code to install each app individually:
             apt install snapd -y
             snap install spotify
             snap install intellij-idea-community --classic
+
+        ### Sonarqube
+        ### Copy, HTTP, Checksum Required
+        elif [[ "$app" =~ SonarQube ]]
+          then
+            FILE=sonarqube-7.9.1.zip
+            URL=https://binaries.sonarsource.com/Distribution/sonarqube/$FILE
+            LOCALAREA=$DAS_APPCACHE/$FILE
+            CHECKSUM=0
+            BINFILE=/usr/local/sbin/sonarqube
+            INSTALLAREA=/opt/
+            checksumCheck $LOCALAREA $CHECKSUM $URL $app
+            cd $DAS_APPCACHE && unzip $FILE
+            mv sonarqube-7.9.1 /opt/
+            chmod a+rxw -R /opt/sonarqube-7.9.1
+            echo "#!/usr/bin/env bash" > $BINFILE
+            echo 'su postgres -c "/opt/sonarqube-7.9.1/bin/linux-x86-64/sonar.sh console" &' >> $BINFILE
+            echo "sleep 10" >> $BINFILE # this is required because of the overhead of the service ...
+            echo 'firefox-esr http://127.0.0.1:9000' >> $BINFILE
+            chmod +x $BINFILE
+
+        ### IDKWTF I GOT
+        ### All done.
         else
             printf "[!] Unknown app was requested! $app\n\n"
         fi
@@ -636,7 +663,7 @@ main () {
     --image=$DAS_WINDOWIMAGE \
     --window-icon=$DAS_WINDOWICON \
    $(if [[ $(which graphana|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Graphana" "open platform for beautiful analytics and monitoring" false \
-   $(if [[ $(which BurpSuiteCommunity|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Burp Suite" "Web vulnerability scanner and proxy" false \
+   $(if [[ $(which BurpSuiteCommunity|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "BurpSuiteCommunity" "Web vulnerability scanner and proxy" false \
    $(if [[ $(which zap.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "ZAP" "OWASP ZAP, Zed Attack Proxy" false \
    $(if [[ $(which maltego|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Maltego" "Paterva's information gathering tool" false \
    $(if [[ $(which ptf|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PTF" "TrustedSec's Pentester's Framework" false \
@@ -651,6 +678,7 @@ main () {
    $(if [[ $(which simplenote|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "SimpleNote" "The simplest way to keep notes" false \
    \
    $(if [[ $(which pycharm|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PyCharm" "The Python IDE for Professional Developers" false \
+   $(if [[ $(which sonarqube|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "SonarQube" "Code vulnerability scanning tool" false \
    $(if [[ $(which VisualStudio|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "VisualStudio" "Microsoft's Visual Studio code editor" false \
    $(if [[ $(which atom|wc -l) -eq 1 ]]; then printf "OK"; else printf "false"; fi) "Atom" "Atom IDE" false \
    $(if [[ $(which sublime|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Sublime_Text" "Sublime text editor" false \
