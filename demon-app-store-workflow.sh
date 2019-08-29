@@ -45,10 +45,11 @@ export -f killBar
 ### Clean App-Cache:
 cleanCache () {
   progressBar "Cleaning out cache directory ... "
-  rm -rf /var/demon/store/app-cache/*
+  usage=$(du -h $DAS_APPCACHE | tail -n 1 | awk '{print $1}')
+  rm -rf $DAS_APPCACHE/*
   bash -c killBar
   yad --on-top --center --width=550 --height=100 --title="Demon App Store - Cache Cleanup" --fixed --button=Exit:0 --image=$DAS_WINDOWIMAGE --window-icon=$DAS_WINDOWICON \
-  --text="\nApp cache area is now clean. \n"
+  --text="\nApp cache area is now clean. \nA total of $usage was freed.\n"
 }
 export -f cleanCache # now it's a command, so-to-speak.
 
