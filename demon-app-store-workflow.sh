@@ -97,7 +97,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
       rm /usr/local/sbin/Cutter
   elif [[ "$app" =~ Atom ]]
     then
-      apt remove Atom -y
+      apt remove atom -y
   elif [[ "$app" =~ Eclipse ]]
     then
       rm -rf /opt/eclipse
@@ -115,6 +115,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
   elif [[ "$app" =~ Google.Chrome ]]
     then
       apt remove -y google-chrome-stable
+      rm /usr/bin/google-chrome
   elif [[ "$app" =~ Sublime.Text ]]
     then
       rm -rf /opt/sublime3
@@ -167,6 +168,23 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
   killBar
 }
 
+### Checksum checker:
+checksumCheck () {
+  FILE=$1
+  CHECKSUM=$2
+  URL=$3
+  APP=$4
+  if [ -f $FILE ]
+    then
+      if [[ ! $(md5sum $FILE) =~ $CHECKSUM ]]
+        then
+          downloadFile $URL $APP $LOCALAREA
+      fi
+  else
+    downloadFile $URL $APP $LOCALAREA
+  fi
+}
+
 ### Install code blocks for EACH App:
 installApp () { # All of the blocks of code to install each app individually:
   app=$1
@@ -182,7 +200,8 @@ installApp () { # All of the blocks of code to install each app individually:
     if [ $(which "${app,,}"|wc -l) -ne 1 ] && [ $(which $app|wc -l) -ne 1 ] # uses syntax sugar to lowercase the name
       then
 
-        ### Spotify ###
+        ### Spotify
+        ### installer, no HTTP
         if [ "$app" == "Spotify" ]
           then # Install Spotify:
             progressBar $progressText
@@ -193,78 +212,105 @@ installApp () { # All of the blocks of code to install each app individually:
                 echo "export PATH=\$PATH:/snap/bin:/snap/sbin" >> ~/.bashrc # update our PATH
             fi
 
-        ### Pentester's Framework from TrustedSec ###
+        ### Pentester's Framework from TrustedSec
+        ### Installer, no HTTP
         elif [ "$app" == "PTF" ]
           then
             progressBar $progressText
             apt install python-pip python-expect -y
-            cd /infosec && git clone https://github.com/trustedsec/ptf
-            if [ $(grep ptf ~/.bashrc|wc -l) -eq 0 ]
+            if [ -d /infosec/ptf ]
               then
-                echo "PATH=\$PATH:/infosec/ptf" >> ~/.bashrc # update our PATH
+                cd /infosec/ptf && git pull
+            else
+              cd /infosec && git clone https://github.com/trustedsec/ptf
+              if [ $(grep ptf ~/.bashrc|wc -l) -eq 0 ]
+                then
+                  echo "PATH=\$PATH:/infosec/ptf" >> ~/.bashrc # update our PATH
+              fi
             fi
 
-        ### Burp Suite ###
+        ### Burp Suite
+        ### Installer, HTTP, Checksum
         elif [ "$app" == "Burp Suite" ]
           then
             LOCALAREA="$DAS_APPCACHE/burpsuite.sh" # /var/demon/store/app-cache/burpsuite.sh
-            downloadFile https://demonlinux.com/download/packages/burpsuite.sh $app $LOCALAREA
+            URL='https://demonlinux.com/download/packages/burpsuite.sh'
+            CHECKSUM=8b56bec4af6ae52a37756ad933dc5345
+            checksumCheck $LOCALAREA $CHECKSUM $URL $app # will download file too.
             progressBar $progressText
             chmod +x $DAS_APPCACHE/burpsuite.sh
             killBar # the installer will take over
             $DAS_APPCACHE/burpsuite.sh
 
-        ### TorBrowser, OK ###
+        ### TorBrowser
+        ### Copy, HTTP, Checksum
         elif [ "$app" == "Tor-Browser" ]
           then
             LOCALAREA="$DAS_APPCACHE/tor-browser-linux64-8.5.4_en-US.tar.xz"
-            downloadFile https://www.torproject.org/dist/torbrowser/8.5.4/tor-browser-linux64-8.5.4_en-US.tar.xz "Tor-Browser" $LOCALAREA
+            URL='https://www.torproject.org/dist/torbrowser/8.5.4/tor-browser-linux64-8.5.4_en-US.tar.xz'
+            rm -rf $LOCALAREA # just destroy it, the xz shit ruins it's integrity check.
+            downloadFile $URL $app $LOCALAREA
             progressBar $progressText
             cd $DAS_APPCACHE
-            xz -d tor-browser-linux64-8.5.4_en-US.tar.xz && tar vxf tor-browser-linux64-8.5.4_en-US.tar && rm tor-browser-linux64-8.5.4_en-US.tar
+            xz -d tor-browser-linux64-8.5.4_en-US.tar.xz && tar vxf tor-browser-linux64-8.5.4_en-US.tar
             sed -ie 's/`" -eq 0/`" -ne 0/' tor-browser_en-US/Browser/start-tor-browser # whoopsey daisey!
             # We do the below in lieu of altering the .profile or .bashrc. This process will be used throughout this app:
             echo "cd /opt/tor-browser_en-US/Browser && ./start-tor-browser" > /usr/local/sbin/tor-browser # Create binary pointer for app
             chmod +x /usr/local/sbin/tor-browser # make binary executable
             cp -R tor-browser_en-US /opt/ # copy it from the $DAS_APPCACHE into the $PATH
 
-        ### Cutter ###
+        ### Cutter
+        ### Copy, HTTP, Checksum
         elif [ "$app" == "Cutter" ]
           then # Install Cutter:
-            downloadFile https://github.com/radareorg/cutter/releases/download/v1.8.3/Cutter-v1.8.3-x64.Linux.AppImage $app /usr/local/sbin/Cutter
-            killBar
-            progressBar $progressText
-            chmod +x /usr/local/sbin/Cutter
+            URL='https://github.com/radareorg/cutter/releases/download/v1.8.3/Cutter-v1.8.3-x64.Linux.AppImage'
+            CHECKSUM=bb98ea36046e3bbc86af73c89580152b
+            LOCALAREA=/usr/local/sbin/Cutter
+            checksumCheck $LOCALAREA $CHECKSUM $URL $app
+            progressBar $progressText # No LOCALAREA Needed (AppImage <3)
+            chmod +x $LOCALAREA
 
-        ### Atom "IDE":
-        elif [ "$app" == "Atom" ]
+        ### Atom "IDE"
+        ### Installer, HTTP, Checksum
+        elif [[ "$app" =~ Atom ]]
           then
-            downloadFile https://github.com/atom/atom/releases/download/v1.40.0/atom-amd64.deb $app /tmp/atom-amd64.deb
-            killBar
+            URL='https://github.com/atom/atom/releases/download/v1.40.0/atom-amd64.deb'
+            LOCALAREA="$DAS_APPCACHE/atom-amd64.deb"
+            CHECKSUM=fe3bedd6bec04e6a2ebacb09404c5c9c
+            checksumCheck $LOCALAREA $CHECKSUM $URL $app
             progressBar $progressText
-            cd /tmp
-            dpkg -i atom-amd64.deb
+            dpkg -i $LOCALAREA
             apt -f install -y # just in case-icles
-        ### Eclipse for Java Devs:
+
+        ### Eclipse for Java Devs
+        ### Copy, HTTP, Checksum
         elif [ "$app" == "Eclipse" ]
           then
-            downloadFile 'http://demonlinux.com/download/packages/eclipse-jee-2019-06-R-linux-gtk-x86_64.tar.gz' $app /tmp/eclipse-jee-2019-06-R-linux-gtk-x86_64.tar.gz
+            URL='http://demonlinux.com/download/packages/eclipse-jee-2019-06-R-linux-gtk-x86_64.tar.gz'
+            FILE=eclipse-jee-2019-06-R-linux-gtk-x86_64.tar.gz
+            LOCALAREA="$DAS_APPCACHE/$FILE"
+            CHECKSUM=0
+            checksumCheck $LOCALAREA $CHECKSUM $URL $app
             progressBar $progressText
-            cd /tmp
-            tar vxzf eclipse-jee-2019-06-R-linux-gtk-x86_64.tar.gz # crack it open
-            mv /tmp/eclipse /opt/ # toss it into a shared space
+            cd $DAS_APPCACHE
+            tar vxzf $FILE # crack it open
+            mv $DAS_APPCACHE/eclipse /opt/ # toss it into a shared space
             binFile=/usr/local/bin/eclipse
             echo "#!/bin/bash " > $binFile
             echo "cd /opt/eclipse && ./eclipse " >> $binFile
             chmod +x $binFile
-        ### VLC Media Player:
+
+        ### VLC Media Player
+        ### Installer, apt, no HTTP
         elif [ "$app" == "VLC" ]
           then
             progressBar $progressText
             apt install vlc -y
             sed -i 's/geteuid/getppid/' /usr/bin/vlc
-        ### Brave little web browser:
-      elif [[ "$app" =~ Brave.Browser ]]
+
+        ### Brave little web browser
+        ### Installer, apt, no HTTP
+        elif [[ "$app" =~ Brave.Browser ]]
           then
             progressBar $progressText
             sudo apt install apt-transport-https curl -y
@@ -279,13 +325,19 @@ installApp () { # All of the blocks of code to install each app individually:
             mv /usr/bin/brave-browser-stable /usr/bin/brave-browser-script
             echo "brave-browser-script --no-sandbox" > /usr/bin/brave-browser-stable
             chmod +x /usr/bin/brave-browser-stable
-        ### Googlefornia's shitty browser:
+
+        ### Googlefornia's shitty browser
+        ### Installer, apt, HTTP, Checksum
         elif [ "$app" == "Google-Chrome" ]
           then
-            downloadFile 'http://demonlinux.com/download/packages/google-chrome-stable_current_amd64.deb' 'Google-Chrome' '/tmp/google-chrome-stable_current_amd64.deb'
-            cd /tmp
+            URL='http://demonlinux.com/download/packages/google-chrome-stable_current_amd64.deb'
+            FILE=google-chrome-stable_current_amd64.deb
+            LOCALAREA="$DAS_APPCACHE/$FILE"
+            CHECKSUM=fa1dd612eed2003f2293c321c80291a5
+            checksumCheck $LOCALAREA $CHECKSUM $URL $app
+            cd $DAS_APPCACHE
             progressBar $progressText
-            dpkg -i google-chrome-stable_current_amd64.deb
+            dpkg -i $FILE
             apt -f install -y
             # great. Now we have a lot of cleaning up to do for Googlefornia.
             mv /usr/bin/google-chrome /usr/bin/google-chrome-script
@@ -294,18 +346,25 @@ installApp () { # All of the blocks of code to install each app individually:
             mv /usr/bin/google-chrome-stable /usr/bin/google-chrome-script
             echo "google-chrome --no-sandbox" > /usr/bin/google-chrome-stable
             chmod +x /usr/bin/google-chrome-stable
-        ### Sublime text editor:
-      elif [ "$app" == "Sublime_Text" ]
+
+        ### Sublime text editor
+        ### Copy, HTTP, Checksum
+        elif [ "$app" == "Sublime_Text" ]
           then
-            downloadFile "https://download.sublimetext.com/sublime_text_3_build_3207_x64.tar.bz2" $app "/tmp/sublime_text_3_build_3207_x64.tar.bz2"
-            cd /tmp
+            URL="https://download.sublimetext.com/sublime_text_3_build_3207_x64.tar.bz2"
+            FILE="sublime_text_3_build_3207_x64.tar.bz2"
+            CHECKSUM=187d5f46fdf8b628fbc4686984591529
+            LOCALAREA=$DAS_APPCACHE/$FILE
+            checksumCheck $LOCALAREA $CHECKSUM $URL $app
+            cd $DAS_APPCACHE
             progressBar $progressText
             binFile=/usr/local/bin/sublime
-            tar vjxf sublime_text_3_build_3207_x64.tar.bz2
+            tar vjxf $FILE
             mv sublime_text_3 /opt/sublime3
             echo "#!/bin/bash" > $binFile
             echo "cd /opt/sublime3 && ./sublime_text " >> $binFile
             chmod +x $binFile
+
         ### SimpleNote
         elif [ "$app" == "SimpleNote" ]
           then
