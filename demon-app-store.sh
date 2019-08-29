@@ -4,9 +4,9 @@
 ## Douglas Berdeaux
 
 source ~/.bashrc # Testing this as there seems to be an issue with the $PATH for Spotifail.
-APPDEV=/appdev
-$DAS=Demon-App-Store
-APPDEVDAS=$APPDEV/$DAS
+APPDEV="/appdev"
+DAS="Demon-App-Store"
+APPDEVDAS="$APPDEV/$DAS"
 ### Generate working directories if not present:
 if [ ! -d "/usr/share/demon/images/icons" ] # Store app icons, etc
   then
