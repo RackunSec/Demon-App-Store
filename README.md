@@ -1,4 +1,4 @@
-![Demon App Store Logo](images/app-store-logo.png)
+![Demon App Store Logo](images/app-store-logdo.png)
 
 Finally, the Demon App Store is here! This, technically, should work with any Debian 10 distribution.
 ## The Store UI
@@ -12,7 +12,7 @@ The Demon App Store will update itself in /appdev/ before each run. This is due 
 ## Caching
 All installation fies will be cached and checked-in `/var/demon/store/app-cache`. To clean up the cache area, simply hit the "Clean Cache" button in the UI.
 
-![Demon App Store Screenshot](images/store-cleainup.png)
+![Demon App Store Screenshot](images/store-cleanup.png)
 
 ## Integrity
 All application files are checked for integrity before re-downloading using hard-coded md5 hashes,
