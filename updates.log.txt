@@ -1,0 +1,18 @@
+08.29.2019
+-----------
+* w3af (w3af.org) was removed from the Demon App Store. 
+  * Dependency hell. 
+  * Unmaintained garbage. 
+  * Even the author hates his project: http://w3af.org/dont-write-your-own-web-application-security-scanner
+* Fixed bug to uninstall and install in the same session
+* Fixed bug to install multiple apps in the ssame session
+* Fixed bug to uninstall multiple apps in the same session
+* Changed staging area to /var/demon/store/code
+* Changed staging and cache area to /var/demon/store/app-cache
+* Added the following apps:
+  * OWASP ZAP
+  * APK Tool
+  * Glances
+  * IntelliJ
+* Updated store logo image
+* Updated screenshot of store
