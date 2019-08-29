@@ -4,7 +4,8 @@
 ## Douglas Berdeaux
 
 source ~/.bashrc # Testing this as there seems to be an issue with the $PATH for Spotifail.
-
+APPDEV=/appdev
+APPDEVDAS=$APPDEV/Demon-App-Store
 ### Generate working directories if not present:
 if [ ! -d "/usr/share/demon/images/icons" ] # Store app icons, etc
   then
@@ -16,18 +17,12 @@ if [ ! -d "/var/demon/store/app-cache" ] # Store all apps in cache area
 fi
 
 ### Update to the latest workflow app:
-if [ ! -d /appdev/ ]
+if [ ! -d $APPDEV ]
   then
-    mkdir -p /appdev
-    cd /appdev
+    mkdir -p $APPDEV
+    cd $APPDEV
+    rm -rf Demon-App-Store # just in case
     git clone https://github.com/weaknetlabs/Demon-App-Store
-else
-  if [ -d /appdev/Demon-App-Store ]
-    then
-      rm -rf /appdev/Demon-App-Store # remove it
-      # recreate it:
-      cd /appdev && git clone https://github.com/weaknetlabs/Demon-App-Store
-  fi
 fi
 
 if [ -f /usr/local/sbin/demon-app-store.sh ]
@@ -40,8 +35,8 @@ if [ -f /usr/local/sbin/demon-app-store-worklflkow.sh ]
 fi
 
 ### Copy the new executable:
-cp /appdev/Demon-App-Store/demon-app-store.sh /usr/local/sbin/
-cp /appdev/Demon-App-Store/demon-app-store-workflow.sh /usr/local/sbin/
+cp $APPDEVDAS/demon-app-store.sh /usr/local/sbin/
+cp $APPDEVDAS/demon-app-store-workflow.sh /usr/local/sbin/
 chmod +x /usr/local/sbin/demon-app-store.sh
 chmod +x /usr/local/sbin/demon-app-store-workflow.sh
 
@@ -50,7 +45,7 @@ if [ ! -d /usr/share/demon/images/icons ]
   then
     mkdir -p /usr/share/demon/images/icons 2>/dev/null
 fi
-cp icons/* /usr/share/demon/images/icons
+cp $APPDEVDAS/icons/* /usr/share/demon/images/icons
 
 ### Complete
 printf "[!] The latest version is now installed ... \n";
