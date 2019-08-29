@@ -5,7 +5,8 @@
 
 source ~/.bashrc # Testing this as there seems to be an issue with the $PATH for Spotifail.
 APPDEV=/appdev
-APPDEVDAS=$APPDEV/Demon-App-Store
+$DAS=Demon-App-Store
+APPDEVDAS=$APPDEV/$DAS
 ### Generate working directories if not present:
 if [ ! -d "/usr/share/demon/images/icons" ] # Store app icons, etc
   then
@@ -20,9 +21,13 @@ fi
 if [ ! -d $APPDEV ]
   then
     mkdir -p $APPDEV
-    cd $APPDEV
-    rm -rf Demon-App-Store # just in case
-    git clone https://github.com/weaknetlabs/Demon-App-Store
+fi
+cd $APPDEV
+if [ -d $DAS ]
+  then
+    cd $DAS && git pull
+else
+  git clone https://github.com/weaknetlabs/Demon-App-Store
 fi
 
 if [ -f /usr/local/sbin/demon-app-store.sh ]
