@@ -194,6 +194,7 @@ installApp () { # All of the blocks of code to install each app individually:
   else # we install it:
     app=$1
     app=$(echo $app|sed -r 's/TRUE\|([^|]+)\|.*/\1/');
+    printf "\n[+] \$app: $app\n"
     progressText="\nInstalling $app ...   "
     # Check if App is already installed (could have been pre-checked in the checklist)
     printf "[+] Checking if "$app" is already installed ... \n";
@@ -366,22 +367,32 @@ installApp () { # All of the blocks of code to install each app individually:
             chmod +x $binFile
 
         ### SimpleNote
+        ### Installer, HTTP, Checksum
         elif [ "$app" == "SimpleNote" ]
           then
-            downloadFile 'https://github.com/Automattic/simplenote-electron/releases/download/v1.7.0/Simplenote-linux-1.7.0-amd64.deb' $app "/tmp/Simplenote-linux-1.7.0-amd64.deb"
-            cd /tmp
+            URL='https://github.com/Automattic/simplenote-electron/releases/download/v1.7.0/Simplenote-linux-1.7.0-amd64.deb'
+            FILE=Simplenote-linux-1.7.0-amd64.deb
+            LOCALAREA=$DAS_APPCACHE/$FILE
+            CHECKSUM=0
+            checksumCheck $LOCALAREA $CHECKSUM $URL $app
+            cd $DAS_APPCACHE
             progressBar $progressText
-            dpkg -i Simplenote-linux-1.7.0-amd64.deb
+            dpkg -i $FILE
             apt -f install -y
-        ### KdenLive:
+
+        ### KdenLive
+        ### Copy, HTTP, Checksum
         elif [ "$app" == "Kdenlive" ]
           then
+            URL='https://files.kde.org/kdenlive/release/Kdenlive-16.12.2-x86_64.AppImage'
             LOCALAREA=/usr/local/bin/kdenlive
-            downloadFile 'https://files.kde.org/kdenlive/release/Kdenlive-16.12.2-x86_64.AppImage' $app $LOCALAREA
-            cd /tmp
+            CHECKSUM=0
+            checksumCheck $LOCALAREA $CHECKSUM $URL $app
+            cd $DAS_APPCACHE
             progressBar $progressText
             apt install -y ffmpeg libavc1394-tools dvdauthor genisoimage
             chmod +x $LOCALAREA
+
         ### ShotCut:
         elif [ "$app" == "Shotcut" ]
           then
