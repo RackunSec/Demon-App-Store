@@ -184,6 +184,9 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
   elif [[ "$app" =~ APKTool ]]
     then
       apt remove apktool -y
+  elif [[ "$app" == "OWASP ZAP" ]]
+    then
+      /opt/zaproxy/uninstall # TODO check if exists
   elif [[ "$app" =~ Glances ]]
     then
       apt remove glances -y
@@ -220,6 +223,18 @@ installApp () { # All of the blocks of code to install each app individually:
               then
                 echo "export PATH=\$PATH:/snap/bin:/snap/sbin" >> ~/.bashrc # update our PATH
             fi
+
+        ### OWASP ZAP
+        ### Installer, HTTP, CHecksum Required
+        elif [ "$app" == "OWASP ZAP" ]
+          then
+            URL=https://github.com/zaproxy/zaproxy/releases/download/v2.8.0/ZAP_2_8_0_unix.sh
+            FILE=ZAP_2_8_0_unix.sh
+            LOCALAREA=$DAS_APPCACHE/$FILE
+            CHECKSUM=8a6f8326d3d17ad9b97b66eef790a50c
+            checksumCheck $LOCALAREA $CHECKSUM $URL $app
+            chmod +x $LOCALAREA
+            bash -c $LOCALAREA
 
         ### APKTool
         ### Install, apt, no HTTP
@@ -621,6 +636,7 @@ main () {
     --window-icon=$DAS_WINDOWICON \
    $(if [[ $(which graphana|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Graphana" "open platform for beautiful analytics and monitoring" false \
    $(if [[ $(which BurpSuiteCommunity|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Burp Suite" "Web vulnerability scanner and proxy." false \
+   $(if [[ $(which zap.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "OWASP ZAP" "Web vulnerability scanner and proxy." false \
    $(if [[ $(which maltego|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Maltego" "Paterva's information gathering tool" false \
    $(if [[ $(which ptf|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PTF" "TrustedSec's Pentester's Framework" false \
    \
