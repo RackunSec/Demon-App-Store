@@ -22,7 +22,7 @@ All application files are checked for integrity before re-downloading using hard
 [+] Cached file found: /var/demon/store/app-cache/grafana_6.3.3_amd64.deb
 [+] Checksum verified, [ OK ]
 ```
-This makes the Demon App Store more efficient by saving bandwidth.
+This makes the Demon App Store more efficient by saving bandwidth of the user and the author/host of the application and dependency files.
 
 ## Install 
 To install simply clone this repository and copy the `demon-app-store.sh` file to `/usr/local/sbin`.
