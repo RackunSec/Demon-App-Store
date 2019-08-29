@@ -64,6 +64,28 @@ complete () { # "--fixed" actually fixes a height issue BUG here:
   yad --text="\nThank you for visting the Demon Linux App Store.  " --height=10 --fixed --title=$DAS_APPNAME --image=$DAS_WINDOWIMAGE --window-icon=$DAS_WINDOWICON --button=Exit:1
 }
 
+### Checksum checker:
+checksumCheck () {
+  FILE=$1
+  CHECKSUM=$2
+  URL=$3
+  APP=$4
+  if [ -f $FILE ]
+    then # File exists, check the checksum given:
+      printf "[+] Cached file found: $FILE\n"
+      if [[ ! $(md5sum $FILE) =~ $CHECKSUM ]]
+        then # failed, re-download
+          rm -rf $FILE # remove borked version
+          downloadFile $URL $APP $LOCALAREA # download
+      else
+        printf "[+] Checksum verified, [ OK ]\n"
+      fi
+  else
+    # didn't exist, let's download it:
+    downloadFile $URL $APP $LOCALAREA
+  fi
+}
+
 ### Uninstall code blocks for EACH app.
 uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exists (even "apt remove $app") then run it.
   app=$1
@@ -159,27 +181,13 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
   elif [[ "$app" =~ Stacer ]]
     then
       apt -y remove stacer
+  elif [[ "$app" =~ APKTool ]]
+    then
+      apt remove apktool -y
   else
     printf "[+] Recieved $app\n";
   fi
   killBar
-}
-
-### Checksum checker:
-checksumCheck () {
-  FILE=$1
-  CHECKSUM=$2
-  URL=$3
-  APP=$4
-  if [ -f $FILE ]
-    then
-      if [[ ! $(md5sum $FILE) =~ $CHECKSUM ]]
-        then
-          downloadFile $URL $APP $LOCALAREA
-      fi
-  else
-    downloadFile $URL $APP $LOCALAREA
-  fi
 }
 
 ### Install code blocks for EACH App:
@@ -210,8 +218,14 @@ installApp () { # All of the blocks of code to install each app individually:
                 echo "export PATH=\$PATH:/snap/bin:/snap/sbin" >> ~/.bashrc # update our PATH
             fi
 
+        ### APKTool
+        ### Install, apt, no HTTP
+        elif [ "$app" == "APKTool" ]
+          then
+            apt install apktool -y
+
         ### Pentester's Framework from TrustedSec
-        ### Installer, no HTTP
+        ### Installer, no HTTP, GIT
         elif [ "$app" == "PTF" ]
           then
             progressBar $progressText
@@ -228,7 +242,7 @@ installApp () { # All of the blocks of code to install each app individually:
             fi
 
         ### Burp Suite
-        ### Installer, HTTP, Checksum
+        ### Installer, HTTP, Checksum required
         elif [ "$app" == "Burp Suite" ]
           then
             LOCALAREA="$DAS_APPCACHE/burpsuite.sh" # /var/demon/store/app-cache/burpsuite.sh
@@ -241,7 +255,7 @@ installApp () { # All of the blocks of code to install each app individually:
             $DAS_APPCACHE/burpsuite.sh
 
         ### TorBrowser
-        ### Copy, HTTP, Checksum
+        ### Copy, HTTP, Checksum required
         elif [ "$app" == "Tor-Browser" ]
           then
             LOCALAREA="$DAS_APPCACHE/tor-browser-linux64-8.5.4_en-US.tar.xz"
@@ -258,7 +272,7 @@ installApp () { # All of the blocks of code to install each app individually:
             cp -R tor-browser_en-US /opt/ # copy it from the $DAS_APPCACHE into the $PATH
 
         ### Cutter
-        ### Copy, HTTP, Checksum
+        ### Copy, HTTP, Checksum required
         elif [ "$app" == "Cutter" ]
           then # Install Cutter:
             URL='https://github.com/radareorg/cutter/releases/download/v1.8.3/Cutter-v1.8.3-x64.Linux.AppImage'
@@ -269,7 +283,7 @@ installApp () { # All of the blocks of code to install each app individually:
             chmod +x $LOCALAREA
 
         ### Atom "IDE"
-        ### Installer, HTTP, Checksum
+        ### Installer, HTTP, Checksum required
         elif [[ "$app" =~ Atom ]]
           then
             URL='https://github.com/atom/atom/releases/download/v1.40.0/atom-amd64.deb'
@@ -281,7 +295,7 @@ installApp () { # All of the blocks of code to install each app individually:
             apt -f install -y # just in case-icles
 
         ### Eclipse for Java Devs
-        ### Copy, HTTP, Checksum
+        ### Copy, HTTP, Checksum required
         elif [ "$app" == "Eclipse" ]
           then
             URL='http://demonlinux.com/download/packages/eclipse-jee-2019-06-R-linux-gtk-x86_64.tar.gz'
@@ -325,7 +339,7 @@ installApp () { # All of the blocks of code to install each app individually:
             chmod +x /usr/bin/brave-browser-stable
 
         ### Googlefornia's shitty browser
-        ### Installer, apt, HTTP, Checksum
+        ### Installer, apt, HTTP, Checksum required
         elif [ "$app" == "Google-Chrome" ]
           then
             URL='http://demonlinux.com/download/packages/google-chrome-stable_current_amd64.deb'
@@ -346,7 +360,7 @@ installApp () { # All of the blocks of code to install each app individually:
             chmod +x /usr/bin/google-chrome-stable
 
         ### Sublime text editor
-        ### Copy, HTTP, Checksum
+        ### Copy, HTTP, Checksum required
         elif [ "$app" == "Sublime_Text" ]
           then
             URL="https://download.sublimetext.com/sublime_text_3_build_3207_x64.tar.bz2"
@@ -364,7 +378,7 @@ installApp () { # All of the blocks of code to install each app individually:
             chmod +x $binFile
 
         ### SimpleNote
-        ### Installer, HTTP, Checksum
+        ### Installer no apt, HTTP, Checksum required
         elif [ "$app" == "SimpleNote" ]
           then
             URL='https://github.com/Automattic/simplenote-electron/releases/download/v1.7.0/Simplenote-linux-1.7.0-amd64.deb'
@@ -378,7 +392,7 @@ installApp () { # All of the blocks of code to install each app individually:
             apt -f install -y
 
         ### KdenLive
-        ### Copy, HTTP, Checksum
+        ### Copy, HTTP, Checksum required
         elif [ "$app" == "Kdenlive" ]
           then
             URL='https://files.kde.org/kdenlive/release/Kdenlive-16.12.2-x86_64.AppImage'
@@ -390,21 +404,31 @@ installApp () { # All of the blocks of code to install each app individually:
             apt install -y ffmpeg libavc1394-tools dvdauthor genisoimage
             chmod +x $LOCALAREA
 
-        ### ShotCut:
+        ### ShotCut
+        ### Copy, HTTP, Checksum required
         elif [ "$app" == "Shotcut" ]
           then
             LOCALAREA=/usr/local/bin/shotcut
-            downloadFile https://github.com/mltframework/shotcut/releases/download/v19.08.16/Shotcut-190816.glibc2.14-x86_64.AppImage $app $LOCALAREA
+            FILE=shotcut
+            URL=https://github.com/mltframework/shotcut/releases/download/v19.08.16/Shotcut-190816.glibc2.14-x86_64.AppImage
+            CHECKSUM=9ffb51476e2ca5bbf9aa712b6cdc44bd
+            checksumCheck $LOCALAREA $CHECKSUM $URL $app
             progressBar $progressText
             chmod +x $LOCALAREA
-        ### Franz Messaging:
+
+        ### Franz Messaging
+        ### Copy, HTTP, Checksum required
         elif [ "$app" == "Franz" ]
           then
             LOCALAREA=/usr/local/bin/franz
-            downloadFile https://github.com/meetfranz/franz/releases/download/v5.2.0/franz-5.2.0-x86_64.AppImage $app $LOCALAREA
+            CHECKSUM=6d8eaac5f875652496e9a056a443b272
+            URL=https://github.com/meetfranz/franz/releases/download/v5.2.0/franz-5.2.0-x86_64.AppImage
+            checksumCheck $LOCALAREA $CHECKSUM $URL $app
             progressBar $progressText
             chmod +x $LOCALAREA
-        ### Visual Studio:
+
+        ### Visual Studio
+        ### Installer, apt, repo, no HTTP
         elif [ "$app" == "VisualStudio" ]
           then
             progressBar $progressText
@@ -415,69 +439,101 @@ installApp () { # All of the blocks of code to install each app individually:
             apt install code -y
             echo "code --user-data-dir" >/usr/local/bin/VisualStudio
             chmod +x /usr/local/bin/VisualStudio
-        ### Maltego CE:
+
+        ### Maltego CE
+        ### Installer, no apt, HTTP, Checksum required
         elif [ "$app" == "Maltego" ]
           then
-            LOCALAREA=/tmp/Maltego.v4.2.6.12502.deb
-            downloadFile http://www.demonlinux.com/download/packages/Maltego.v4.2.6.12502.deb $app $LOCALAREA
+            FILE=Maltego.v4.2.6.12502.deb
+            LOCALAREA="$DAS_APPCACHE/$FILE"
+            CHECKSUM=7400f0e8fba47b7fdf8bc2b4a9d23714
+            URL=http://www.demonlinux.com/download/packages/Maltego.v4.2.6.12502.deb
+            checksumCheck $LOCALAREA $CHECKSUM $URL $app
             progressBar $progressText
-            cd /tmp
-            dpkg -i Maltego.v4.2.6.12502.deb
+            dpkg -i $LOCALAREA
             apt -f install -y
-        ### Slack:
+
+        ### Slack
+        ### Installer, no apt, HTTP, Checksum required
         elif [ "$app" == "Slack" ]
           then
-            LOCALAREA=/tmp/slack-desktop-4.0.1-amd64.deb
-            downloadFile  https://downloads.slack-edge.com/linux_releases/slack-desktop-4.0.1-amd64.deb $app $LOCALAREA
+            FILE=slack-desktop-4.0.1-amd64.deb
+            LOCALAREA=$DAS_APPCACHE/$FILE
+            CHECKSUM=d3738ea4d5761a398a01656b875587cc
+            URL=https://downloads.slack-edge.com/linux_releases/slack-desktop-4.0.1-amd64.deb
+            checksumCheck $LOCALAREA $CHECKSUM $URL $app
             progressBar $progressText
-            cd /tmp
-            dpkg -i slack-desktop-4.0.1-amd64.deb
+            dpkg -i $LOCALAREA
             apt -f install -y
+
         ### PyCharm (FREE)
+        ### Copy, HTTP, Checksum required
         elif [ "$app" == "PyCharm" ]
           then
-            LOCALAREA=/opt/pycharm-professional-2019.2.tar.gz
-            downloadFile 'https://download.jetbrains.com/python/pycharm-professional-2019.2.tar.gz' $app $LOCALAREA
-            progressBar $progressText
-            cd /opt/
-            tar vxzf pycharm-professional-2019.2.tar.gz
-            rm pycharm-professional-2019.2.tar.gz
+            FILE=/pycharm-professional-2019.2.tar.gz
+            LOCALAREA=$DAS_APPCACHE/$FILE
+            CHECKSUM=0
+            INSTALLAREA=/opt
+            URL=https://download.jetbrains.com/python/pycharm-professional-2019.2.tar.gz
             binFile=/usr/local/bin/pycharm
+
+            checksumCheck $LOCALAREA $CHECKSUM $URL $app
+            progressBar $progressText
+            cd $DAS_APPCACHE
+            tar vxzf $FILE
+            mv pycharm-2019.2 $INSTALLAREA
             echo "#!/bin/bash" > $binFile
             echo "cd /opt/pycharm-2019.2/bin && ./pycharm.sh" >> $binFile
             chmod +x $binFile
+
         ### DBeaver
+        ### Installer, No apt, HTTP, Checksum required
         elif [ "$app" == "DBeaver" ]
           then
-            LOCALAREA=/tmp/dbeaver-ce_latest_amd64.deb
-            downloadFile https://dbeaver.io/files/dbeaver-ce_latest_amd64.deb $app $LOCALAREA
+            FILE=dbeaver-ce_latest_amd64.deb
+            LOCALAREA=$DAS_APPCACHE/$FILE
+            CHECKSUM=697462846ad718bed985fcd1e3308a86
+            URL=https://dbeaver.io/files/dbeaver-ce_latest_amd64.deb
+            checksumCheck $LOCALAREA $CHECKSUM $URL $app
             progressBar $progressText
-            cd /tmp
-            dpkg -i dbeaver-ce_latest_amd64.deb
+            dpkg -i $LOCALAREA
             apt -f install -y
-        ### Discord:
+
+        ### Discord
+        ### Installer, No Apt, HTTP, Checksum required
         elif [ "$app" == "Discord" ]
           then
-            LOCALAREA=/tmp/discord-0.0.9.deb
-            downloadFile 'https://discordapp.com/api/download?platform=linux&format=deb' $app $LOCALAREA
+            FILE=discord-0.0.9.deb
+            CHECKSUM=2f6f5eb899f2815fbd26dddea0d2d316
+            URL='https://discordapp.com/api/download?platform=linux&format=deb'
+            LOCALAREA=$DAS_APPCACHE/$FILE
+            checksumCheck $LOCALAREA $CHECKSUM $URL $app
             progressBar $progressText
-            cd /tmp
-            dpkg -i discord-0.0.9.deb
+            dpkg -i $LOCALAREA
             apt -f install -y
+
         ### CherryTree
+        ### Installer, No apt, HTTP, Checksum Required
         elif [ "$app" == "CherryTree" ]
           then
-            LOCALAREA=/tmp/python-gtksourceview2_2.10.1-3_amd64.deb
-            downloadFile http://ftp.de.debian.org/debian/pool/main/p/pygtksourceview/python-gtksourceview2_2.10.1-3_amd64.deb "CherryTree Dependency" $LOCALAREA
-            cd /tmp
-            dpkg -i python-gtksourceview2_2.10.1-3_amd64.deb
+            # 1. get this: python-gtksourceview2
+            FILE=python-gtksourceview2_2.10.1-3_amd64.deb
+            URL=http://ftp.de.debian.org/debian/pool/main/p/pygtksourceview/python-gtksourceview2_2.10.1-3_amd64.deb
+            CHECKSUM=2a1446484fcbae1b9e636ebff5990aaf
+            LOCALAREA=$DAS_APPCACHE/$FILE
+            checksumCheck $LOCALAREA $CHECKSUM $URL $app
+            dpkg -i $LOCALAREA
             apt -f install -y
-            LOCALAREA=/tmp/cherrytree_0.38.9-0_all.deb
-            downloadFile http://www.giuspen.com/software/cherrytree_0.38.9-0_all.deb $app $LOCALAREA
+            # 2. get cherry tree:
+            FILE=cherrytree_0.38.9-0_all.deb
+            LOCALAREA=$DAS_APPCACHE/$FILE
+            URL=http://www.giuspen.com/software/cherrytree_0.38.9-0_all.deb
+            CHECKSUM=c13200d2e4b13d00978520a24e08d685
+            checksumCheck $LOCALAREA $CHECKSUM $URL $app
             progressBar $progressText
-            cd /tmp
-            dpkg -i cherrytree_0.38.9-0_all.deb
+            dpkg -i $LOCALAREA
             apt -f install -y
+
         ### Graphana
         elif [ "$app" == "Graphana" ]
           then
@@ -533,32 +589,41 @@ main () {
     --list --checklist --column="Install" --column="App Name" --column=Description --column=Uninstall:CHK\
     --image=$DAS_WINDOWIMAGE \
     --window-icon=$DAS_WINDOWICON \
-   $(if [[ $(which spotify|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Spotify" "Spotify desktop app" false \
    $(if [[ $(which graphana|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Graphana" "open platform for beautiful analytics and monitoring" false \
+   $(if [[ $(which stacer|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Stacer" "System optimizer app" false \
    $(if [[ $(which BurpSuiteCommunity|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Burp Suite" "Web vulnerability scanner and proxy." false \
-   $(if [[ $(which cherrytree|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "CherryTree" "A hierarchical note taking application" false \
-   $(if [[ $(which slack|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Slack" "Slack collaboration tool" false \
-   $(if [[ $(which discord|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Discord" "Voice and text chat for gamers" false \
-   $(if [[ $(which tor-browser|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Tor-Browser" "The Tor Project Browser"  false \
-   $(if [[ $(which pycharm|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PyCharm" "The Python IDE for Professional Developers" false \
-   $(if [[ $(which intellij-idea-community|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "IntelliJ IDEA Community" "Java IDE for Developers"  false \
-   $(if [[ $(which ptf|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PTF" "TrustedSec's Pentester's Framework" false \
-   $(if [[ $(which dbeaver|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "DBeaver" "Database tool for developers" false \
    $(if [[ $(which maltego|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Maltego" "Paterva's information gathering tool" false \
+   $(if [[ $(which ptf|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PTF" "TrustedSec's Pentester's Framework" false \
+   \
    $(if [[ $(which Cutter|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Cutter" "Reverse engineering tool" false \
-   $(if [[ $(which atom|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Atom" "Atom IDE" false \
+   $(if [[ $(which apktool|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "APKTool" "Reverse engineering Android APK tool" false \
+   \
+   $(if [[ $(which cherrytree|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "CherryTree" "A hierarchical note taking application" false \
+   $(if [[ $(which simplenote|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "SimpleNote" "The simplest way to keep notes" false \
+   \
+   $(if [[ $(which pycharm|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PyCharm" "The Python IDE for Professional Developers" false \
+   $(if [[ $(which VisualStudio|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "VisualStudio" "Microsoft's Visual Studio code editor" false \
+   $(if [[ $(which atom|wc -l) -eq 1 ]]; then printf "OK"; else printf "false"; fi) "Atom" "Atom IDE" false \
+   $(if [[ $(which sublime|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Sublime_Text" "Sublime text editor" false \
    $(if [[ $(which eclipse|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Eclipse" "Eclipse IDE for Java" false \
-   $(if [[ $(which vlc|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "VLC" "Multimedia player and framework" false \
+   $(if [[ $(which intellij-idea-community|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "IntelliJ IDEA Community" "Java IDE for Developers"  false \
+   \
+   $(if [[ $(which dbeaver|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "DBeaver" "Database tool for developers" false \
+   \
    $(if [[ $(which anydesk|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "AnyDesk" "Remote Desktop App" false \
+   \
    $(if [[ $(which brave-browser|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Brave-Browser" "Much more than a web browser" false \
    $(if [[ $(which google-chrome|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Google-Chrome" "Google's web browser" false \
-   $(if [[ $(which sublime|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Sublime_Text" "Sublime text editor" false \
-   $(if [[ $(which simplenote|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "SimpleNote" "The simplest way to keep notes" false \
+   $(if [[ $(which tor-browser|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Tor-Browser" "The Tor Project Browser"  false \
+   \
+   $(if [[ $(which slack|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Slack" "Slack collaboration tool" false \
+   $(if [[ $(which franz|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Franz" "Messaging client app" false \
+   $(if [[ $(which discord|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Discord" "Voice and text chat for gamers" false \
+   \
    $(if [[ $(which kdenlive|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Kdenlive" "Video editor program" false \
    $(if [[ $(which shotcut|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Shotcut" "Video editor program" false \
-   $(if [[ $(which franz|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Franz" "Messaging client app" false \
-   $(if [[ $(which VisualStudio|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "VisualStudio" "Microsoft's Visual Studio code editor" false \
-   $(if [[ $(which stacer|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Stacer" "System optimizer app")
+   $(if [[ $(which spotify|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Spotify" "Spotify desktop app" false \
+   $(if [[ $(which vlc|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "VLC" "Multimedia player and framework" false)
 
    for app in "${selected[@]}"
     do
