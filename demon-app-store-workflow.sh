@@ -5,7 +5,6 @@
 
 source ~/.bashrc # Testing this as there seems to be an issue with the $PATH for Spotifail.
 
-IFS=$'\n' # required for for() loop
 # I chose "DAS_" as a prefix for exportation purposes, "(D)emon (A)pp (S)tore"
 # This way I don't accidentally overwrite anything else (hoopefully) in the environment.
 export DAS_SPANFONT="<span font='Ubuntu Condensed 11'>"
@@ -68,11 +67,9 @@ complete () { # "--fixed" actually fixes a height issue BUG here:
 ### Uninstall code blocks for EACH app.
 uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exists (even "apt remove $app") then run it.
   app=$1
-  DAS_APPNAME=$(echo $app | awk -F'|' '{print $2}')
-  #printf "[+] \$DAS_APPNAME: $DAS_APPNAME\n" # DEBUG
-  #printf "[+] \$app: \"$app\"\n" # DEBUG
-  progressText="Removing  $DAS_APPNAME ... "
-
+  app=$(echo $1 | cut -d \| -f 2) # FALSE|PTF|TrustedSec's Pentester's Framework|TRUE|
+  progressText="Removing  $app ... "
+  printf "\n [! UNINSTALL !] Removing app2: $app ... \n\n"
   progressBar $progressText
   # Spotifail:
   if [[ "$app" =~ potify ]]
@@ -158,7 +155,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
   elif [[ "$app" =~ Graphana ]]
     then
       apt remove graphana
-      rm /usr/local/sbin/graphana # remove the pointer-binary that we made
+      rm /usr/local/sbin/graphana || true # remove the pointer-binary that we made
   elif [[ "$app" =~ Stacer ]]
     then
       apt -y remove stacer
@@ -188,10 +185,10 @@ checksumCheck () {
 ### Install code blocks for EACH App:
 installApp () { # All of the blocks of code to install each app individually:
   app=$1
-  if [[ "$app" =~ \|TRUE\|$ ]]
+  if [[ "$app" =~ \|TRUE\|$ ]] # if the last element is "TRUE" uninstall it.
     then # We uninstall it:
       uninstall $app
-  else # we install it:
+  else # we install it.
     app=$1
     app=$(echo $app|sed -r 's/TRUE\|([^|]+)\|.*/\1/');
     printf "\n[+] \$app: $app\n"
@@ -521,7 +518,6 @@ installApp () { # All of the blocks of code to install each app individually:
         else
             printf "[!] Unknown app was requested! $app\n\n"
         fi
-        sleep 1 # DEBUG
         killBar
     fi
   fi
@@ -531,13 +527,12 @@ main () {
  # Update Me:
   #updateMe # This will pull the latest version each time. # comment out during development
   # This may seem crazy, but it's for the UI/UX sake:
-  for app in $(yad --width=685 --height=400 --title=$DAS_APPNAME\
-    --button="Clean Cache:bash -c cleanCache" --button=Help:"bash -c help" --button=Cancel:1 --button="Make Changes:0"\
-   --list --column=Install:CHK --column="App Name" --column=Description \
-   --column="Uninstall:CHK" \
-   --image=$DAS_WINDOWIMAGE \
-   --window-icon=$DAS_WINDOWICON \
-   --text=$DAS_APPTEXT \
+  IFS=$'\n'
+  readarray selected < <(yad --width=685 --height=400 --title=$DAS_APPNAME\
+    --button="Clean Cache:bash -c cleanCache" --button=Help:"bash -c help" --button=Cancel:1 --button="Make Changes:0" \
+    --list --checklist --column="Install" --column="App Name" --column=Description --column=Uninstall:CHK\
+    --image=$DAS_WINDOWIMAGE \
+    --window-icon=$DAS_WINDOWICON \
    $(if [[ $(which spotify|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Spotify" "Spotify desktop app" false \
    $(if [[ $(which graphana|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Graphana" "open platform for beautiful analytics and monitoring" false \
    $(if [[ $(which BurpSuiteCommunity|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Burp Suite" "Web vulnerability scanner and proxy." false \
@@ -545,7 +540,7 @@ main () {
    $(if [[ $(which slack|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Slack" "Slack collaboration tool" false \
    $(if [[ $(which discord|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Discord" "Voice and text chat for gamers" false \
    $(if [[ $(which tor-browser|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Tor-Browser" "The Tor Project Browser"  false \
-   $(if [[ $(which pycharm|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PyCharm" "The Python IDE for Professional Developers"  false \
+   $(if [[ $(which pycharm|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PyCharm" "The Python IDE for Professional Developers" false \
    $(if [[ $(which intellij-idea-community|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "IntelliJ IDEA Community" "Java IDE for Developers"  false \
    $(if [[ $(which ptf|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PTF" "TrustedSec's Pentester's Framework" false \
    $(if [[ $(which dbeaver|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "DBeaver" "Database tool for developers" false \
@@ -563,7 +558,13 @@ main () {
    $(if [[ $(which shotcut|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Shotcut" "Video editor program" false \
    $(if [[ $(which franz|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Franz" "Messaging client app" false \
    $(if [[ $(which VisualStudio|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "VisualStudio" "Microsoft's Visual Studio code editor" false \
-   $(if [[ $(which stacer|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Stacer" "System optimizer app" ); do installApp $app; done
+   $(if [[ $(which stacer|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Stacer" "System optimizer app")
+
+   for app in "${selected[@]}"
+    do
+      installApp $app
+   done
+
   # All done!
 }
 main
