@@ -10,7 +10,7 @@ if [ ! -d "/usr/share/demon/store/app-cache" ] # Store app icons, etc
   then
     mkdir -p /usr/share/demon/images/icons/
 fi
-if [ ! -d "/var/demon/" ] # Store all apps in cache area
+if [ ! -d "/var/demon/store/app-cache" ] # Store all apps in cache area
   then
     mkdir -p /var/demon/store/app-cache/
 fi
