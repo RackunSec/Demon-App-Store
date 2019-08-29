@@ -27,7 +27,19 @@ This makes the Demon App Store more efficient by saving bandwidth of the user an
 ## Install 
 To install simply clone this repository and copy the `demon-app-store.sh` file to `/usr/local/sbin`.
 Then, run it with `demon-app-store.sh` and it will get the lateste version of itself, and place it into `/var/demon/store/code`.
-
+```
+root@demon:~# git clone https://github.com/weaknetlabs/Demon-App-Store
+Cloning into 'Demon-App-Store'...
+remote: Enumerating objects: 181, done.
+remote: Counting objects: 100% (181/181), done.
+remote: Compressing objects: 100% (150/150), done.
+remote: Total 305 (delta 91), reused 98 (delta 31), pack-reused 124
+Receiving objects: 100% (305/305), 941.59 KiB | 7.59 MiB/s, done.
+Resolving deltas: 100% (156/156), done.
+root@demon:~# cp Demon-App-Store/demon-app-store.sh /usr/local/sbin/
+root@demon:~# chmod +x /usr/local/sbin/demon-app-store.sh 
+root@demon:~# demon-app-store.sh 
+```
 ### Dependencies
 * wget
 * awk, sed, grep
