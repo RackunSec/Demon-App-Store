@@ -12,7 +12,7 @@ The Demon App Store will update itself in /appdev/ before each run. This is due 
 ## Caching
 All installation fies will be cached and checked-in `/var/demon/store/app-cache`. To clean up the cache area, simply hit the "Clean Cache" button in the UI.
 
-![Demon App Store Screenshot](images/store-cleanup.png)
+![Demon App Store Screenshot](images/store-cleainup.png)
 
 ## Integrity
 All application files are checked for integrity before re-downloading using hard-coded md5 hashes,
