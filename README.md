@@ -4,7 +4,7 @@ Finally, the Demon App Store is here! This, technically, should work with any De
 ## The Store UI
 The store UI is very simple to use. If you want an application installed, simply make sure that it is checked under the "Install" column. If you would like to uninstall an application, just maked sure that it is checked under the "uninstall" column. Then, hit the "Make Changes" button.
 
-![Demon App Store Screenshot](images/screenshot-app-store.png)
+![Demon App Store Screenshot](images/app-store-screenshot-1.png)
 
 ## Self Maintaining
 The Demon App Store will update itself in /appdev/ before each run. This is due to the ```demon-app-store-workflow.sh``` file which is stored in ```/usr/local/sbin/``` which holds all of the working code.
