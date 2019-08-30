@@ -734,7 +734,7 @@ main () {
     do
       installApp $app
    done
-
+   main
   # All done!
 }
 main
