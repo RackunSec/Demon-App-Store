@@ -257,7 +257,6 @@ installApp () { # All of the blocks of code to install each app individually:
             echo "#!/usr/bin/env bash" > $BINFILE
             echo "cd /infosec/exploit/AutoSploit && ./run_autosploit.sh" >> $BINFILE
             chmod +x $BINFILE
-            cp
 
         ### OWASP ZAP
         ### Installer, HTTP, CHecksum Required
