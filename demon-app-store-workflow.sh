@@ -200,6 +200,10 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
     then
       rm -rf /usr/local/sbin/sonarqube
       rm -rf /opt/sonarqube-7.9.1
+  elif [[ "$app" =~ AutoSploit ]]
+    then
+      rm -rf /infosec/exploit/AutoSploit
+      rm -rf /usr/local/sbin/autosploit
   else
     printf "[+] Recieved $app\n";
   fi
@@ -233,6 +237,23 @@ installApp () { # All of the blocks of code to install each app individually:
               then
                 echo "export PATH=\$PATH:/snap/bin:/snap/sbin" >> ~/.bashrc # update our PATH
             fi
+
+        ### AutoSploit
+        ### Copy, GIT
+        elif [ "$app" == "AutoSploit" ]
+          then
+            URL=https://github.com/NullArray/AutoSploit
+            FILE=AutoSploit
+            INSTALLAREA=/infosec/exploit
+            BINFILE=/usr/local/sbin/autosploit
+            progressBar "Installing AutoSploit ... "
+            cd $INSTALLAREA && git clone $URL
+            cd $INSTALLAREA/$FILE
+            chmod +x install.sh
+            ./install.sh
+            echo "#!/usr/bin/env bash" > $BINFILE
+            echo "cd /infosec/exploit/AutoSploit && ./run_autosploit.sh" >> $BINFILE
+            chmod +x $BINFILE
 
         ### OWASP ZAP
         ### Installer, HTTP, CHecksum Required
@@ -667,7 +688,8 @@ main () {
     --list --checklist --column="Install" --column="App Name" --column=Description --column=Uninstall:CHK\
     --image=$DAS_WINDOWLONGIMAGE \
     --window-icon=$DAS_WINDOWICON \
-   $(if [[ $(which graphana|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Graphana" "open platform for beautiful analytics and monitoring" false \
+    $(if [[ $(which graphana|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Graphana" "open platform for beautiful analytics and monitoring" false \
+    $(if [[ $(which autosploit|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "AutoSploit" "Automated Mass Exploit Tool" false \
    $(if [[ $(which BurpSuiteCommunity|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "BurpSuiteCommunity" "Web vulnerability scanner and proxy" false \
    $(if [[ $(which zap.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "ZAP" "OWASP ZAP, Zed Attack Proxy" false \
    $(if [[ $(which maltego|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Maltego" "Paterva's information gathering tool" false \
