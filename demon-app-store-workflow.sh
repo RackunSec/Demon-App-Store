@@ -685,7 +685,7 @@ main () {
   # This may seem crazy, but it's for the UI/UX sake:
   IFS=$'\n'
   readarray selected < <(yad --width=685 --height=400 --title=$DAS_APPNAME\
-    --button=Help:"bash -c help" --button="Clean Cache:bash -c cleanCache" --button="Exit:1" --button="Check Out:0" \
+    --button=Help:"bash -c help" --button="Clean Cache:bash -c cleanCache" --button="Exit:complete" --button="Check Out:0" \
     --list --checklist --column="Install" --column="App Name" --column=Description --column=Uninstall:CHK\
     --image=$DAS_WINDOWLONGIMAGE \
     --window-icon=$DAS_WINDOWICON \
