@@ -204,6 +204,9 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
     then
       rm -rf /infosec/exploit/AutoSploit
       rm -rf /usr/local/sbin/autosploit
+  elif [[ "$app" =~ GitKraken ]]
+    then
+      apt -y remove gitkraken
   else
     printf "[+] Recieved $app\n";
   fi
@@ -668,6 +671,18 @@ installApp () { # All of the blocks of code to install each app individually:
             echo 'firefox-esr http://127.0.0.1:9000' >> $BINFILE
             chmod +x $BINFILE
 
+        ### GitKraken
+        ### Installer, HTTP, CHecksum required
+        elif [[ "$app" =~ GitKraken ]]
+          then
+            URL=http://demonlinux.com/download/packages/gitkraken-amd64.deb
+            FILE=gitkraken-amd64.deb
+            CHECKSUM=6ad71a6e177e4eda2c3252bee4fceaab
+            LOCALAREA=$DAS_APPCACHE/$FILE
+            checksumCheck $LOCALAREA $CHECKSUM $URL $app
+            dpkg -i $LOCALAREA
+            apt -f install -y
+
         ### IDKWTF I GOT
         ### All done.
         else
@@ -708,7 +723,8 @@ main () {
    $(if [[ $(which pycharm|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PyCharm" "The Python IDE for Professional Developers" false \
    $(if [[ $(which sonarqube|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "SonarQube" "Code vulnerability scanning tool" false \
    $(if [[ $(which VisualStudio|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "VisualStudio" "Microsoft's Visual Studio code editor" false \
-   $(if [[ $(which atom|wc -l) -eq 1 ]]; then printf "OK"; else printf "false"; fi) "Atom" "Atom IDE" false \
+   $(if [[ $(which atom|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Atom" "Atom IDE" false \
+   $(if [[ $(which gitkraken|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "GitKraken" "Git Client" false \
    $(if [[ $(which sublime|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Sublime_Text" "Sublime text editor" false \
    $(if [[ $(which eclipse|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Eclipse" "Eclipse IDE for Java" false \
    $(if [[ $(which intellij-idea-community|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "IntelliJ IDEA Community" "Java IDE for Developers"  false \
