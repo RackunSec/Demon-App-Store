@@ -9,7 +9,8 @@ source ~/.bashrc # Testing this as there seems to be an issue with the $PATH for
 # This way I don't accidentally overwrite anything else (hoopefully) in the environment.
 export DAS_SPANFONT="<span font='Ubuntu Condensed 11'>"
 export DAS_WINDOWICON="/usr/share/demon/images/icons/demon-64-white.png"
-export DAS_WINDOWIMAGE="/usr/share/demon/images/icons/demon-store-icon-64-padded.png"
+export DAS_WINDOWIMAGE=/usr/share/demon/images/icons/demon-store-icon-64-padded.png
+export DAS_WINDOWLONGIMAGE="/usr/share/demon/images/icons/demon-store-icon-64-padded-bin.png"
 export DAS_APPNAME="Demon App Store"
 export DAS_APPTEXT="\n\nWelcome to the Demon App Store - where everything's free.\n"
 export DAS_APPCACHE=/var/demon/store/app-cache
@@ -25,7 +26,11 @@ fi
 ### HELP Dialog needs exported to be called from button press:
 help () {
   yad --on-top --center --width=550 --height=100 --title="Demon App Store HELP" --fixed --button=Exit:0 --image=$DAS_WINDOWIMAGE --window-icon=$DAS_WINDOWICON \
-  --text="\n<b>To install an app:</b> simply click the checkbox under the 'Install' column.\n\n<b>To uninstall an app:</b> simply click the checkbox under the 'Uninstall' column.\n"
+  --text="\n<b>To install an app:</b> simply click the checkbox under the 'Install' column.\n\
+<b>To uninstall an app:</b> simply click the checkbox under the 'Uninstall' column.\n\
+Then, click 'Check Out' and all of your changes will be made.\n\
+<b>To clean the local cache</b> of downloaded packages, simply click 'Clean Cache'\n\n\
+  \n2019 WeakNet Labs (Douglas Berdeaux), DemonLinux.com\n"
 }
 export -f help # kinda cool. We basically temporarily make a command in our $PATH out of a function.
 
@@ -658,9 +663,9 @@ main () {
   # This may seem crazy, but it's for the UI/UX sake:
   IFS=$'\n'
   readarray selected < <(yad --width=685 --height=400 --title=$DAS_APPNAME\
-    --button="Clean Cache:bash -c cleanCache" --button=Help:"bash -c help" --button=Cancel:1 --button="Make Changes:0" \
+    --button="Clean Cache:bash -c cleanCache" --button=Help:"bash -c help" --button=Cancel:1 --button="Check Out:0" \
     --list --checklist --column="Install" --column="App Name" --column=Description --column=Uninstall:CHK\
-    --image=$DAS_WINDOWIMAGE \
+    --image=$DAS_WINDOWLONGIMAGE \
     --window-icon=$DAS_WINDOWICON \
    $(if [[ $(which graphana|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Graphana" "open platform for beautiful analytics and monitoring" false \
    $(if [[ $(which BurpSuiteCommunity|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "BurpSuiteCommunity" "Web vulnerability scanner and proxy" false \
