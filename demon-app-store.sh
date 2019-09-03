@@ -51,8 +51,7 @@ if [ ! -d /usr/share/demon/images/icons ]
     mkdir -p /usr/share/demon/images/icons 2>/dev/null
 fi
 cp $APPDEVDAS/icons/* /usr/share/demon/images/icons # Add all the icon files
-cp $APPDEVDAS/desktop/* /usr/share/applications/ # Add all the desktop icons
-
+cp $APPDEVDAS/desktop/* /usr/share/demon/desktop/ # Add all the desktop icons into Demon shared area
 ### Complete
 printf "[!] The latest version is now installed ... \n";
 

@@ -14,6 +14,7 @@ export DAS_WINDOWLONGIMAGE="/usr/share/demon/images/icons/demon-store-icon-64-pa
 export DAS_APPNAME="Demon App Store"
 export DAS_APPTEXT="\n\nWelcome to the Demon App Store - where everything's free.\n"
 export DAS_APPCACHE=/var/demon/store/app-cache
+export DAS_DESKTOP_CACHE=/usr/share/demon/desktop/
 export DAS_WIDTH=840
 export DAS_HEIGHT=512
 # These are for application cetegories, see final YAD call at bottom of file
@@ -25,6 +26,8 @@ export DAS_CAT_DEV="Developer"
 export DAS_CAT_WEB="Web"
 export DAS_CAT_COM="Communication"
 export DAS_CAT_MM="Multimedia"
+
+export LOCAL_APPS=/usr/share/applications/
 
 ### Fail gracefully if ran alone (should be called by demon-app-store.sh):
 if [ ! -d /var/demon/store/app-cache ]
@@ -198,6 +201,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
     then
       apt remove grafana
       rm /usr/local/sbin/grafana || true # remove the pointer-binary that we made
+      rm ${LOCAL_APPS}grafana.desktop # remove the desktop icon from the menu
   elif [[ "$app" =~ Stacer ]]
     then
       apt -y remove stacer
@@ -697,6 +701,7 @@ installApp () { # All of the blocks of code to install each app individually:
             echo "service grafana-server start" >> $BINFILE
             echo "firefox http://127.0.0.1:3000" >> $BINFILE
             chmod +x $BINFILE
+            cp $DAS_DESKTOP_CACHE/grafana.desktop $LOCAL_APPS # copy the desktop icon over.
 
         ### AnyDesk
         ### Installer, No apt, HTTP, Checksum Required
