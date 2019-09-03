@@ -16,7 +16,7 @@ if [ ! -d "/var/demon/store/app-cache" ] # Store all apps in cache area
   then
     mkdir -p /var/demon/store/app-cache/
 fi
-fi [ ! -d "/usr/share/demon/desktop" ]
+if [ ! -d "/usr/share/demon/desktop" ]
   then
     mkdir -p /usr/share/demon/desktop
 fi
