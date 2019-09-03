@@ -199,7 +199,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
       apt -y remove cherrytree
   elif [[ "$app" =~ Grafana ]]
     then
-      apt remove grafana
+      apt remove grafana -y
       rm /usr/local/sbin/grafana || true # remove the pointer-binary that we made
       rm ${LOCAL_APPS}grafana.desktop # remove the desktop icon from the menu
   elif [[ "$app" =~ Stacer ]]
