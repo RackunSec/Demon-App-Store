@@ -3,7 +3,7 @@
 ## 2019 WeakNet Labs
 ## Douglas Berdeaux
 
-source ~/.bashrc # Testing this as there seems to be an issue with the $PATH for Spotifail.
+source ~/.bashrc # Testing this as there seems to be an issue with the $PATH
 
 # I chose "DAS_" as a prefix for exportation purposes, "(D)emon (A)pp (S)tore"
 # This way I don't accidentally overwrite anything else (hoopefully) in the environment.
@@ -16,7 +16,7 @@ export DAS_APPTEXT="\n\nWelcome to the Demon App Store - where everything's free
 export DAS_APPCACHE=/var/demon/store/app-cache
 export DAS_WIDTH=840
 export DAS_HEIGHT=512
-
+# These are for application cetegories, see final YAD call at bottom of file
 export DAS_CAT_PEN="Pentest"
 export DAS_CAT_SYS="System"
 export DAS_CAT_ENG="Engineering"
@@ -230,6 +230,9 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
     then
       rm -rf /infosec/exploit/AutoSploit
       rm -rf /usr/local/sbin/autosploit
+  elif [[ "$app" =~ MassDNS ]]
+    then
+      rm -rf /usr/local/sbin/massdns
   elif [[ "$app" =~ GitKraken ]]
     then
       apt -y remove gitkraken
@@ -761,6 +764,18 @@ installApp () { # All of the blocks of code to install each app individually:
             echo 'firefox-esr http://127.0.0.1:9000' >> $BINFILE
             chmod +x $BINFILE
 
+        ### MassDNS
+        ### Git, Compile, Copy
+        elif [[ "$app" =~ MassDNS ]]
+          then
+            URL=https://github.com/blechschmidt/massdns
+            BINFILE=/usr/local/sbin/massdns
+            progressBar " Installing MassDSN from GitHUB ... "
+              cd /tmp && git clone $URL
+              cd /tmp/massdns && make
+              cp /tmp/massdns/bin/massdns $BINFILE
+            killBar
+
         ### GitKraken
         ### Installer, HTTP, CHecksum required
         elif [[ "$app" =~ GitKraken ]]
@@ -798,6 +813,7 @@ main () {
    $(if [[ $(which BurpSuiteCommunity|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "BurpSuiteCommunity" "$DAS_CAT_PEN" "Web vulnerability scanner and proxy" false \
    $(if [[ $(which zap.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "ZAP" "$DAS_CAT_PEN" "OWASP ZAP, Zed Attack Proxy" false \
    $(if [[ $(which amass|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Amass" "$DAS_CAT_PEN" "OWASP Amass, attack surface mapping" false \
+   $(if [[ $(which massdns|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "MassDNS" "$DAS_CAT_PEN" "Simple high-performance DNS stub resolver" false \
    $(if [[ $(which zap.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "ZAP" "$DAS_CAT_PEN" "OWASP ZAP, Zed Attack Proxy" false \
    $(if [[ $(which maltego|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Maltego" "$DAS_CAT_PEN" "Paterva's information gathering tool" false \
    $(if [[ $(which ptf|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PTF" "$DAS_CAT_PEN" "TrustedSec's Pentester's Framework" false \
