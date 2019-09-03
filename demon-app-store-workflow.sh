@@ -190,6 +190,10 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
   elif [[ "$app" =~ APKTool ]]
     then
       apt remove apktool -y
+  elif [[ "$app" =~ ApacheDirectoryStudio ]]
+  then
+    rm -rf /opt/ApacheDirectoryStudio
+    rm -rf /usr/local/bin/apachedirectorystudio
   elif [[ "$app" == "ZAP" ]]
     then
       /opt/zaproxy/uninstall # TODO check if exists
@@ -240,6 +244,23 @@ installApp () { # All of the blocks of code to install each app individually:
               then
                 echo "export PATH=\$PATH:/snap/bin:/snap/sbin" >> ~/.bashrc # update our PATH
             fi
+
+        ### Apache Studio
+        ### Copy, HTTP, Checksum Required
+      elif [ "$app" == "ApacheDirectoryStudio" ]
+        then
+          URL=http://mirrors.gigenet.com/apache/directory/studio/2.0.0.v20180908-M14/ApacheDirectoryStudio-2.0.0.v20180908-M14-linux.gtk.x86_64.tar.gz
+          FILE=ApacheDirectoryStudio-2.0.0.v20180908-M14-linux.gtk.x86_64.tar.gz
+          CHECKSUM=f9915592978c0b7e1a2f64c80b756a1d
+          BINFILE=/usr/local/sbin/apachedirectorystudio
+          LOCALAREA=$DAS_APPCACHE/$FILE
+          checksumCheck $LOCALAREA $CHECKSUM $URL $app
+          cd $DAS_APPCACHE
+          tar vxzf $FILE
+          mv ApacheDirectoryStudio /opt/ # just move it.
+          echo "#!/usr/bin/env bash" > $BINFILE
+          echo "cd /opt/ApacheDirectoryStudio && ./ApacheDirectoryStudio" >> $BINFILE
+          chmod +x $BINFILE
 
         ### AutoSploit
         ### Copy, GIT
@@ -720,6 +741,7 @@ main () {
    $(if [[ $(which simplenote|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "SimpleNote" "The simplest way to keep notes" false \
    \
    $(if [[ $(which pycharm|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PyCharm" "The Python IDE for Professional Developers" false \
+   $(if [[ $(which apachedirectorystudio|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "ApacheDirectoryStudio" "Complete LDAP directory tooling platform" false \
    $(if [[ $(which sonarqube|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "SonarQube" "Code vulnerability scanning tool" false \
    $(if [[ $(which VisualStudio|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "VisualStudio" "Microsoft's Visual Studio code editor" false \
    $(if [[ $(which atom|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Atom" "Atom IDE" false \
