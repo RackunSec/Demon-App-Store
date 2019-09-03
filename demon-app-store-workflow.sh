@@ -394,7 +394,7 @@ installApp () { # All of the blocks of code to install each app individually:
 
         ### Burp Suite
         ### Installer, HTTP, Checksum required
-        elif [ "$app" == "Burp Suite" ]
+        elif [ "$app" == "BurpSuiteCommunity" ]
           then
             LOCALAREA="$DAS_APPCACHE/burpsuite.sh" # /var/demon/store/app-cache/burpsuite.sh
             URL='https://demonlinux.com/download/packages/burpsuite.sh'
