@@ -194,10 +194,10 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
   elif [[ "$app" =~ CherryTree ]]
     then
       apt -y remove cherrytree
-  elif [[ "$app" =~ Graphana ]]
+  elif [[ "$app" =~ Grafana ]]
     then
-      apt remove graphana
-      rm /usr/local/sbin/graphana || true # remove the pointer-binary that we made
+      apt remove grafana
+      rm /usr/local/sbin/grafana || true # remove the pointer-binary that we made
   elif [[ "$app" =~ Stacer ]]
     then
       apt -y remove stacer
@@ -682,7 +682,7 @@ installApp () { # All of the blocks of code to install each app individually:
 
         ### Grafana
         ### Installer, No apt, HTTP, Checksum Required
-        elif [ "$app" == "Graphana" ]
+      elif [ "$app" == "Grafana" ]
           then
             FILE=grafana_6.3.3_amd64.deb
             LOCALAREA=$DAS_APPCACHE/$FILE
@@ -821,7 +821,7 @@ main () {
    \
    $(if [[ $(which stacer|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Stacer" "$DAS_CAT_SYS" "System optimizer app" false \
    $(if [[ $(which glances|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Glances" "$DAS_CAT_SYS" "Curses-based monitoring tool" false \
-   $(if [[ $(which graphana|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Graphana" "$DAS_CAT_SYS" "Open platform for beautiful analytics and monitoring" false \
+   $(if [[ $(which grafana|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Grafana" "$DAS_CAT_SYS" "Open platform for beautiful analytics and monitoring" false \
    $(if [[ $(which anydesk|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "AnyDesk" "$DAS_CAT_SYS" "Remote Desktop App" false \
    \
    $(if [[ $(which Cutter|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Cutter" "$DAS_CAT_ENG" "Reverse engineering tool" false \
