@@ -14,6 +14,8 @@ export DAS_WINDOWLONGIMAGE="/usr/share/demon/images/icons/demon-store-icon-64-pa
 export DAS_APPNAME="Demon App Store"
 export DAS_APPTEXT="\n\nWelcome to the Demon App Store - where everything's free.\n"
 export DAS_APPCACHE=/var/demon/store/app-cache
+export DAS_WIDTH=720
+export DAS_HEIGHT=400
 
 ### Fail gracefully if ran alone (should be called by demon-app-store.sh):
 if [ ! -d /var/demon/store/app-cache ]
@@ -201,6 +203,10 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
     then
       rm -rf /opt/SocialBox
       rm -rf /usr/local/bin/socialbox
+  elif [[ "$app" =~ quasar ]]
+    then
+      rm -rf /opt/quasar
+      rm -rf /usr/local/bin/quasar
   elif [[ "$app" =~ Glances ]]
     then
       apt remove glances -y
@@ -282,6 +288,23 @@ installApp () { # All of the blocks of code to install each app individually:
           echo "#!/usr/bin/env bash" > $BINFILE
           echo "cd $LOCALAREA && ./SocialBox.sh" >> $BINFILE
           chmod +x $BINFILE
+
+        ### Quasar
+        ### Copy, GIT
+        elif [[ "$app" == "quasar" ]]
+            then
+              URL=https://github.com/Cyb0r9/quasar
+              LOCALAREA=/opt/quasar
+              BINFILE=/usr/local/bin/quasar
+              cd /opt/ && git clone $URL
+              cd $LOCALAREA
+              chmod +x install.sh
+              chmod +x quasar.sh
+              sed -i -e 's/apt-get/apt-get -y/g' install.sh # whoopsey daisey:
+              ./install.sh
+              echo "#!/usr/bin/env bash" > $BINFILE
+              echo "cd /opt/quasar && ./quasar.sh" >> $BINFILE
+              chmod +x $BINFILE
 
         ### AutoSploit
         ### Copy, GIT
@@ -740,7 +763,7 @@ main () {
   #updateMe # This will pull the latest version each time. # comment out during development
   # This may seem crazy, but it's for the UI/UX sake:
   IFS=$'\n'
-  readarray selected < <(yad --width=685 --height=400 --title=$DAS_APPNAME\
+  readarray selected < <(yad --width=$DAS_WIDTH --height=$DAS_HEIGHT --title=$DAS_APPNAME\
     --button=Help:"bash -c help" --button="Clean Cache:bash -c cleanCache" --button="Exit:1" --button="Check Out:0" \
     --list --checklist --column="Install" --column="App Name" --column=Description --column=Uninstall:CHK\
     --image=$DAS_WINDOWLONGIMAGE \
@@ -752,6 +775,7 @@ main () {
    $(if [[ $(which maltego|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Maltego" "Paterva's information gathering tool" false \
    $(if [[ $(which ptf|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PTF" "TrustedSec's Pentester's Framework" false \
    $(if [[ $(which socialbox|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "SocialBox" "Social Media Bruteforce Attack Framework" false \
+   $(if [[ $(which quasar|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "quasar" "Information Gathering Framework For Penetration Testers" false \
    \
    $(if [[ $(which stacer|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Stacer" "System optimizer app" false \
    $(if [[ $(which glances|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Glances" "Curses-based monitoring tool" false \
