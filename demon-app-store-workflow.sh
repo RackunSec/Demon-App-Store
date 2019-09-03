@@ -130,6 +130,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
   elif [[ "$app" =~ Burp ]]
     then
       /opt/BurpSuiteCommunity/uninstall
+      rm ${LOCAL_APPS}/burp.desktop # remove desktop icon from menu
   elif [[ "$app" =~ Tor.Browser ]]
     then
       rm /usr/local/sbin/tor-browser
@@ -403,6 +404,7 @@ installApp () { # All of the blocks of code to install each app individually:
             chmod +x $DAS_APPCACHE/burpsuite.sh
             killBar # the installer will take over
             $DAS_APPCACHE/burpsuite.sh
+            cp $DAS_DESKTOP_CACHE/burp.desktop $LOCAL_APPS # copy the desktop icon that I made
 
         ### TorBrowser
         ### Copy, HTTP, Checksum required
