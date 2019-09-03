@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Grafana
+Comment=Leading open source project for visualizing metrics
+TryExec=grafana
+Exec=grafana
+Icon=/usr/share/demon/images/icons/grafana.png
+Categories=GTK;System;
+Keywords=clean;performances;free;privacy;
+StartupNotify=true
+

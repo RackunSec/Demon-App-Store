@@ -680,14 +680,14 @@ installApp () { # All of the blocks of code to install each app individually:
             dpkg -i $LOCALAREA
             apt -f install -y
 
-        ### Graphana
+        ### Grafana
         ### Installer, No apt, HTTP, Checksum Required
         elif [ "$app" == "Graphana" ]
           then
             FILE=grafana_6.3.3_amd64.deb
             LOCALAREA=$DAS_APPCACHE/$FILE
             CHECKSUM=bb2f244c968b9bfca9b6c5763e9df698
-            BINFILE=/usr/local/sbin/graphana
+            BINFILE=/usr/local/sbin/grafana
             URL=https://dl.grafana.com/oss/release/grafana_6.3.3_amd64.deb
             checksumCheck $LOCALAREA $CHECKSUM $URL $app
             progressBar $progressText
@@ -695,7 +695,7 @@ installApp () { # All of the blocks of code to install each app individually:
             apt -f install -y
             echo "#!/bin/bash" > $BINFILE
             echo "service grafana-server start" >> $BINFILE
-            echo "/opt/firefox/firefox-bin http://127.0.0.1:3000" >> $BINFILE
+            echo "firefox http://127.0.0.1:3000" >> $BINFILE
             chmod +x $BINFILE
 
         ### AnyDesk
