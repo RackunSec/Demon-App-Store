@@ -814,7 +814,6 @@ main () {
    $(if [[ $(which zap.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "ZAP" "$DAS_CAT_PEN" "OWASP ZAP, Zed Attack Proxy" false \
    $(if [[ $(which amass|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Amass" "$DAS_CAT_PEN" "OWASP Amass, attack surface mapping" false \
    $(if [[ $(which massdns|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "MassDNS" "$DAS_CAT_PEN" "Simple high-performance DNS stub resolver" false \
-   $(if [[ $(which zap.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "ZAP" "$DAS_CAT_PEN" "OWASP ZAP, Zed Attack Proxy" false \
    $(if [[ $(which maltego|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Maltego" "$DAS_CAT_PEN" "Paterva's information gathering tool" false \
    $(if [[ $(which ptf|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PTF" "$DAS_CAT_PEN" "TrustedSec's Pentester's Framework" false \
    $(if [[ $(which socialbox|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "SocialBox" "$DAS_CAT_PEN" "Social Media Bruteforce Attack Framework" false \
