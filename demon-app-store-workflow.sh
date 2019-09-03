@@ -197,6 +197,10 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
   elif [[ "$app" == "ZAP" ]]
     then
       /opt/zaproxy/uninstall # TODO check if exists
+  elif [[ "$app" =~ SocialBox ]]
+    then
+      rm -rf /opt/SocialBox
+      rm -rf /usr/local/bin/socialbox
   elif [[ "$app" =~ Glances ]]
     then
       apt remove glances -y
@@ -252,7 +256,7 @@ installApp () { # All of the blocks of code to install each app individually:
           URL=http://mirrors.gigenet.com/apache/directory/studio/2.0.0.v20180908-M14/ApacheDirectoryStudio-2.0.0.v20180908-M14-linux.gtk.x86_64.tar.gz
           FILE=ApacheDirectoryStudio-2.0.0.v20180908-M14-linux.gtk.x86_64.tar.gz
           CHECKSUM=f9915592978c0b7e1a2f64c80b756a1d
-          BINFILE=/usr/local/sbin/apachedirectorystudio
+          BINFILE=/usr/local/bin/apachedirectorystudio
           LOCALAREA=$DAS_APPCACHE/$FILE
           checksumCheck $LOCALAREA $CHECKSUM $URL $app
           cd $DAS_APPCACHE
@@ -260,6 +264,23 @@ installApp () { # All of the blocks of code to install each app individually:
           mv ApacheDirectoryStudio /opt/ # just move it.
           echo "#!/usr/bin/env bash" > $BINFILE
           echo "cd /opt/ApacheDirectoryStudio && ./ApacheDirectoryStudio" >> $BINFILE
+          chmod +x $BINFILE
+
+        ### SocialBox
+        ### Copy, GIT
+        elif [[ "$app" == "SocialBox" ]]
+        then
+          URL=https://github.com/TunisianEagles/SocialBox.git
+          LOCALAREA=/opt/SocialBox
+          BINFILE=/usr/local/bin/socialbox
+          cd /opt && git clone $URL
+          cd $LOCALAREA
+          chmod +x SocialBox.sh
+          chmod +x install-sb.sh
+          ./install-sb.sh
+          # ./SocialBox.sh
+          echo "#!/usr/bin/env bash" > $BINFILE
+          echo "cd $LOCALAREA && ./SocialBox.sh" >> $BINFILE
           chmod +x $BINFILE
 
         ### AutoSploit
@@ -730,6 +751,7 @@ main () {
    $(if [[ $(which zap.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "ZAP" "OWASP ZAP, Zed Attack Proxy" false \
    $(if [[ $(which maltego|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Maltego" "Paterva's information gathering tool" false \
    $(if [[ $(which ptf|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PTF" "TrustedSec's Pentester's Framework" false \
+   $(if [[ $(which socialbox|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "SocialBox" "Social Media Bruteforce Attack Framework" false \
    \
    $(if [[ $(which stacer|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Stacer" "System optimizer app" false \
    $(if [[ $(which glances|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Glances" "Curses-based monitoring tool" false \
