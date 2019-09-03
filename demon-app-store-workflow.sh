@@ -14,8 +14,17 @@ export DAS_WINDOWLONGIMAGE="/usr/share/demon/images/icons/demon-store-icon-64-pa
 export DAS_APPNAME="Demon App Store"
 export DAS_APPTEXT="\n\nWelcome to the Demon App Store - where everything's free.\n"
 export DAS_APPCACHE=/var/demon/store/app-cache
-export DAS_WIDTH=720
-export DAS_HEIGHT=400
+export DAS_WIDTH=840
+export DAS_HEIGHT=512
+
+export DAS_CAT_PEN="Pentest"
+export DAS_CAT_SYS="System"
+export DAS_CAT_ENG="Engineering"
+export DAS_CAT_NOT="Note Taking"
+export DAS_CAT_DEV="Developer"
+export DAS_CAT_WEB="Web"
+export DAS_CAT_COM="Communication"
+export DAS_CAT_MM="Multimedia"
 
 ### Fail gracefully if ran alone (should be called by demon-app-store.sh):
 if [ ! -d /var/demon/store/app-cache ]
@@ -105,6 +114,9 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
   if [[ "$app" =~ potify ]]
     then
       snap remove spotify
+  elif [[ "$app" =~ amass ]]
+    then
+      snap remove amass
   elif [[ "$app" =~ IntelliJ ]]
     then
       snap remove intellij-idea-community
@@ -265,46 +277,52 @@ installApp () { # All of the blocks of code to install each app individually:
           BINFILE=/usr/local/bin/apachedirectorystudio
           LOCALAREA=$DAS_APPCACHE/$FILE
           checksumCheck $LOCALAREA $CHECKSUM $URL $app
-          cd $DAS_APPCACHE
-          tar vxzf $FILE
-          mv ApacheDirectoryStudio /opt/ # just move it.
-          echo "#!/usr/bin/env bash" > $BINFILE
-          echo "cd /opt/ApacheDirectoryStudio && ./ApacheDirectoryStudio" >> $BINFILE
-          chmod +x $BINFILE
+          progressBar " Installing Apache Directory Studio ... "
+            cd $DAS_APPCACHE
+            tar vxzf $FILE
+            mv ApacheDirectoryStudio /opt/ # just move it.
+            echo "#!/usr/bin/env bash" > $BINFILE
+            echo "cd /opt/ApacheDirectoryStudio && ./ApacheDirectoryStudio" >> $BINFILE
+            chmod +x $BINFILE
+          killBar
 
         ### SocialBox
         ### Copy, GIT
         elif [[ "$app" == "SocialBox" ]]
         then
-          URL=https://github.com/TunisianEagles/SocialBox.git
-          LOCALAREA=/opt/SocialBox
-          BINFILE=/usr/local/bin/socialbox
-          cd /opt && git clone $URL
-          cd $LOCALAREA
-          chmod +x SocialBox.sh
-          chmod +x install-sb.sh
-          ./install-sb.sh
-          # ./SocialBox.sh
-          echo "#!/usr/bin/env bash" > $BINFILE
-          echo "cd $LOCALAREA && ./SocialBox.sh" >> $BINFILE
-          chmod +x $BINFILE
+          progressBar " Installing SocialBox from GitHUB ...    "
+            URL=https://github.com/TunisianEagles/SocialBox.git
+            LOCALAREA=/opt/SocialBox
+            BINFILE=/usr/local/bin/socialbox
+            cd /opt && git clone $URL
+            cd $LOCALAREA
+            chmod +x SocialBox.sh
+            chmod +x install-sb.sh
+            ./install-sb.sh
+            # ./SocialBox.sh
+            echo "#!/usr/bin/env bash" > $BINFILE
+            echo "cd $LOCALAREA && ./SocialBox.sh" >> $BINFILE
+            chmod +x $BINFILE
+          killBar
 
         ### Quasar
         ### Copy, GIT
         elif [[ "$app" == "quasar" ]]
             then
-              URL=https://github.com/Cyb0r9/quasar
-              LOCALAREA=/opt/quasar
-              BINFILE=/usr/local/bin/quasar
-              cd /opt/ && git clone $URL
-              cd $LOCALAREA
-              chmod +x install.sh
-              chmod +x quasar.sh
-              sed -i -e 's/apt-get/apt-get -y/g' install.sh # whoopsey daisey:
-              ./install.sh
-              echo "#!/usr/bin/env bash" > $BINFILE
-              echo "cd /opt/quasar && ./quasar.sh" >> $BINFILE
-              chmod +x $BINFILE
+              progressBar " Installing Quasar from GitHUB ...    "
+                URL=https://github.com/Cyb0r9/quasar
+                LOCALAREA=/opt/quasar
+                BINFILE=/usr/local/bin/quasar
+                cd /opt/ && git clone $URL
+                cd $LOCALAREA
+                chmod +x install.sh
+                chmod +x quasar.sh
+                sed -i -e 's/apt-get/apt-get -y/g' install.sh # whoopsey daisey:
+                ./install.sh
+                echo "#!/usr/bin/env bash" > $BINFILE
+                echo "cd /opt/quasar && ./quasar.sh" >> $BINFILE
+                chmod +x $BINFILE
+              killBar
 
         ### AutoSploit
         ### Copy, GIT
@@ -322,6 +340,14 @@ installApp () { # All of the blocks of code to install each app individually:
             echo "#!/usr/bin/env bash" > $BINFILE
             echo "cd /infosec/exploit/AutoSploit && ./run_autosploit.sh" >> $BINFILE
             chmod +x $BINFILE
+
+        ### OWASP Amass
+        ### Installer, No Apt
+        elif [ "$app" == "amass" ]
+          then
+            progressBar "Installing OWASP Amass ...   "
+              snap install amass
+            killBar
 
         ### OWASP ZAP
         ### Installer, HTTP, CHecksum Required
@@ -765,53 +791,54 @@ main () {
   IFS=$'\n'
   readarray selected < <(yad --width=$DAS_WIDTH --height=$DAS_HEIGHT --title=$DAS_APPNAME\
     --button=Help:"bash -c help" --button="Clean Cache:bash -c cleanCache" --button="Exit:1" --button="Check Out:0" \
-    --list --checklist --column="Install" --column="App Name" --column=Description --column=Uninstall:CHK\
+    --list --checklist --column="Install" --column="App Name" --column=Category --column=Description --column=Uninstall:CHK\
     --image=$DAS_WINDOWLONGIMAGE \
     --window-icon=$DAS_WINDOWICON \
-    $(if [[ $(which graphana|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Graphana" "open platform for beautiful analytics and monitoring" false \
-    $(if [[ $(which autosploit|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "AutoSploit" "Automated Mass Exploit Tool" false \
-   $(if [[ $(which BurpSuiteCommunity|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "BurpSuiteCommunity" "Web vulnerability scanner and proxy" false \
-   $(if [[ $(which zap.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "ZAP" "OWASP ZAP, Zed Attack Proxy" false \
-   $(if [[ $(which maltego|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Maltego" "Paterva's information gathering tool" false \
-   $(if [[ $(which ptf|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PTF" "TrustedSec's Pentester's Framework" false \
-   $(if [[ $(which socialbox|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "SocialBox" "Social Media Bruteforce Attack Framework" false \
-   $(if [[ $(which quasar|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "quasar" "Information Gathering Framework For Penetration Testers" false \
+   $(if [[ $(which autosploit|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "AutoSploit" "$DAS_CAT_PEN" "Automated Mass Exploit Tool" false \
+   $(if [[ $(which BurpSuiteCommunity|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "BurpSuiteCommunity" "$DAS_CAT_PEN" "Web vulnerability scanner and proxy" false \
+   $(if [[ $(which zap.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "ZAP" "$DAS_CAT_PEN" "OWASP ZAP, Zed Attack Proxy" false \
+   $(if [[ $(which amass|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Amass" "$DAS_CAT_PEN" "OWASP Amass, attack surface mapping" false \
+   $(if [[ $(which zap.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "ZAP" "$DAS_CAT_PEN" "OWASP ZAP, Zed Attack Proxy" false \
+   $(if [[ $(which maltego|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Maltego" "$DAS_CAT_PEN" "Paterva's information gathering tool" false \
+   $(if [[ $(which ptf|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PTF" "$DAS_CAT_PEN" "TrustedSec's Pentester's Framework" false \
+   $(if [[ $(which socialbox|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "SocialBox" "$DAS_CAT_PEN" "Social Media Bruteforce Attack Framework" false \
+   $(if [[ $(which quasar|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "quasar" "$DAS_CAT_PEN" "Information Gathering Framework For Penetration Testers" false \
    \
-   $(if [[ $(which stacer|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Stacer" "System optimizer app" false \
-   $(if [[ $(which glances|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Glances" "Curses-based monitoring tool" false \
+   $(if [[ $(which stacer|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Stacer" "$DAS_CAT_SYS" "System optimizer app" false \
+   $(if [[ $(which glances|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Glances" "$DAS_CAT_SYS" "Curses-based monitoring tool" false \
+   $(if [[ $(which graphana|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Graphana" "$DAS_CAT_SYS" "Open platform for beautiful analytics and monitoring" false \
+   $(if [[ $(which anydesk|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "AnyDesk" "$DAS_CAT_SYS" "Remote Desktop App" false \
    \
-   $(if [[ $(which Cutter|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Cutter" "Reverse engineering tool" false \
-   $(if [[ $(which apktool|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "APKTool" "Reverse engineering Android APK tool" false \
+   $(if [[ $(which Cutter|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Cutter" "$DAS_CAT_ENG" "Reverse engineering tool" false \
+   $(if [[ $(which apktool|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "APKTool" "$DAS_CAT_ENG" "Reverse engineering Android APK tool" false \
    \
-   $(if [[ $(which cherrytree|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "CherryTree" "A hierarchical note taking application" false \
-   $(if [[ $(which simplenote|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "SimpleNote" "The simplest way to keep notes" false \
+   $(if [[ $(which cherrytree|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "CherryTree" "$DAS_CAT_NOT" "A hierarchical note taking application" false \
+   $(if [[ $(which simplenote|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "SimpleNote" "$DAS_CAT_NOT" "The simplest way to keep notes" false \
    \
-   $(if [[ $(which pycharm|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PyCharm" "The Python IDE for Professional Developers" false \
-   $(if [[ $(which apachedirectorystudio|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "ApacheDirectoryStudio" "Complete LDAP directory tooling platform" false \
-   $(if [[ $(which sonarqube|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "SonarQube" "Code vulnerability scanning tool" false \
-   $(if [[ $(which VisualStudio|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "VisualStudio" "Microsoft's Visual Studio code editor" false \
-   $(if [[ $(which atom|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Atom" "Atom IDE" false \
-   $(if [[ $(which gitkraken|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "GitKraken" "Git Client" false \
-   $(if [[ $(which sublime|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Sublime_Text" "Sublime text editor" false \
-   $(if [[ $(which eclipse|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Eclipse" "Eclipse IDE for Java" false \
-   $(if [[ $(which intellij-idea-community|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "IntelliJ IDEA Community" "Java IDE for Developers"  false \
+   $(if [[ $(which pycharm|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PyCharm" "$DAS_CAT_DEV" "The Python IDE for Professional Developers" false \
+   $(if [[ $(which apachedirectorystudio|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "ApacheDirectoryStudio" "$DAS_CAT_DEV" "Complete LDAP directory tooling platform" false \
+   $(if [[ $(which sonarqube|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "SonarQube" "$DAS_CAT_DEV" "Code vulnerability scanning tool" false \
+   $(if [[ $(which VisualStudio|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "VisualStudio" "$DAS_CAT_DEV" "Microsoft's Visual Studio code editor" false \
+   $(if [[ $(which atom|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Atom" "$DAS_CAT_DEV" "Atom IDE" false \
+   $(if [[ $(which gitkraken|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "GitKraken" "$DAS_CAT_DEV" "Git Client" false \
+   $(if [[ $(which sublime|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Sublime_Text" "$DAS_CAT_DEV" "Sublime text editor" false \
+   $(if [[ $(which eclipse|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Eclipse" "$DAS_CAT_DEV" "Eclipse IDE for Java" false \
+   $(if [[ $(which intellij-idea-community|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "IntelliJ IDEA Community" "$DAS_CAT_DEV" "Java IDE for Developers"  false \
    \
-   $(if [[ $(which dbeaver|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "DBeaver" "Database tool for developers" false \
+   $(if [[ $(which dbeaver|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "DBeaver" "$DAS_CAT_DEV" "Database tool for developers" false \
    \
-   $(if [[ $(which anydesk|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "AnyDesk" "Remote Desktop App" false \
+   $(if [[ $(which brave-browser|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Brave-Browser" "$DAS_CAT_WEB" "Much more than a web browser" false \
+   $(if [[ $(which google-chrome|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Google-Chrome" "$DAS_CAT_WEB" "Google's web browser" false \
+   $(if [[ $(which tor-browser|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Tor-Browser" "$DAS_CAT_WEB" "The Tor Project Browser"  false \
    \
-   $(if [[ $(which brave-browser|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Brave-Browser" "Much more than a web browser" false \
-   $(if [[ $(which google-chrome|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Google-Chrome" "Google's web browser" false \
-   $(if [[ $(which tor-browser|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Tor-Browser" "The Tor Project Browser"  false \
+   $(if [[ $(which slack|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Slack" "$DAS_CAT_COM" "Slack collaboration tool" false \
+   $(if [[ $(which franz|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Franz" "$DAS_CAT_COM" "Messaging client app" false \
+   $(if [[ $(which discord|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Discord" "$DAS_CAT_COM" "Voice and text chat for gamers" false \
    \
-   $(if [[ $(which slack|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Slack" "Slack collaboration tool" false \
-   $(if [[ $(which franz|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Franz" "Messaging client app" false \
-   $(if [[ $(which discord|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Discord" "Voice and text chat for gamers" false \
-   \
-   $(if [[ $(which kdenlive|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Kdenlive" "Video editor program" false \
-   $(if [[ $(which shotcut|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Shotcut" "Video editor program" false \
-   $(if [[ $(which spotify|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Spotify" "Spotify desktop app" false \
-   $(if [[ $(which vlc|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "VLC" "Multimedia player and framework" false)
+   $(if [[ $(which kdenlive|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Kdenlive" "$DAS_CAT_MM" "Video editor program" false \
+   $(if [[ $(which shotcut|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Shotcut" "$DAS_CAT_MM" "Video editor program" false \
+   $(if [[ $(which spotify|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Spotify" "$DAS_CAT_MM" "Spotify desktop app" false \
+   $(if [[ $(which vlc|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "VLC" "Multimedia" "$DAS_CAT_MM player and framework" false)
 
    for app in "${selected[@]}"
     do
