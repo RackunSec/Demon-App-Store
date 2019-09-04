@@ -247,6 +247,11 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
       rm -rf /infosec/exploit/beef # remove the app
       rm -rf /usr/share/applications/beef.desktop # remove the menu entry
       rm -rf /usr/local/sbin/beef # remove the binary file
+  elif [[ "$app" =~ "PixieWPS" ]]
+    then
+      rm -rf /infosec/wifi/pixiewps-master # removethe initial build directory
+      rm /usr/local/sbin/pixiewps # remove the executable
+      rm /usr/share/applications/pixiewps.desktop # remove the desktop/menu icon
   else
     printf "[+] Recieved $app\n";
   fi
@@ -758,24 +763,27 @@ installApp () { # All of the blocks of code to install each app individually:
             BINFILE=
             checksumCheck $LOCALAREA $CHECKSUM $URL $app
             progressBar $progressText
-            dpkg -i $LOCALAREA
-            apt -f install -y
+              dpkg -i $LOCALAREA
+              apt -f install -y
+            killBar
 
         ### Glances
         ### Installer, apt
         elif [[ "$app" =~ Glances ]]
           then
             progressBar "Installing $app ... "
-            apt install glances -y
+              apt install glances -y
+            killBar
 
         ### IntelliJ
         ### Install, snap
         elif [[ "$app" =~ IntelliJ ]]
           then
             progressBar $progressText
-            apt install snapd -y
-            snap install spotify
-            snap install intellij-idea-community --classic
+              apt install snapd -y
+              snap install spotify
+              snap install intellij-idea-community --classic
+            killBar
 
         ### Sonarqube
         ### Copy, HTTP, Checksum Required
@@ -788,14 +796,16 @@ installApp () { # All of the blocks of code to install each app individually:
             BINFILE=/usr/local/sbin/sonarqube
             INSTALLAREA=/opt/
             checksumCheck $LOCALAREA $CHECKSUM $URL $app
-            cd $DAS_APPCACHE && unzip $FILE
-            mv sonarqube-7.9.1 /opt/
-            chmod a+rxw -R /opt/sonarqube-7.9.1
-            echo "#!/usr/bin/env bash" > $BINFILE
-            echo 'su postgres -c "/opt/sonarqube-7.9.1/bin/linux-x86-64/sonar.sh console" &' >> $BINFILE
-            echo "sleep 10" >> $BINFILE # this is required because of the overhead of the service ...
-            echo 'firefox-esr http://127.0.0.1:9000' >> $BINFILE
-            chmod +x $BINFILE
+            progressBar " Installing SonarQube (SonarSource.com) ... "
+              cd $DAS_APPCACHE && unzip $FILE
+              mv sonarqube-7.9.1 /opt/
+              chmod a+rxw -R /opt/sonarqube-7.9.1
+              echo "#!/usr/bin/env bash" > $BINFILE
+              echo 'su postgres -c "/opt/sonarqube-7.9.1/bin/linux-x86-64/sonar.sh console" &' >> $BINFILE
+              echo "sleep 10" >> $BINFILE # this is required because of the overhead of the service ...
+              echo 'firefox-esr http://127.0.0.1:9000' >> $BINFILE
+              chmod +x $BINFILE
+            killBar
 
         ### MassDNS
         ### Git, Compile, Copy
@@ -807,6 +817,27 @@ installApp () { # All of the blocks of code to install each app individually:
               cd /tmp && git clone $URL
               cd /tmp/massdns && make
               cp /tmp/massdns/bin/massdns $BINFILE
+            killBar
+
+        ### PixieWPS
+        ### GIT, Compile, Copy
+        elif [[ "$app" =~ PixieWPS ]]
+          then
+            URL=https://github.com/wiire/pixiewps/archive/master.zip
+            FILE=master.zip
+            LOCALAREA=/$DAS_APPCACHE/$FILE # /var/demon/.../master.zip
+            CHECKSUM=75453b8646f28873de05c083a60b6a69 # for master.zip ($FILE)
+            INSTALLAREA=/infosec/wifi/
+            INSTALLDIR=pixiewps-master
+            checksumCheck $LOCALAREA $CHECKSUM $URL $app # download the file
+            printf "[++] LOCALAREA: $LOCALAREA\n"
+            progressBar " Installing PixieWPS (GitHUB) ... " # let em know you're compiling.
+              cp $LOCALAREA $INSTALLAREA
+              cd $INSTALLAREA && unzip $FILE && rm $FILE
+              apt -y install build-essential # install dependencies
+              cd ${INSTALLAREA}/${INSTALLDIR} && make && cp pixiewps /usr/local/sbin # copy the executable into $PATH
+              cp $DAS_DESKTOP_CACHE/pixiewps.desktop /usr/share/applications # copy menu icon/entry file
+              cd && rm -rf ${INSTALLAREA}/${INSTALLDIR} # remove /infosec/wifi/pixiewps-master
             killBar
 
         ### GitKraken
@@ -843,7 +874,8 @@ main () {
     --image=$DAS_WINDOWLONGIMAGE \
     --window-icon=$DAS_WINDOWICON \
     --center \
-   $(if [[ $(which autosploit|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "AutoSploit" "$DAS_CAT_PEN" "Automated Mass Exploit Tool" false \
+    $(if [[ $(which autosploit|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "AutoSploit" "$DAS_CAT_PEN" "Automated Mass Exploit Tool" false \
+    $(if [[ $(which pixiewps|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PixieWPS" "$DAS_CAT_PEN" "Cracking WPS PIN" false \
    $(if [[ $(which BurpSuiteCommunity|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "BurpSuiteCommunity" "$DAS_CAT_PEN" "Web vulnerability scanner and proxy" false \
    $(if [[ $(which zap.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "ZAP" "$DAS_CAT_PEN" "OWASP ZAP, Zed Attack Proxy" false \
    $(if [[ $(which amass|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Amass" "$DAS_CAT_PEN" "OWASP Amass, attack surface mapping" false \

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=PixieWPS
+Comment=Offline WPS PIN Cracking
+Exec=gnome-terminal -e "bash -c \"pixiewps;bash\"";
+Icon=/usr/share/demon/images/icons/wifi.png
+StartupNotify=false
+Terminal=true
+Categories=wifihacking
