@@ -18,7 +18,7 @@ export DAS_DESKTOP_CACHE=/usr/share/demon/desktop/
 export DAS_WIDTH=840
 export DAS_HEIGHT=512
 # These are for application cetegories, see final YAD call at bottom of file
-export DAS_CAT_PEN="Pentest"
+export DAS_CAT_PEN="Infosec"
 export DAS_CAT_SYS="System"
 export DAS_CAT_ENG="Engineering"
 export DAS_CAT_NOT="Note Taking"
@@ -26,6 +26,7 @@ export DAS_CAT_DEV="Developer"
 export DAS_CAT_WEB="Web"
 export DAS_CAT_COM="Communication"
 export DAS_CAT_MM="Multimedia"
+export DAS_CAT_NET="Networking"
 
 export LOCAL_APPS=/usr/share/applications/
 
@@ -902,12 +903,13 @@ main () {
     $(if [[ $(which BurpSuiteCommunity|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "BurpSuiteCommunity" "$DAS_CAT_PEN" "Web vulnerability scanner and proxy" false \
    $(if [[ $(which zap.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "ZAP" "$DAS_CAT_PEN" "OWASP ZAP, Zed Attack Proxy" false \
    $(if [[ $(which amass|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Amass" "$DAS_CAT_PEN" "OWASP Amass, attack surface mapping" false \
-   $(if [[ $(which massdns|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "MassDNS" "$DAS_CAT_PEN" "Simple high-performance DNS stub resolver" false \
    $(if [[ $(which maltego|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Maltego" "$DAS_CAT_PEN" "Paterva's information gathering tool" false \
    $(if [[ $(which ptf|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PTF" "$DAS_CAT_PEN" "TrustedSec's Pentester's Framework" false \
    $(if [[ $(which beef|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "BeEF" "$DAS_CAT_PEN" "The Browser Exploitation Framework" false \
    $(if [[ $(which socialbox|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "SocialBox" "$DAS_CAT_PEN" "Social Media Bruteforce Attack Framework" false \
    $(if [[ $(which quasar|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "quasar" "$DAS_CAT_PEN" "Information Gathering Framework For Penetration Testers" false \
+   \
+   $(if [[ $(which massdns|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "MassDNS" "$DAS_CAT_NET" "Simple high-performance DNS stub resolver" false \
    \
    $(if [[ $(which stacer|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Stacer" "$DAS_CAT_SYS" "System optimizer app" false \
    $(if [[ $(which glances|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Glances" "$DAS_CAT_SYS" "Curses-based monitoring tool" false \
