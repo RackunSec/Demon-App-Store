@@ -235,6 +235,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
     then
       rm -rf /infosec/exploit/AutoSploit
       rm -rf /usr/local/sbin/autosploit
+      rm -rf /usr/share/applications/autosploit.desktop # remove the desktop/menu icon
   elif [[ "$app" =~ MassDNS ]]
     then
       rm -rf /usr/local/sbin/massdns
@@ -346,8 +347,9 @@ installApp () { # All of the blocks of code to install each app individually:
             chmod +x install.sh
             ./install.sh
             echo "#!/usr/bin/env bash" > $BINFILE
-            echo "cd /infosec/exploit/AutoSploit && ./run_autosploit.sh" >> $BINFILE
+            echo "cd /infosec/exploit/AutoSploit && ./runsploit.sh" >> $BINFILE
             chmod +x $BINFILE
+            cp $DAS_DESKTOP_CACHE/autosploit.desktop $LOCAL_APPS # set the menu/desktop icon
 
         ### OWASP Amass
         ### Installer, No Apt
