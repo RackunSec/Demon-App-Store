@@ -242,6 +242,11 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
   elif [[ "$app" =~ GitKraken ]]
     then
       apt -y remove gitkraken
+  elif [[ "$app" =~ "BeEF" ]]
+    then
+      rm -rf /infosec/exploit/beef # remove the app
+      rm -rf /usr/share/applications/beef.desktop # remove the menu entry
+      rm -rf /usr/local/sbin/beef # remove the binary file
   else
     printf "[+] Recieved $app\n";
   fi
@@ -353,7 +358,7 @@ installApp () { # All of the blocks of code to install each app individually:
 
         ### BeEF
         ### GIT, install script
-        elif [ "$app" == "beef" ]
+      elif [ "$app" == "BeEF" ]
           then
             URL=https://github.com/beefproject/beef
             LOCALAREA=/infosec/exploit/
@@ -367,6 +372,7 @@ installApp () { # All of the blocks of code to install each app individually:
             cp $DAS_DESKTOP_CACHE/beef.desktop $LOCAL_APPS # copy the desktop icon that I made
             echo "#!/usr/bin/env bash" > $BINFILE
             echo "cd /infosec/exploit/beef && ./beef" >> $BINFILE
+            chmod +x $BINFILE # make it executable
 
         ### OWASP Amass
         ### Installer, No Apt
