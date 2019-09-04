@@ -362,7 +362,7 @@ installApp () { # All of the blocks of code to install each app individually:
           then
             URL=https://github.com/beefproject/beef
             LOCALAREA=/infosec/exploit/
-            BINFILE=/usr/local/sbin
+            BINFILE=/usr/local/sbin/beef
             progressBar " Installing BeEF ... "
               cd $LOCALAREA && git clone $URL
               cd beef
