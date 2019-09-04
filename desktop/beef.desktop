@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=BeEF
+Comment=The Browser Exploitation Framework
+Exec=gnome-terminal -e "bash -c \"beef;bash\"";
+Icon=/usr/share/demon/images/icons/beef.png
+StartupNotify=false
+Terminal=true
+Categories=exploitation

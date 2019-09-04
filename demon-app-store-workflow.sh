@@ -351,6 +351,23 @@ installApp () { # All of the blocks of code to install each app individually:
             chmod +x $BINFILE
             cp $DAS_DESKTOP_CACHE/autosploit.desktop $LOCAL_APPS # set the menu/desktop icon
 
+        ### BeEF
+        ### GIT, install script
+        elif [ "$app" == "beef" ]
+          then
+            URL=https://github.com/beefproject/beef
+            LOCALAREA=/infosec/exploit/
+            BINFILE=/usr/local/sbin
+            progressBar " Installing BeEF ... "
+            cd $LOCALAREA && git clone $URL
+            cd beef
+            sed -ri 's/\s+get_permission//' install # whoopsey daisey!
+            sed -ri 's/apt-get install/apt-get install -y/' install # whoopsey daisey!
+            ./install
+            cp $DAS_DESKTOP_CACHE/beef.desktop $LOCAL_APPS # copy the desktop icon that I made
+            echo "#!/usr/bin/env bash" > $BINFILE
+            echo "cd /infosec/exploit/beef && ./beef" >> $BINFILE
+
         ### OWASP Amass
         ### Installer, No Apt
         elif [ "$app" == "amass" ]
@@ -825,6 +842,7 @@ main () {
    $(if [[ $(which massdns|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "MassDNS" "$DAS_CAT_PEN" "Simple high-performance DNS stub resolver" false \
    $(if [[ $(which maltego|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Maltego" "$DAS_CAT_PEN" "Paterva's information gathering tool" false \
    $(if [[ $(which ptf|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PTF" "$DAS_CAT_PEN" "TrustedSec's Pentester's Framework" false \
+   $(if [[ $(which beef|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "BeEF" "$DAS_CAT_PEN" "The Browser Exploitation Framework" false \
    $(if [[ $(which socialbox|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "SocialBox" "$DAS_CAT_PEN" "Social Media Bruteforce Attack Framework" false \
    $(if [[ $(which quasar|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "quasar" "$DAS_CAT_PEN" "Information Gathering Framework For Penetration Testers" false \
    \
