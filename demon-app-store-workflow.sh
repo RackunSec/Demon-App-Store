@@ -364,15 +364,16 @@ installApp () { # All of the blocks of code to install each app individually:
             LOCALAREA=/infosec/exploit/
             BINFILE=/usr/local/sbin
             progressBar " Installing BeEF ... "
-            cd $LOCALAREA && git clone $URL
-            cd beef
-            sed -ri 's/\s+get_permission//' install # whoopsey daisey!
-            sed -ri 's/apt-get install/apt-get install -y/' install # whoopsey daisey!
-            ./install
-            cp $DAS_DESKTOP_CACHE/beef.desktop $LOCAL_APPS # copy the desktop icon that I made
-            echo "#!/usr/bin/env bash" > $BINFILE
-            echo "cd /infosec/exploit/beef && ./beef" >> $BINFILE
-            chmod +x $BINFILE # make it executable
+              cd $LOCALAREA && git clone $URL
+              cd beef
+              sed -ri 's/\s+get_permission//' install # whoopsey daisey!
+              sed -ri 's/apt-get install/apt-get install -y/' install # whoopsey daisey!
+              ./install
+              cp $DAS_DESKTOP_CACHE/beef.desktop $LOCAL_APPS # copy the desktop icon that I made
+              echo "#!/usr/bin/env bash" > $BINFILE
+              echo "cd /infosec/exploit/beef && ./beef" >> $BINFILE
+              chmod +x $BINFILE # make it executable
+            killBar
 
         ### OWASP Amass
         ### Installer, No Apt
