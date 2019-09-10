@@ -228,6 +228,11 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
   elif [[ "$app" =~ Glances ]]
     then
       apt remove glances -y
+  elif [[ "$app" =~ IMSI-Catcher ]]
+    then
+      rm -rf /infosec/rf/IMSI-catcher # remove local git repo
+      rm -rf /usr/local/sbin/imsi-catcher # remove binary file
+      apt remove -y gr-gsm
   elif [[ "$app" =~ SonarQube ]]
     then
       rm -rf /usr/local/sbin/sonarqube
@@ -826,21 +831,45 @@ installApp () { # All of the blocks of code to install each app individually:
 
         ### NESSUS
         ### HTTP, Checksum Required, Installer
-      elif [[ "$app" =~ "Nessus" ]]
-        then
-          URL=https://demonlinux.com/download/packages/Nessus-8.6.0-debian6_amd64.deb
-          FILE=Nessus-8.6.0-debian6_amd64.deb
-          LOCALAREA=$DAS_APPCACHE/$FILE
-          CHECKSUM=d76a6b3d793e424737746c810991499a
-          BINFILE=/usr/local/sbin/nessus
-          checksumCheck $LOCALAREA $CHECKSUM $URL $app # download the file
-          progressBar " Installing Nessus ...   "
-            dpkg -i $LOCALAREA
-            apt -f install -y
-            echo '#!/usr/bin/env bash' > $BINFILE
-            echo "/etc/init.d/nessusd start & sleep 5 && firefox https://127.0.0.1:8834" >> $BINFILE
-            chmod +x $BINFILE # make it executable
-          killBar
+        elif [[ "$app" =~ "Nessus" ]]
+          then
+            URL=https://demonlinux.com/download/packages/Nessus-8.6.0-debian6_amd64.deb
+            FILE=Nessus-8.6.0-debian6_amd64.deb
+            LOCALAREA=$DAS_APPCACHE/$FILE
+            CHECKSUM=d76a6b3d793e424737746c810991499a
+            BINFILE=/usr/local/sbin/nessus
+            checksumCheck $LOCALAREA $CHECKSUM $URL $app # download the file
+            progressBar " Installing Nessus ...   "
+              dpkg -i $LOCALAREA
+              apt -f install -y
+              echo '#!/usr/bin/env bash' > $BINFILE
+              echo "/etc/init.d/nessusd start & sleep 5 && firefox https://127.0.0.1:8834" >> $BINFILE
+              chmod +x $BINFILE # make it executable
+            killBar
+
+        ### IMSI-Catcher
+        ### GIT with depends
+        elif [[ "$app" =~ "IMSI-Catcher" ]]
+            then
+              URL=https://github.com/Oros42/IMSI-catcher.git
+              BINFILE=/usr/local/sbin/imsi-catcher
+              progressBar " Installing IMSI-Catcher (GitHUB) ...   "
+                if [ ! -d /infosec/rf ]
+                  then
+                    mkdir -p /infosec/rf
+                fi
+                if [ ! -d /infosec/rf/IMSI-catcher ] # /infosec/rf/ should be tehre by now
+                  then
+                    cd /infosec/rf && git clone $URL
+                else
+                    cd /infosec/rf/IMSI-catcher && git pull
+                fi
+                apt -y install python-numpy python-scipy python-scapy gr-gsm
+
+                echo '#!/usr/bin/env bash' > $BINFILE
+                echo "cd /infosec/rf/IMSI-catcher && ls --color=auto " >> $BINFILE
+                chmod +x $BINFILE # make it executable
+              killBar
 
         ### PixieWPS
         ### GIT, Compile, Copy
@@ -898,6 +927,7 @@ main () {
     --window-icon=$DAS_WINDOWICON \
     --center \
     $(if [[ $(which autosploit|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "AutoSploit" "$DAS_CAT_PEN" "Automated Mass Exploit Tool" false \
+    $(if [[ $(which imsi-catcher|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "IMSI-Catcher" "$DAS_CAT_PEN" "IMSI Catcher Tool" false \
     $(if [[ $(which pixiewps|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PixieWPS" "$DAS_CAT_PEN" "Cracking WPS PIN" false \
     $(if [[ $(which nessus|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Nessus" "$DAS_CAT_PEN" "Tenable's vulnerability scanner" false \
     $(if [[ $(which BurpSuiteCommunity|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "BurpSuiteCommunity" "$DAS_CAT_PEN" "Web vulnerability scanner and proxy" false \
