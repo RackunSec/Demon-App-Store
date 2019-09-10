@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=IMSI Catcher
+Comment=Sniffing IMSI using RTL-SDR, HackRF
+Exec=gnome-terminal -e "bash -c \"cd /infosec/rf/IMSI-catcher && ls --color=auto;bash\"";
+Icon=/usr/share/demon/images/icons/imsi.png
+StartupNotify=false
+Terminal=true
+Categories=rf
