@@ -28,6 +28,7 @@ export DAS_CAT_COM="Communication"
 export DAS_CAT_MM="Multimedia"
 export DAS_CAT_NET="Networking"
 export DAS_NOTIFY_APP="Demon App Store Notification"
+export DAS_NOTIFY_ICON="--icon=/usr/share/demon/images/icons/demon-store-icon.png"
 
 export LOCAL_APPS=/usr/share/applications/
 
@@ -65,7 +66,7 @@ export -f killBar
 
 ### XFCE4 Notification
 notify () {
-  notify-send "$1" "$2"
+  notify-send "$1" "$2" "$DAS_NOTIFY_ICON"
 }
 export -f notify
 
