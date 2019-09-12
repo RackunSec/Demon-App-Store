@@ -232,6 +232,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
     then
       rm -rf /infosec/rf/IMSI-catcher # remove local git repo
       rm -rf /usr/local/sbin/imsi-catcher # remove binary file
+      rm -rf ${LOCAL_APPS}imsi-catcher.desktop # remove the desktop icon
       apt remove -y gr-gsm
   elif [[ "$app" =~ SonarQube ]]
     then
