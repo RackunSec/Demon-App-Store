@@ -21,6 +21,10 @@ if [ ! -d "/usr/share/demon/desktop" ]
     mkdir -p /usr/share/demon/desktop
 fi
 
+### Grab a few dependencies and update our Debian repo cache/lists
+apt update 1>&2>/dev/null
+apt install -y xfce4-notifyd
+
 ### Update to the latest workflow app:
 if [ ! -d $APPDEV ]
   then
