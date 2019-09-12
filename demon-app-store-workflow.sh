@@ -865,7 +865,7 @@ installApp () { # All of the blocks of code to install each app individually:
                     cd /infosec/rf/IMSI-catcher && git pull
                 fi
                 apt -y install python-numpy python-scipy python-scapy gr-gsm
-
+                cp $DAS_DESKTOP_CACHE/imsi-catcher.desktop $LOCAL_APPS
                 echo '#!/usr/bin/env bash' > $BINFILE
                 echo "cd /infosec/rf/IMSI-catcher && ls --color=auto " >> $BINFILE
                 chmod +x $BINFILE # make it executable
