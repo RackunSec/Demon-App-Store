@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=PyCharm
+Comment=IDE for Python Professionals
+GenericName=IDE
+Exec=pycharm
+Icon=/usr/share/icons/Papirus/64x64/apps/pycharm.svg
+Type=Application
+StartupNotify=true
+Categories=Development;
+MimeType=text/plain;

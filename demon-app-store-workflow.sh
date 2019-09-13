@@ -199,6 +199,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
     then
       rm -rf /opt/pycharm-2019.2
       rm /usr/local/bin/pycharm
+      rm ${LOCAL_APPS}/pycharm.desktop
   elif [[ "$app" =~ DBeaver ]]
     then
       apt -y remove dbeaver-ce
@@ -690,6 +691,7 @@ installApp () { # All of the blocks of code to install each app individually:
             echo "#!/bin/bash" > $binFile
             echo "cd /opt/pycharm-2019.2/bin && ./pycharm.sh" >> $binFile
             chmod +x $binFile
+            cp $DAS_DESKTOP_CACHE/pycharm.desktop $LOCAL_APPS # copy in our shiny new menu/deskop icon
 
         ### DBeaver
         ### Installer, No apt, HTTP, Checksum required
