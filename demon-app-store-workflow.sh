@@ -200,6 +200,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
       rm -rf /opt/pycharm-2019.2
       rm /usr/local/bin/pycharm
       rm ${LOCAL_APPS}/pycharm.desktop
+      ls -lah $HOME | grep -i pycharm|awk '{print $9}'|xargs -I {} rm -rf {} # destroy all evidence
   elif [[ "$app" =~ DBeaver ]]
     then
       apt -y remove dbeaver-ce
