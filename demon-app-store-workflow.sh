@@ -126,7 +126,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
   if [[ "$app" =~ potify ]]
     then
       snap remove spotify
-      rm $DAS_DESKTOP_CACHE/spotify.desktop
+      rm ${LOCAL_APPS}/spotify.desktop
   elif [[ "$app" =~ amass ]]
     then
       snap remove amass
