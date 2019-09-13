@@ -5,8 +5,11 @@
 
 ### Am I already running?
 RUN=$(ps aux | egrep -E 'demon-app-[s]tore\.sh'|wc -l)
-printf "[RUNNING PROCESSES] $RUN\n"
-ps aux | egrep -E 'demon-app-[s]tore\.sh'
+if [[ $RUN -gt 2 ]]
+  then
+    yad --text="\n The Demon App Store is already running. " --window-icon=/usr/share/demon/images/icons/demon-64-white.png --image=/usr/share/demon/images/icons/demon-store-icon-64-padded.png --button=Exit:0 --width=400 --height=20 --fixed
+    exit 57
+fi
 
 source ~/.bashrc # Testing this as there seems to be an issue with the $PATH for Spotifail.
 APPDEV="/var/demon/store/code/"
