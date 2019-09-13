@@ -1,9 +1,9 @@
 [Desktop Entry]
 Version=1.0
 Encoding=UTF-8
-Name=StartupNotify
+Name=Spotify
 Comment=Listen to music on Spotify
-Exec=spotify
+Exec=/snap/bin/spotify
 Terminal=false
 Type=Application
 Icon=/usr/share/icons/Papirus/64x64/apps/spotify-client.svg
