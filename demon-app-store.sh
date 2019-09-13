@@ -3,6 +3,10 @@
 ## 2019 WeakNet Labs
 ## Douglas Berdeaux
 
+### Am I already running?
+RUN=$(ps aux | egrep -E 'demon-app-[s]tore\.sh'|wc -l)
+printf "[RUNNING PROCESSES] $RUN\n"
+
 source ~/.bashrc # Testing this as there seems to be an issue with the $PATH for Spotifail.
 APPDEV="/var/demon/store/code/"
 DAS="Demon-App-Store"

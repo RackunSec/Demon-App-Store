@@ -126,6 +126,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
   if [[ "$app" =~ potify ]]
     then
       snap remove spotify
+      rm $DAS_DESKTOP_CACHE/spotify.desktop
   elif [[ "$app" =~ amass ]]
     then
       snap remove amass
@@ -301,6 +302,7 @@ installApp () { # All of the blocks of code to install each app individually:
             progressBar $progressText
             apt install snapd -y
             snap install spotify
+            cp $DAS_DESKTOP_CACHE/spotify.desktop $LOCAL_APPS # copy over the desktop icon
             if [ $(grep /snap/bin ~/.bashrc|wc -l) -eq 0 ]
               then
                 echo "export PATH=\$PATH:/snap/bin:/snap/sbin" >> ~/.bashrc # update our PATH
@@ -308,22 +310,22 @@ installApp () { # All of the blocks of code to install each app individually:
 
         ### Apache Studio
         ### Copy, HTTP, Checksum Required
-      elif [ "$app" == "ApacheDirectoryStudio" ]
-        then
-          URL=http://mirrors.gigenet.com/apache/directory/studio/2.0.0.v20180908-M14/ApacheDirectoryStudio-2.0.0.v20180908-M14-linux.gtk.x86_64.tar.gz
-          FILE=ApacheDirectoryStudio-2.0.0.v20180908-M14-linux.gtk.x86_64.tar.gz
-          CHECKSUM=f9915592978c0b7e1a2f64c80b756a1d
-          BINFILE=/usr/local/bin/apachedirectorystudio
-          LOCALAREA=$DAS_APPCACHE/$FILE
-          checksumCheck $LOCALAREA $CHECKSUM $URL $app
-          progressBar " Installing Apache Directory Studio ... "
-            cd $DAS_APPCACHE
-            tar vxzf $FILE
-            mv ApacheDirectoryStudio /opt/ # just move it.
-            echo "#!/usr/bin/env bash" > $BINFILE
-            echo "cd /opt/ApacheDirectoryStudio && ./ApacheDirectoryStudio" >> $BINFILE
-            chmod +x $BINFILE
-          killBar
+        elif [ "$app" == "ApacheDirectoryStudio" ]
+          then
+            URL=http://mirrors.gigenet.com/apache/directory/studio/2.0.0.v20180908-M14/ApacheDirectoryStudio-2.0.0.v20180908-M14-linux.gtk.x86_64.tar.gz
+            FILE=ApacheDirectoryStudio-2.0.0.v20180908-M14-linux.gtk.x86_64.tar.gz
+            CHECKSUM=f9915592978c0b7e1a2f64c80b756a1d
+            BINFILE=/usr/local/bin/apachedirectorystudio
+            LOCALAREA=$DAS_APPCACHE/$FILE
+            checksumCheck $LOCALAREA $CHECKSUM $URL $app
+            progressBar " Installing Apache Directory Studio ... "
+              cd $DAS_APPCACHE
+              tar vxzf $FILE
+              mv ApacheDirectoryStudio /opt/ # just move it.
+              echo "#!/usr/bin/env bash" > $BINFILE
+              echo "cd /opt/ApacheDirectoryStudio && ./ApacheDirectoryStudio" >> $BINFILE
+              chmod +x $BINFILE
+            killBar
 
         ### SocialBox
         ### Copy, GIT
@@ -739,22 +741,22 @@ installApp () { # All of the blocks of code to install each app individually:
 
         ### Grafana
         ### Installer, No apt, HTTP, Checksum Required
-      elif [ "$app" == "Grafana" ]
-          then
-            FILE=grafana_6.3.3_amd64.deb
-            LOCALAREA=$DAS_APPCACHE/$FILE
-            CHECKSUM=bb2f244c968b9bfca9b6c5763e9df698
-            BINFILE=/usr/local/sbin/grafana
-            URL=https://dl.grafana.com/oss/release/grafana_6.3.3_amd64.deb
-            checksumCheck $LOCALAREA $CHECKSUM $URL $app
-            progressBar $progressText
-            dpkg -i $LOCALAREA
-            apt -f install -y
-            echo "#!/bin/bash" > $BINFILE
-            echo "service grafana-server start" >> $BINFILE
-            echo "firefox http://127.0.0.1:3000" >> $BINFILE
-            chmod +x $BINFILE
-            cp $DAS_DESKTOP_CACHE/grafana.desktop $LOCAL_APPS # copy the desktop icon over.
+        elif [ "$app" == "Grafana" ]
+            then
+              FILE=grafana_6.3.3_amd64.deb
+              LOCALAREA=$DAS_APPCACHE/$FILE
+              CHECKSUM=bb2f244c968b9bfca9b6c5763e9df698
+              BINFILE=/usr/local/sbin/grafana
+              URL=https://dl.grafana.com/oss/release/grafana_6.3.3_amd64.deb
+              checksumCheck $LOCALAREA $CHECKSUM $URL $app
+              progressBar $progressText
+              dpkg -i $LOCALAREA
+              apt -f install -y
+              echo "#!/bin/bash" > $BINFILE
+              echo "service grafana-server start" >> $BINFILE
+              echo "firefox http://127.0.0.1:3000" >> $BINFILE
+              chmod +x $BINFILE
+              cp $DAS_DESKTOP_CACHE/grafana.desktop $LOCAL_APPS # copy the desktop icon over.
 
         ### AnyDesk
         ### Installer, No apt, HTTP, Checksum Required
@@ -801,7 +803,6 @@ installApp () { # All of the blocks of code to install each app individually:
           then
             progressBar $progressText
               apt install snapd -y
-              snap install spotify
               snap install intellij-idea-community --classic
             killBar
 
