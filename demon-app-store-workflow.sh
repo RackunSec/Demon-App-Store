@@ -269,7 +269,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
       rm -rf /usr/local/sbin/EyeWitness.sh
   elif [[ "$app" =~ BloodHound ]]
     then
-      rm -rf /opt/BloodHound-linux-x64
+      rm -rf /opt/BloodHound*
       rm -rf /usr/local/sbin/BloodHound.sh # remove our script
       rm -rf /usr/local/sbin/neo4j-start # remove the Neo4J appimage
   elif [[ "$app" =~ GitKraken ]]
@@ -980,7 +980,7 @@ installApp () { # All of the blocks of code to install each app individually:
               URL=https://github.com/BloodHoundAD/BloodHound/releases/download/2.2.1/BloodHound-linux-x64.zip
               BHCHECKSUM=c0c25df56b7eaaefd8ac2e9214c5fbe6
               BINFILE=/usr/local/sbin/BloodHound.sh
-              checksumCheck $LOCALAREA $BHCHECKSUM $URL $app # git the BloodHound Release
+              checksumCheck $LOCALAREA $BHCHECKSUM $URL "$app Release (GitHUB)" # git the BloodHound Release
             progressBar " Installing BloodHound ... "
               cd /opt/ && git clone $GITURL BloodHoundFiles # git the BloodHound Files
               cd $DAS_APPCACHE && unzip $BHFILE # unzip the BloodHound "release"
