@@ -938,14 +938,16 @@ installApp () { # All of the blocks of code to install each app individually:
         then
           URL=https://github.com/FortyNorthSecurity/EyeWitness
           BINFILE=/usr/local/sbin/EyeWitness.sh
-          cd /tmp && git clone $URL
-          cd EyeWitness
-          sed -ir 's/# OS Specific Installation Statement/osinfo=Kali/g' setup/setup.sh # Whoopsey Daisey!
-          ./setup/setup.sh
-          cp -R /tmp/EyeWitness /opt
-          echo "#!/usr/bin/env bash" > $BINFILE # generate a script to autostart the framework.
-          echo "cd /opt/EyeWitness && ./EyeWitness.py" >> $BINFILE
-          chmod +x $BINFILE
+          progressBar " Installing EyeWitness (GitHUB) ... "
+            cd /tmp && git clone $URL
+            cd EyeWitness
+            sed -ir 's/# OS Specific Installation Statement/osinfo=Kali/g' setup/setup.sh # Whoopsey Daisey!
+            ./setup/setup.sh
+            cp -R /tmp/EyeWitness /opt
+            echo "#!/usr/bin/env bash" > $BINFILE # generate a script to autostart the framework.
+            echo "cd /opt/EyeWitness && ./EyeWitness.py" >> $BINFILE
+            chmod +x $BINFILE
+          killBar
 
         ### GitKraken
         ### Installer, HTTP, CHecksum required
