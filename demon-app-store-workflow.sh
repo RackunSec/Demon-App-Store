@@ -174,7 +174,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
     then
       rm -rf /opt/sublime3
       rm /usr/local/bin/sublime # remove our pointer-binary we made
-  elif [[ "$app" =~ Temrinus ]]
+  elif [[ "$app" =~ Terminus ]]
     then
       apt remove terminus -y
   elif [[ "$app" =~ SimpleNote ]]
