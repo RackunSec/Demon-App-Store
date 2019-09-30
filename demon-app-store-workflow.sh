@@ -133,6 +133,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
   elif [[ "$app" =~ IntelliJ ]]
     then
       snap remove intellij-idea-community
+      rm ${LOCAL_APPS}/intellij.desktop
   elif [[ "$app" =~ PTF ]]
     then
       rm -rf /infosec/ptf
@@ -807,6 +808,7 @@ installApp () { # All of the blocks of code to install each app individually:
             progressBar $progressText
               apt install snapd -y
               snap install intellij-idea-community --classic
+              cp $DAS_DESKTOP_CACHE/intellij.desktop ${LOCAL_APPS} # copy in our Desktop/Menu icon
             killBar
 
         ### Sonarqube

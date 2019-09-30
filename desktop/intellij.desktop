@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=IntelliJ Community
+Comment=Java IDE for Professionals
+GenericName=IDE
+Exec=/snap/bin/intellij-idea-community
+Icon=/usr/share/icons/Papirus/64x64/apps/intellij.svg
+Type=Application
+StartupNotify=true
+Categories=Development;
+MimeType=text/plain;
