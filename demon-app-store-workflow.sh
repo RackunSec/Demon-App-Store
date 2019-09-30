@@ -303,6 +303,7 @@ installApp () { # All of the blocks of code to install each app individually:
     app=$1
     app=$(echo $app|sed -r 's/TRUE\|([^|]+)\|.*/\1/');
     applower=$app # somehow tr is destroying my variable? wtf?
+    applower=$(echo $applower|tr A-Z a-z)
     printf "\n[+] \$app: $app\n"
     progressText="\nInstalling $app ...   "
     # Check if App is already installed (could have been pre-checked in the checklist)
