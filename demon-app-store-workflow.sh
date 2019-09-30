@@ -975,6 +975,7 @@ installApp () { # All of the blocks of code to install each app individually:
             progressBar " Installing Neo4J ... "
               chmod +x $LOCALAREA
               cp $LOCALAREA /usr/local/sbin/neo4j-start # copy the binary into the $PATH, keep original for checksum/bandwidth
+              apt install --no-install-recommends gnome-keyring -y # needed for web interface of Neo4J
             killBar
               BHFILE=BloodHound-linux-x64.zip
               URL=https://github.com/BloodHoundAD/BloodHound/releases/download/2.2.1/BloodHound-linux-x64.zip
