@@ -265,6 +265,10 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
     then
       rm -rf /opt/EyeWitness
       rm -rf /usr/local/sbin/EyeWitness.sh
+  elif [[ "$app" =~ BloodHound ]]
+    then
+      rm -rf /opt/BloodHound-linux-x64
+      rm -rf /usr/local/sbin/BloodHound.sh # remove our script
   elif [[ "$app" =~ GitKraken ]]
     then
       apt -y remove gitkraken # don't forget about meeeeeeeeeeeeeeeee!!!!!!!!!!!!!!!
