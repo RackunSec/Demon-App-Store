@@ -314,7 +314,7 @@ installApp () { # All of the blocks of code to install each app individually:
     appdotsh=$(echo ${app}.sh)
     applowerhyphendotsh=$(echo ${applowerhyphen}.sh)
     applowerdotsh=${applower}.sh
-    if [[ "$DAS_DEBUG" == "True "]]
+    if [[ "$DAS_DEBUG" == "True" ]]
       then
         printf "[i] \$app = \'$app\'\n\
           [i] \$apphyphen = \'$apphyphen\'\n\
