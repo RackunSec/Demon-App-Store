@@ -308,15 +308,15 @@ installApp () { # All of the blocks of code to install each app individually:
     printf "[+] Checking if "$app" is already installed ... \n";
     apphyphen=$(echo $app|tr A-Z a-z|sed -r -e 's/ /-/g')
     applower=$(echo $app | tr A-Z a-z)
-    printf "[i] \$apphyphen = \'$apphyphen\' \n"
+    appdotsh=$(echo ${app,,}.sh)
+    printf "[i] \$app = \'$app\'\n[i] \$apphyphen = \'$apphyphen\'\n[i] \$appdotsh = \'$appdotsh\'\n[i] \$applower = \'$applower\'\n"
     if [ $(which "${app,,}"|wc -l) -ne 1 ] \
       && [ $(which $app|wc -l) -ne 1 ] \
-      && [ $(which "${app,,}.sh"|wc -l) -ne 1 ] \
+      && [ $(which $appdotsh|wc -l) -ne 1 ] \
       && [ $(which $apphyphen|wc -l) -ne 1 ] \
       && [ $(which $applower|wc -l) -ne 1 ]
 
       then
-        printf "[!DEBUG!] $app not found in system \$PATH.\n"
         ### Spotify
         ### installer, no HTTP
         if [ "$app" == "Spotify" ]
