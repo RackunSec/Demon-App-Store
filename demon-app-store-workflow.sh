@@ -941,7 +941,7 @@ installApp () { # All of the blocks of code to install each app individually:
             URLNEO4J=https://demonlinux.com/download/packages/neo4j-desktop-offline-1.2.1-x86_64.AppImage
             FILE=neo4j-desktop-offline-1.2.1-x86_64.AppImage
             LOCALAREA=${DAS_APPCACHE}/$FILE
-            checksumCheck $LOCALAREA $CHECKSUM $URL $app # download Neo4J
+            checksumCheck $LOCALAREA $CHECKSUM $URLNEO4J $app # download Neo4J
             progressBar " Installing BloodHound ... "
               chmod +x $LOCALAREA
               ./${LOCALAREA} # run the Installer for Neo4J ...
