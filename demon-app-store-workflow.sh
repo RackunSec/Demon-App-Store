@@ -271,6 +271,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
     then
       rm -rf /opt/BloodHound-linux-x64
       rm -rf /usr/local/sbin/BloodHound.sh # remove our script
+      rm -rf /usr/local/sbin/neo4j-start # remove the Neo4J appimage
   elif [[ "$app" =~ GitKraken ]]
     then
       apt -y remove gitkraken # don't forget about meeeeeeeeeeeeeeeee!!!!!!!!!!!!!!!
@@ -973,7 +974,7 @@ installApp () { # All of the blocks of code to install each app individually:
             checksumCheck $LOCALAREA $NEOCHECKSUM $NEO4JURL "Neo4J (WNL Mirror)" # download Neo4J
             progressBar " Installing Neo4J ... "
               chmod +x $LOCALAREA
-              cd $DAS_APPCACHE && ./$NEOFILE # run the Installer for Neo4J ...
+              mv $LOCALAREA /usr/local/sbin/neo4j-start # mv the binary into the $PATH
             killBar
               BHFILE=BloodHound-linux-x64.zip
               URL=https://github.com/BloodHoundAD/BloodHound/releases/download/2.2.1/BloodHound-linux-x64.zip
