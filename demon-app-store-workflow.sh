@@ -962,7 +962,7 @@ installApp () { # All of the blocks of code to install each app individually:
               cd && rm -rf ${INSTALLAREA}/${INSTALLDIR} # remove /infosec/wifi/pixiewps-master
             killBar
 
-        ### BloodHound
+        ### BloodHound, Dependency Hell, removed
         ### Git, no checksum
         elif [[ "$app" =~ BloodHound ]]
           then
@@ -1034,6 +1034,8 @@ installApp () { # All of the blocks of code to install each app individually:
 }
 
 main () {
+  #     $(if [[ $(which BloodHound.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "BloodHound" "$DAS_CAT_PEN" "Enumerating Relationships in AD Environments" false \
+  # BloodHound Dependency Hell
  # Update Me:
   #updateMe # This will pull the latest version each time. # comment out during development
   # This may seem crazy, but it's for the UI/UX sake:
@@ -1045,7 +1047,6 @@ main () {
     --window-icon=$DAS_WINDOWICON \
     --center \
     $(if [[ $(which autosploit|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "AutoSploit" "$DAS_CAT_PEN" "Automated Mass Exploit Tool" false \
-    $(if [[ $(which BloodHound.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "BloodHound" "$DAS_CAT_PEN" "Enumerating Relationships in AD Environments" false \
     $(if [[ $(which EyeWitness.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "EyeWitness" "$DAS_CAT_PEN" "Automated Web Vulnerability Tool" false \
     $(if [[ $(which imsi-catcher|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "IMSI-Catcher" "$DAS_CAT_PEN" "IMSI Catcher Tool" false \
     $(if [[ $(which pixiewps|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PixieWPS" "$DAS_CAT_PEN" "Cracking WPS PIN" false \
