@@ -261,6 +261,10 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
   elif [[ "$app" =~ MassDNS ]]
     then
       rm -rf /usr/local/sbin/massdns
+  elif [[ "$app" =~ EyeWitness ]]
+    then
+      rm -rf /opt/EyeWitness
+      rm -rf /usr/local/sbin/EyeWitness.sh
   elif [[ "$app" =~ GitKraken ]]
     then
       apt -y remove gitkraken # don't forget about meeeeeeeeeeeeeeeee!!!!!!!!!!!!!!!
@@ -928,6 +932,19 @@ installApp () { # All of the blocks of code to install each app individually:
               cd && rm -rf ${INSTALLAREA}/${INSTALLDIR} # remove /infosec/wifi/pixiewps-master
             killBar
 
+        ### EyeWitness
+        ### Git, no checksum or installer
+      elif [[ "$app" =~ EyeWitness ]]
+        then
+          URL=https://github.com/FortyNorthSecurity/EyeWitness
+          BINFILE=/usr/local/sbin/EyeWitness.sh
+          cd /tmp && git clone $URL
+          cd EyeWitness
+          sed -ir 's/# OS Specific Installation Statement/osinfo=Kali/g' setup/setup.sh # Whoopsey Daisey!
+          cp -R /tmp/EyeWitness /opt
+          echo "#!/usr/bin/env bash" > $BINFILE # generate a script to autostart the framework.
+          echo "cd /opt/EyeWitness && ./EyeWitness.py" >> $BINFILE
+
         ### GitKraken
         ### Installer, HTTP, CHecksum required
         elif [[ "$app" =~ GitKraken ]]
@@ -963,6 +980,7 @@ main () {
     --window-icon=$DAS_WINDOWICON \
     --center \
     $(if [[ $(which autosploit|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "AutoSploit" "$DAS_CAT_PEN" "Automated Mass Exploit Tool" false \
+    $(if [[ $(which eyewitness|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "EyeWitness" "$DAS_CAT_PEN" "Automated Web Vulnerability Tool" false \
     $(if [[ $(which imsi-catcher|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "IMSI-Catcher" "$DAS_CAT_PEN" "IMSI Catcher Tool" false \
     $(if [[ $(which pixiewps|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PixieWPS" "$DAS_CAT_PEN" "Cracking WPS PIN" false \
     $(if [[ $(which nessus|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Nessus" "$DAS_CAT_PEN" "Tenable's vulnerability scanner" false \
