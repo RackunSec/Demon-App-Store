@@ -880,6 +880,7 @@ installApp () { # All of the blocks of code to install each app individually:
                 printf "[i] \$LOCALAREA = $LOCALAREA\n"
                 dpkg -i $LOCALAREA
                 apt -f install -y # clean up after .deb
+                sed -ri 's/%U/%U --no-sandbox/g' /usr/share/applications/terminus.desktop # whoopsey daisey!!
               killBar
 
 
