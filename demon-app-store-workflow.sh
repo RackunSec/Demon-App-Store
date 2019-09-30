@@ -932,22 +932,48 @@ installApp () { # All of the blocks of code to install each app individually:
               cd && rm -rf ${INSTALLAREA}/${INSTALLDIR} # remove /infosec/wifi/pixiewps-master
             killBar
 
+        ### BloodHound
+        ### Git, no checksum
+        elif [[ "$app" =~ BloodHound ]]
+          then
+            URL=https://github.com/adaptivethreat/Bloodhound
+            CHECKSUM=4f625988b580eacaf7daef1cb8c98622
+            URLNEO4J=https://demonlinux.com/download/packages/neo4j-desktop-offline-1.2.1-x86_64.AppImage
+            FILE=neo4j-desktop-offline-1.2.1-x86_64.AppImage
+            LOCALAREA=${DAS_APPCACHE}/$FILE
+            checksumCheck $LOCALAREA $CHECKSUM $URL $app # download Neo4J
+            progressBar " Installing BloodHound ... "
+              chmod +x $LOCALAREA
+              ./${LOCALAREA} # run the Installer for Neo4J ...
+              cd $DAS_APPCACHE && git clone $URL # git the BloodHound Files
+              FILE=BloodHound-linux-x64.zip
+              URL=https://github.com/BloodHoundAD/BloodHound/releases/download/2.2.1/BloodHound-linux-x64.zip
+              CHECKSUM=c0c25df56b7eaaefd8ac2e9214c5fbe6
+              BINFILE=/usr/local/sbin/BloodHound.sh
+              checksumCheck $LOCALAREA $CHECKSUM $URL $app # git the BloodHound Release
+              cd $DAS_APPCACHE && unzip $FILE
+              mv BloodHound-linux-x64 /opt/
+              echo "#!/usr/bin/env bash" > $BINFILE
+              echo "cd /opt/BloodHound-linux-x64 && ./BloodHound" >> $BINFILE
+              chmod +x $BINFILE
+            killBar
+
         ### EyeWitness
         ### Git, no checksum or installer
-      elif [[ "$app" =~ EyeWitness ]]
-        then
-          URL=https://github.com/FortyNorthSecurity/EyeWitness
-          BINFILE=/usr/local/sbin/EyeWitness.sh
-          progressBar " Installing EyeWitness (GitHUB) ... "
-            cd /tmp && git clone $URL
-            cd EyeWitness
-            sed -ir 's/# OS Specific Installation Statement/osinfo=Kali/g' setup/setup.sh # Whoopsey Daisey!
-            ./setup/setup.sh
-            cp -R /tmp/EyeWitness /opt
-            echo "#!/usr/bin/env bash" > $BINFILE # generate a script to autostart the framework.
-            echo "cd /opt/EyeWitness && ./EyeWitness.py" >> $BINFILE
-            chmod +x $BINFILE
-          killBar
+        elif [[ "$app" =~ EyeWitness ]]
+          then
+            URL=https://github.com/FortyNorthSecurity/EyeWitness
+            BINFILE=/usr/local/sbin/EyeWitness.sh
+            progressBar " Installing EyeWitness (GitHUB) ... "
+              cd /tmp && git clone $URL
+              cd EyeWitness
+              sed -ir 's/# OS Specific Installation Statement/osinfo=Kali/g' setup/setup.sh # Whoopsey Daisey!
+              ./setup/setup.sh
+              cp -R /tmp/EyeWitness /opt
+              echo "#!/usr/bin/env bash" > $BINFILE # generate a script to autostart the framework.
+              echo "cd /opt/EyeWitness && ./EyeWitness.py" >> $BINFILE
+              chmod +x $BINFILE
+            killBar
 
         ### GitKraken
         ### Installer, HTTP, CHecksum required
@@ -984,6 +1010,7 @@ main () {
     --window-icon=$DAS_WINDOWICON \
     --center \
     $(if [[ $(which autosploit|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "AutoSploit" "$DAS_CAT_PEN" "Automated Mass Exploit Tool" false \
+    $(if [[ $(which bloodhound|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "BloodHound" "$DAS_CAT_PEN" "" false \
     $(if [[ $(which EyeWitness.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "EyeWitness" "$DAS_CAT_PEN" "Automated Web Vulnerability Tool" false \
     $(if [[ $(which imsi-catcher|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "IMSI-Catcher" "$DAS_CAT_PEN" "IMSI Catcher Tool" false \
     $(if [[ $(which pixiewps|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PixieWPS" "$DAS_CAT_PEN" "Cracking WPS PIN" false \
