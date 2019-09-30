@@ -968,6 +968,7 @@ installApp () { # All of the blocks of code to install each app individually:
               cd /tmp && git clone $URL
               cd EyeWitness
               sed -ir 's/# OS Specific Installation Statement/osinfo=Kali/g' setup/setup.sh # Whoopsey Daisey!
+              sed -ir 's/^clear$//' setup/setup.sh # ass hats.
               ./setup/setup.sh
               cp -R /tmp/EyeWitness /opt
               echo "#!/usr/bin/env bash" > $BINFILE # generate a script to autostart the framework.
