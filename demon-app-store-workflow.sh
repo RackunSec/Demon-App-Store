@@ -307,8 +307,14 @@ installApp () { # All of the blocks of code to install each app individually:
     # Check if App is already installed (could have been pre-checked in the checklist)
     printf "[+] Checking if "$app" is already installed ... \n";
     apphyphen=$(echo $app|tr A-Z a-z|sed -r -e 's/ /-/g')
+    applower=$(echo $app | tr A-Z a-z)
     printf "[i] \$apphyphen = \'$apphyphen\' \n"
-    if [ $(which "${app,,}"|wc -l) -ne 1 ] && [ $(which $app|wc -l) -ne 1 ] && [ $(which "${app,,}.sh"|wc -l) -ne 1 ] && [ $(which $apphyphen|wc -l) -ne 1 ] # uses syntax sugar to lowercase the name
+    if [ $(which "${app,,}"|wc -l) -ne 1 ] \
+      && [ $(which $app|wc -l) -ne 1 ] \
+      && [ $(which "${app,,}.sh"|wc -l) -ne 1 ] \
+      && [ $(which $apphyphen|wc -l) -ne 1 ] \
+      && [ $(which $applower|wc -l) -ne 1 ]
+      
       then
         ### Spotify
         ### installer, no HTTP
