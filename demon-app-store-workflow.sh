@@ -992,7 +992,7 @@ main () {
    $(if [[ $(which VisualStudio|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "VisualStudio" "$DAS_CAT_DEV" "Microsoft's Visual Studio code editor" false \
    $(if [[ $(which atom|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Atom" "$DAS_CAT_DEV" "Atom IDE" false \
    $(if [[ $(which gitkraken|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "GitKraken" "$DAS_CAT_DEV" "Git Client" false \
-   $(if [[ $(which sublime|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Sublime_Text" "$DAS_CAT_DEV" "Sublime text editor" false \
+   $(if [[ $(which sublime|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Sublime" "$DAS_CAT_DEV" "Sublime text editor" false \
    $(if [[ $(which eclipse|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Eclipse" "$DAS_CAT_DEV" "Eclipse IDE for Java" false \
    $(if [[ $(which intellij-idea-community|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "IntelliJ IDEA Community" "$DAS_CAT_DEV" "Java IDE for Developers"  false \
    \
