@@ -300,9 +300,8 @@ installApp () { # All of the blocks of code to install each app individually:
     printf "[+] Checking if "$app" is already installed ... \n";
     apphyphen=$(echo $app|tr A-Z a-z|sed -r -e 's/ /-/g')
     printf "[i] \$apphyphen = \'$apphyphen\' \n"
-    if [ $(which "${app,,}"|wc -l) -ne 1 ] && [ $(which $app|wc -l) -ne 1 ] && [ $(which "${app,,}.sh"|wc -l) -ne 1 ] && [ $(which $apphyphen|wc -l) -ne 1 ]# uses syntax sugar to lowercase the name
+    if [ $(which "${app,,}"|wc -l) -ne 1 ] && [ $(which $app|wc -l) -ne 1 ] && [ $(which "${app,,}.sh"|wc -l) -ne 1 ] && [ $(which $apphyphen|wc -l) -ne 1 ] # uses syntax sugar to lowercase the name
       then
-
         ### Spotify
         ### installer, no HTTP
         if [ "$app" == "Spotify" ]
