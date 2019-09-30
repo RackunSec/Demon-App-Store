@@ -301,13 +301,13 @@ installApp () { # All of the blocks of code to install each app individually:
       uninstall $app
   else # we install it.
     app=$1
-    applower=$app # somehow tr is destroying my variable? wtf?
     app=$(echo $app|sed -r 's/TRUE\|([^|]+)\|.*/\1/');
+    applower=$app # somehow tr is destroying my variable? wtf?
     printf "\n[+] \$app: $app\n"
     progressText="\nInstalling $app ...   "
     # Check if App is already installed (could have been pre-checked in the checklist)
     printf "[+] Checking if "$app" is already installed ... \n";
-    apphyphen=$(echo $applower|sed -r -e 's/ /-/g')
+    apphyphen=$(echo $app|sed -r -e 's/ /-/g')
     appdotsh=$(echo ${app,,}.sh)
     printf "[i] \$app = \'$app\'\n[i] \$apphyphen = \'$apphyphen\'\n[i] \$appdotsh = \'$appdotsh\'\n[i] \$applower = \'$applower\'\n"
     if [ $(which "${app,,}"|wc -l) -ne 1 ] \
