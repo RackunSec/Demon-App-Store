@@ -878,7 +878,7 @@ installApp () { # All of the blocks of code to install each app individually:
               checksumCheck $LOCALAREA $CHECKSUM $URL $app # Download the file ...
               progressBar " Installing Terminus (GitHUB) ... "
                 printf "[i] \$LOCALAREA = $LOCALAREA\n"
-                dpkg -i ${LOCALAREA}/terminus-1.0.91-linux.deb
+                dpkg -i $LOCALAREA
                 apt -f install -y # clean up after .deb
               killBar
 
