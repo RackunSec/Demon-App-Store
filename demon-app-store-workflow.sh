@@ -874,6 +874,7 @@ installApp () { # All of the blocks of code to install each app individually:
               URL=https://github.com/Eugeny/terminus/releases/download/v1.0.91/terminus-1.0.91-linux.deb
               CHECKSUM=0
               FILE=terminus-1.0.91-linux.deb
+              LOCALAREA=$DAS_APPCACHE/$FILE
               checksumCheck $LOCALAREA $CHECKSUM $URL $app # Download the file ...
               progressBar " Installing Terminus (GitHUB) ... "
                 printf "[i] \$LOCALAREA = $LOCALAREA\n"
