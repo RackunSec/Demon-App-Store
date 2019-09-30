@@ -978,6 +978,7 @@ installApp () { # All of the blocks of code to install each app individually:
             killBar
               BHFILE=BloodHound-linux-x64.zip
               URL=https://github.com/BloodHoundAD/BloodHound/releases/download/2.2.1/BloodHound-linux-x64.zip
+              LOCALAREA=${DAS_APPCACHE}/$BHFILE
               BHCHECKSUM=c0c25df56b7eaaefd8ac2e9214c5fbe6
               BINFILE=/usr/local/sbin/BloodHound.sh
               checksumCheck $LOCALAREA $BHCHECKSUM $URL "$app Release (GitHUB)" # git the BloodHound Release
