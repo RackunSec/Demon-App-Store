@@ -867,9 +867,9 @@ installApp () { # All of the blocks of code to install each app individually:
               chmod +x $BINFILE # make it executable
             killBar
 
-        ### terminus
+        ### Terminus
         ### Git Apt Installer, Checksum required
-        elif [[ "$app" =~ "Temrinus" ]]
+      elif [[ "$app" =~ "Terminus" ]]
           then
             URL=https://github.com/Eugeny/terminus/releases/download/v1.0.91/terminus-1.0.91-linux.deb
             CHECKSUM=0
