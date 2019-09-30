@@ -308,7 +308,7 @@ installApp () { # All of the blocks of code to install each app individually:
     # Check if App is already installed (could have been pre-checked in the checklist)
     printf "[+] Checking if "$app" is already installed ... \n";
     apphyphen=$(echo $app|sed -r -e 's/ /-/g')
-    appdotsh=$(echo ${app,,}.sh)
+    appdotsh=$(echo ${app}.sh)
     printf "[i] \$app = \'$app\'\n[i] \$apphyphen = \'$apphyphen\'\n[i] \$appdotsh = \'$appdotsh\'\n[i] \$applower = \'$applower\'\n"
     if [ $(which "${app,,}"|wc -l) -ne 1 ] \
       && [ $(which $app|wc -l) -ne 1 ] \
