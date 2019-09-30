@@ -29,6 +29,7 @@ export DAS_CAT_MM="Multimedia"
 export DAS_CAT_NET="Networking"
 export DAS_NOTIFY_APP="Demon App Store Notification"
 export DAS_NOTIFY_ICON="--icon=/usr/share/demon/images/icons/demon-store-icon.png"
+export DAS_DEBUG="False" # chnage to "True" to see debug info during app installation / checking ...
 
 export LOCAL_APPS=/usr/share/applications/
 
@@ -313,13 +314,16 @@ installApp () { # All of the blocks of code to install each app individually:
     appdotsh=$(echo ${app}.sh)
     applowerhyphendotsh=$(echo ${applowerhyphen}.sh)
     applowerdotsh=${applower}.sh
-    printf "[i] \$app = \'$app\'\n\
-      [i] \$apphyphen = \'$apphyphen\'\n\
-      [i] \$appdotsh = \'$appdotsh\'\n\
-      [i] \$applower = \'$applower\'\n\
-      [i] \$applowerhyphen = \'${applowerhyphen}\'\n\
-      [i] \$applowerhyphendotsh = \'${applowerhyphendotsh}\'\n\
-      [i] \$applowerdotsh = \'${applowerdotsh}\'\n"
+    if [[ "$DAS_DEBUG" == "True "]]
+      then
+        printf "[i] \$app = \'$app\'\n\
+          [i] \$apphyphen = \'$apphyphen\'\n\
+          [i] \$appdotsh = \'$appdotsh\'\n\
+          [i] \$applower = \'$applower\'\n\
+          [i] \$applowerhyphen = \'${applowerhyphen}\'\n\
+          [i] \$applowerhyphendotsh = \'${applowerhyphendotsh}\'\n\
+          [i] \$applowerdotsh = \'${applowerdotsh}\'\n"
+    fi
     if [ $(which "${app,,}"|wc -l) -ne 1 ] \
       && [ $(which $app|wc -l) -ne 1 ] \
       && [ $(which $appdotsh|wc -l) -ne 1 ] \
