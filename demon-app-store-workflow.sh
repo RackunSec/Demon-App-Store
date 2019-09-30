@@ -106,10 +106,10 @@ checksumCheck () {
       if [[ ! $(md5sum $FILE) =~ $CHECKSUM ]]
         then # failed, re-download
           rm -rf $FILE # remove borked version
-          printf "[i] Downloading file: $URL \n"
+          printf "[i] $APP Failed checksum check ($CHECKSUM). Re-downloading file: $URL \n"
           downloadFile $URL $APP $LOCALAREA # download
       else
-        printf "[+] Checksum verified, [ OK ]\n"
+        printf "[+] Checksum ($CHECKSUM) verified, [ OK ]\n"
       fi
   else
     # didn't exist, let's download it:
@@ -966,20 +966,20 @@ installApp () { # All of the blocks of code to install each app individually:
         elif [[ "$app" =~ BloodHound ]]
           then
             GITURL=https://github.com/adaptivethreat/Bloodhound
-            CHECKSUM=4f625988b580eacaf7daef1cb8c98622
+            NEOCHECKSUM=4f625988b580eacaf7daef1cb8c98622
             NEO4JURL=https://demonlinux.com/download/packages/neo4j-desktop-offline-1.2.1-x86_64.AppImage
             NEOFILE=neo4j-desktop-offline-1.2.1-x86_64.AppImage
             LOCALAREA=${DAS_APPCACHE}/$NEOFILE
-            checksumCheck $LOCALAREA $CHECKSUM $NEO4JURL "Neo4J (WNL Mirror)" # download Neo4J
+            checksumCheck $LOCALAREA $NEOCHECKSUM $NEO4JURL "Neo4J (WNL Mirror)" # download Neo4J
             progressBar " Installing Neo4J ... "
               chmod +x $LOCALAREA
               cd $DAS_APPCACHE && ./$NEOFILE # run the Installer for Neo4J ...
             killBar
               BHFILE=BloodHound-linux-x64.zip
               URL=https://github.com/BloodHoundAD/BloodHound/releases/download/2.2.1/BloodHound-linux-x64.zip
-              CHECKSUM=c0c25df56b7eaaefd8ac2e9214c5fbe6
+              BHCHECKSUM=c0c25df56b7eaaefd8ac2e9214c5fbe6
               BINFILE=/usr/local/sbin/BloodHound.sh
-              checksumCheck $LOCALAREA $CHECKSUM $URL $app # git the BloodHound Release
+              checksumCheck $LOCALAREA $BHCHECKSUM $URL $app # git the BloodHound Release
             progressBar " Installing BloodHound ... "
               cd /opt/ && git clone $GITURL BloodHoundFiles # git the BloodHound Files
               cd $DAS_APPCACHE && unzip $BHFILE # unzip the BloodHound "release"
