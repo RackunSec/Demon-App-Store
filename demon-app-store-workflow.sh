@@ -314,8 +314,9 @@ installApp () { # All of the blocks of code to install each app individually:
       && [ $(which "${app,,}.sh"|wc -l) -ne 1 ] \
       && [ $(which $apphyphen|wc -l) -ne 1 ] \
       && [ $(which $applower|wc -l) -ne 1 ]
-      
+
       then
+        printf "[!DEBUG!] $app not found in system \$PATH.\n"
         ### Spotify
         ### installer, no HTTP
         if [ "$app" == "Spotify" ]
