@@ -289,7 +289,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
   else
     printf "[+] Recieved $app\n";
   fi
-  notify $DAS_NOTIFY_APP "$app Has been Uninstalled"
+  notify $DAS_NOTIFY_APP "$app has been Uninstalled"
   killBar
 }
 
@@ -309,14 +309,24 @@ installApp () { # All of the blocks of code to install each app individually:
     # Check if App is already installed (could have been pre-checked in the checklist)
     printf "[+] Checking if "$app" is already installed ... \n";
     apphyphen=$(echo $app|sed -r -e 's/ /-/g')
+    applowerhyphen=$(echo $applower|sed 's/ /-/g')
     appdotsh=$(echo ${app}.sh)
+    applowerhyphendotsh=$(echo ${applowerhyphen}.sh)
     applowerdotsh=${applower}.sh
-    printf "[i] \$app = \'$app\'\n[i] \$apphyphen = \'$apphyphen\'\n[i] \$appdotsh = \'$appdotsh\'\n[i] \$applower = \'$applower\'\n"
+    printf "[i] \$app = \'$app\'\n\
+      [i] \$apphyphen = \'$apphyphen\'\n\
+      [i] \$appdotsh = \'$appdotsh\'\n\
+      [i] \$applower = \'$applower\'\n\
+      [i] \$applowerhyphen = \'${applowerhyphen}\'\n\
+      [i] \$applowerhyphendotsh = \'${applowerhyphendotsh}\'\n\
+      [i] \$applowerdotsh = \'${applowerdotsh}\'\n"
     if [ $(which "${app,,}"|wc -l) -ne 1 ] \
       && [ $(which $app|wc -l) -ne 1 ] \
       && [ $(which $appdotsh|wc -l) -ne 1 ] \
       && [ $(which $apphyphen|wc -l) -ne 1 ] \
       && [ $(which $applowerdotsh|wc -l) -ne 1 ] \
+      && [ $(which $applowerhyphendotsh | wc -l) -ne 1 ] \
+      && [ $(which $applowerhyphen | wc -l) -ne 1 ] \
       && [ $(which $applower|wc -l) -ne 1 ]
       ### We checked all combinations above for the $PATH object.
       then
