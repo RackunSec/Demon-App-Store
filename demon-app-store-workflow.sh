@@ -310,13 +310,15 @@ installApp () { # All of the blocks of code to install each app individually:
     printf "[+] Checking if "$app" is already installed ... \n";
     apphyphen=$(echo $app|sed -r -e 's/ /-/g')
     appdotsh=$(echo ${app}.sh)
+    applowerdotsh=${applower}.sh
     printf "[i] \$app = \'$app\'\n[i] \$apphyphen = \'$apphyphen\'\n[i] \$appdotsh = \'$appdotsh\'\n[i] \$applower = \'$applower\'\n"
     if [ $(which "${app,,}"|wc -l) -ne 1 ] \
       && [ $(which $app|wc -l) -ne 1 ] \
       && [ $(which $appdotsh|wc -l) -ne 1 ] \
       && [ $(which $apphyphen|wc -l) -ne 1 ] \
+      && [ $(which $applowerdotsh|wc -l) -ne 1 ] \
       && [ $(which $applower|wc -l) -ne 1 ]
-
+      ### We checked all combinations above for the $PATH object.
       then
         ### Spotify
         ### installer, no HTTP
