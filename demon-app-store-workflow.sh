@@ -174,6 +174,9 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
     then
       rm -rf /opt/sublime3
       rm /usr/local/bin/sublime # remove our pointer-binary we made
+  elif [[ "$app" =~ Temrinus ]]
+    then
+      apt remove terminus -y
   elif [[ "$app" =~ SimpleNote ]]
     then
       apt remove -y simplenote
@@ -863,6 +866,20 @@ installApp () { # All of the blocks of code to install each app individually:
               chmod +x $BINFILE # make it executable
             killBar
 
+        ### terminus
+        ### Git Apt Installer, Checksum required
+        elif [[ "$app" =~ "Temrinus" ]]
+          then
+            URL=https://github.com/Eugeny/terminus/releases/download/v1.0.91/terminus-1.0.91-linux.deb
+            CHECKSUM=0
+            FILE=terminus-1.0.91-linux.deb
+            checksumCheck $LOCALAREA $CHECKSUM $URL $app
+            progressBar " Installing Temrinus (GitHUB) ... "
+              dpkg -i ${LOCALAREA}/terminus-1.0.91-linux.deb
+              apt -f install -y # clean up after .deb
+            killBar
+
+
         ### IMSI-Catcher
         ### GIT with depends
         elif [[ "$app" =~ "IMSI-Catcher" ]]
@@ -898,7 +915,6 @@ installApp () { # All of the blocks of code to install each app individually:
             INSTALLAREA=/infosec/wifi/
             INSTALLDIR=pixiewps-master
             checksumCheck $LOCALAREA $CHECKSUM $URL $app # download the file
-            printf "[++] LOCALAREA: $LOCALAREA\n"
             progressBar " Installing PixieWPS (GitHUB) ... " # let em know you're compiling.
               cp $LOCALAREA $INSTALLAREA
               cd $INSTALLAREA && unzip $FILE && rm $FILE
@@ -961,6 +977,7 @@ main () {
    $(if [[ $(which glances|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Glances" "$DAS_CAT_SYS" "Curses-based monitoring tool" false \
    $(if [[ $(which grafana|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Grafana" "$DAS_CAT_SYS" "Open platform for beautiful analytics and monitoring" false \
    $(if [[ $(which anydesk|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "AnyDesk" "$DAS_CAT_SYS" "Remote Desktop App" false \
+   $(if [[ $(which terminus|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Terminus" "$DAS_CAT_SYS" "A Terminal for a Modern Age" false \
    \
    $(if [[ $(which Cutter|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Cutter" "$DAS_CAT_ENG" "Reverse engineering tool" false \
    $(if [[ $(which apktool|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "APKTool" "$DAS_CAT_ENG" "Reverse engineering Android APK tool" false \
