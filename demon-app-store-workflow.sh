@@ -29,6 +29,9 @@ export DAS_CAT_MM="Multimedia"
 export DAS_CAT_NET="Networking"
 export DAS_NOTIFY_APP="Demon App Store Notification"
 export DAS_NOTIFY_ICON="--icon=/usr/share/demon/images/icons/demon-store-icon.png"
+export DAS_NOTIFY_ICON_GRN="--icon=/usr/share/demon/images/icons/demon-store-icon-green.png"
+export DAS_NOTIFY_ICON_RED="--icon=/usr/share/demon/images/icons/demon-store-icon-red.png"
+
 export DAS_DEBUG="False" # chnage to "True" to see debug info during app installation / checking ...
 
 export LOCAL_APPS=/usr/share/applications/
@@ -66,8 +69,8 @@ killBar () {
 export -f killBar
 
 ### XFCE4 Notification
-notify () {
-  notify-send "$1" "$2" "$DAS_NOTIFY_ICON"
+notify () { # Pass to me the Title,Message,Icon
+  notify-send "$1" "$2" "$3"
 }
 export -f notify
 
@@ -292,7 +295,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
   else
     printf "[+] Recieved $app\n";
   fi
-  notify $DAS_NOTIFY_APP "$app has been Uninstalled"
+  notify $DAS_NOTIFY_APP "$app has been Uninstalled" $DAS_NOTIFY_ICON_RED
   killBar
 }
 
@@ -1027,7 +1030,7 @@ installApp () { # All of the blocks of code to install each app individually:
         else
             printf "[!] Unknown app was requested! $app\n\n"
         fi
-        notify $DAS_NOTIFY_APP "$app Has been Installed"
+        notify $DAS_NOTIFY_APP "$app Has been Installed" $DAS_NOTIFY_ICON_GRN
         killBar
     fi
   fi
