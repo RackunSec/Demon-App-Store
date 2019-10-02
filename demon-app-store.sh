@@ -13,12 +13,18 @@ export DAS_NOTIFY_ICON="--icon=/usr/share/demon/images/icons/demon-store-icon.pn
 export DAS_NOTIFY_ICON_GRN="--icon=/usr/share/demon/images/icons/demon-store-icon-green.png"
 export DAS_NOTIFY_ICON_RED="--icon=/usr/share/demon/images/icons/demon-store-icon-red.png"
 
-network_test () {
-  ping -c 1 debian.org || notify "$DAS_NOTIFY_APP" "No network access.\nDemon App Store exiting." $DAS_NOTIFY_ICON_RED\
-   && printf "[ERROR] no network connectivity. (DEBIAN.ORG unreachable) Exiting.\n" 1>&2\
-   && exit 1337
+network_fail () {
+  notify "$DAS_NOTIFY_APP" "No network access.\nDemon App Store exiting." $DAS_NOTIFY_ICON_RED
+  printf "[ERROR] no network connectivity. (DEBIAN.ORG unreachable) Exiting.\n" 1>&2
+  exit 1337
+}
+export -f network_fail
+
+network_test ()
+  ping -c 1 debian.org || network_fail
 }
 
+export -f network_test
 network_test # ensure a connection
 
 ### Am I already running?
