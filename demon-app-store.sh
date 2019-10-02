@@ -5,11 +5,13 @@
 
 ### XFCE4 Notification
 notify () {
-  notify-send "$1" "$2" "$DAS_NOTIFY_ICON"
+  notify-send "$1" "$2" "$3"
 }
 export -f notify
 export DAS_NOTIFY_APP="Demon App Store Notification"
 export DAS_NOTIFY_ICON="--icon=/usr/share/demon/images/icons/demon-store-icon.png"
+export DAS_NOTIFY_ICON_GRN="--icon=/usr/share/demon/images/icons/demon-store-icon.png"
+export DAS_NOTIFY_ICON_RED="--icon=/usr/share/demon/images/icons/demon-store-icon.png"
 
 
 ### Am I already running?
@@ -21,9 +23,7 @@ if [[ $RUN -gt 2 ]]
     exit 57
 fi
 
-notify "$DAS_NOTIFY_APP" "The Demon App Store is Initializing."
-
-
+notify "$DAS_NOTIFY_APP" "The Demon App Store is Initializing." $DAS_NOTIFY_ICON
 
 
 source ~/.bashrc # Testing this as there seems to be an issue with the $PATH for Spotifail.
@@ -69,7 +69,6 @@ if [ -f /usr/local/sbin/demon-app-store-worklflkow.sh ]
   then
     rm /usr/local/sbin/demon-app-store-workflow.sh
 fi
-notify "$DAS_NOTIFY_APP" "The Demon App Store has been updated."
 
 ### Copy the new executable:
 cp $APPDEVDAS/demon-app-store.sh /usr/local/sbin/
@@ -85,7 +84,8 @@ fi
 cp $APPDEVDAS/icons/* /usr/share/demon/images/icons # Add all the icon files
 cp $APPDEVDAS/desktop/* /usr/share/demon/desktop/ # Add all the desktop icons into Demon shared area
 ### Complete
-printf "[!] The latest version is now installed ... \n";
+
+notify "$DAS_NOTIFY_APP" "The Demon App Store has been updated." "$DAS_NOTIFY_ICON_GRN"
 
 ### start Workflow:
 /usr/local/sbin/demon-app-store-workflow.sh
