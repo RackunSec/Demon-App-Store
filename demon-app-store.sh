@@ -19,7 +19,7 @@ export -f notify
 export DAS_NOTIFY_APP="Demon App Store Notification"
 export DAS_NOTIFY_ICON="--icon=/usr/share/demon/images/icons/demon-store-icon.png"
 
-notify $DAS_NOTIFY_APP "The Demon App Store is Initializing."
+notify "$DAS_NOTIFY_APP" "The Demon App Store is Initializing."
 
 source ~/.bashrc # Testing this as there seems to be an issue with the $PATH for Spotifail.
 APPDEV="/var/demon/store/code/"
@@ -64,6 +64,7 @@ if [ -f /usr/local/sbin/demon-app-store-worklflkow.sh ]
   then
     rm /usr/local/sbin/demon-app-store-workflow.sh
 fi
+notify "$DAS_NOTIFY_APP" "The Demon App Store has been updated."
 
 ### Copy the new executable:
 cp $APPDEVDAS/demon-app-store.sh /usr/local/sbin/
