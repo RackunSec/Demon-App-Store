@@ -81,7 +81,7 @@ if [ ! -d /usr/share/demon/images/icons ]
   then
     mkdir -p /usr/share/demon/images/icons 2>/dev/null
 fi
-printf "[i] Copying new icon images ... "
+printf "[i] Copying new icon images from ($APPDEVDAS/icons/)... \n"
 cp $APPDEVDAS/icons/* /usr/share/demon/images/icons/ # Add all the icon files
 cp $APPDEVDAS/desktop/* /usr/share/demon/desktop/ # Add all the desktop icons into Demon shared area
 ### Complete
