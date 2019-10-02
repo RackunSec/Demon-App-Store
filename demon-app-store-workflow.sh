@@ -610,7 +610,7 @@ installApp () { # All of the blocks of code to install each app individually:
 
         ### Sublime text editor
         ### Copy, HTTP, Checksum required
-        elif [ "$app" == "Sublime_Text" ]
+        elif [ "$app" == "Sublime" ]
           then
             URL="https://download.sublimetext.com/sublime_text_3_build_3207_x64.tar.bz2"
             FILE="sublime_text_3_build_3207_x64.tar.bz2"
