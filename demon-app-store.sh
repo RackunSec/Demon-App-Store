@@ -10,8 +10,8 @@ notify () {
 export -f notify
 export DAS_NOTIFY_APP="Demon App Store Notification"
 export DAS_NOTIFY_ICON="--icon=/usr/share/demon/images/icons/demon-store-icon.png"
-export DAS_NOTIFY_ICON_GRN="--icon=/usr/share/demon/images/icons/demon-store-icon.png"
-export DAS_NOTIFY_ICON_RED="--icon=/usr/share/demon/images/icons/demon-store-icon.png"
+export DAS_NOTIFY_ICON_GRN="--icon=/usr/share/demon/images/icons/demon-store-icon-green.png"
+export DAS_NOTIFY_ICON_RED="--icon=/usr/share/demon/images/icons/demon-store-icon-red.png"
 
 
 ### Am I already running?
