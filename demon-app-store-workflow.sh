@@ -1030,7 +1030,7 @@ installApp () { # All of the blocks of code to install each app individually:
         else
             printf "[!] Unknown app was requested! $app\n\n"
         fi
-        notify $DAS_NOTIFY_APP "$app Has been installed" $DAS_NOTIFY_ICON_GRN
+        notify $DAS_NOTIFY_APP "$app has been installed" $DAS_NOTIFY_ICON_GRN
         killBar
     fi
   fi
