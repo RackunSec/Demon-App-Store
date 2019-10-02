@@ -14,7 +14,7 @@ export DAS_NOTIFY_ICON_GRN="--icon=/usr/share/demon/images/icons/demon-store-ico
 export DAS_NOTIFY_ICON_RED="--icon=/usr/share/demon/images/icons/demon-store-icon-red.png"
 
 network_test () {
-  ping -c 1 debian.org || notify $DAS_NOTIFY_APP "No network access.\nDemon App Store exiting." $DAS_NOTIFY_ICON_RED
+  ping -c 1 debian.org || notify "$DAS_NOTIFY_APP" "No network access.\nDemon App Store exiting." $DAS_NOTIFY_ICON_RED
   printf "[ERROR] no network connectivity. (DEBIAN.ORG unreachable) Exiting.\n" 1>&2
   exit 1337
 }
