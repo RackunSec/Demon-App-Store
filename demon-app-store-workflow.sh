@@ -295,7 +295,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
   else
     printf "[+] Recieved $app\n";
   fi
-  notify $DAS_NOTIFY_APP "$app has been Uninstalled" $DAS_NOTIFY_ICON_RED
+  notify $DAS_NOTIFY_APP "$app has been uninstalled" $DAS_NOTIFY_ICON_RED
   killBar
 }
 
@@ -1030,7 +1030,7 @@ installApp () { # All of the blocks of code to install each app individually:
         else
             printf "[!] Unknown app was requested! $app\n\n"
         fi
-        notify $DAS_NOTIFY_APP "$app Has been Installed" $DAS_NOTIFY_ICON_GRN
+        notify $DAS_NOTIFY_APP "$app Has been installed" $DAS_NOTIFY_ICON_GRN
         killBar
     fi
   fi
