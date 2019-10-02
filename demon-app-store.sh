@@ -3,14 +3,6 @@
 ## 2019 WeakNet Labs
 ## Douglas Berdeaux
 
-### Am I already running?
-RUN=$(ps aux | egrep -E 'demon-app-[s]tore\.sh'|wc -l)
-if [[ $RUN -gt 2 ]]
-  then
-    yad --text="\n The Demon App Store is already running. " --window-icon=/usr/share/demon/images/icons/demon-64-white.png --image=/usr/share/demon/images/icons/demon-store-icon-64-padded.png --button=Exit:0 --width=400 --height=20 --fixed
-    exit 57
-fi
-
 ### XFCE4 Notification
 notify () {
   notify-send "$1" "$2" "$DAS_NOTIFY_ICON"
@@ -19,7 +11,20 @@ export -f notify
 export DAS_NOTIFY_APP="Demon App Store Notification"
 export DAS_NOTIFY_ICON="--icon=/usr/share/demon/images/icons/demon-store-icon.png"
 
+
+### Am I already running?
+RUN=$(ps aux | egrep -E 'demon-app-[s]tore\.sh'|wc -l)
+if [[ $RUN -gt 2 ]]
+  then
+    yad --text="\n The Demon App Store is already running. " --window-icon=/usr/share/demon/images/icons/demon-64-white.png --image=/usr/share/demon/images/icons/demon-store-icon-64-padded.png --button=Exit:0 --width=400 --height=20 --fixed
+    notify "$DAS_NOTIFY_APP" "The Demon App Store is already running."
+    exit 57
+fi
+
 notify "$DAS_NOTIFY_APP" "The Demon App Store is Initializing."
+
+
+
 
 source ~/.bashrc # Testing this as there seems to be an issue with the $PATH for Spotifail.
 APPDEV="/var/demon/store/code/"
