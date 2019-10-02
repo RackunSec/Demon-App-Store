@@ -20,7 +20,7 @@ network_fail () {
 }
 export -f network_fail
 
-network_test ()
+network_test () {
   ping -c 1 debian.org || network_fail
 }
 
