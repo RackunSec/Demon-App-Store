@@ -1022,6 +1022,9 @@ installApp () { # All of the blocks of code to install each app individually:
               sed -ir 's/.usr.share.WiFi-Pumpkin.icons.icon.png/\/opt\/WiFi-Pumpkin\/icons\/icon.png/' wifi-pumpkin.desktop
               # allow me ...
               sed -ir 's/gksudo //' wifi-pumpkin.desktop # c'mon, man.
+              # more bad practices ...
+              sed -ir 's/\tclear$//' installer_wifimode.sh
+              # wow, okay.
               cp wifi-pumpkin.desktop $LOCAL_APPS # copy the menu icon into local share
               cp wifi-pumpkin /usr/local/sbin/ # copy the script that runs the app
             killBar
