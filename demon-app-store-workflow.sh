@@ -1073,6 +1073,7 @@ installApp () { # All of the blocks of code to install each app individually:
             progressBar "Installing SERT (GitHUB) ... "
               mkdir -p /infosec/forensics
               cd /infosec/forensics && git clone https://github.com/weaknetlabs/SERT.git
+              cd /infosec/forensics/SERT
               cp sert.py /usr/local/sbin # copy the binary into the $PATH
               cp sert.desktop $LOCAL_APPS # copy in the desktop menu file
             killBar
