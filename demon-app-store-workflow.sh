@@ -278,6 +278,11 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
     then
       rm -rf /opt/EyeWitness
       rm -rf /usr/local/sbin/EyeWitness.sh
+  elif [[ "$app" =~ WiFiPhisher ]]
+    then
+      rm -rf /infosec/wifi/wifiphisher # remove the build directory
+      rm -rf /usr/local/sbin/wifiphisher # remove my script
+      apt remove dnsmasq # remove dependency
   elif [[ "$app" =~ BloodHound ]]
     then
       rm -rf /opt/BloodHound*
@@ -1055,6 +1060,22 @@ installApp () { # All of the blocks of code to install each app individually:
               chmod +x $BINFILE
             killBar
 
+        ### WiFiPhisher
+        ### Git, Compile, no checksum required
+        elif [[ "$app" =~ WiFiPhisher ]]
+          then
+            BINFILE=/usr/local/sbin/wifiphisher
+            progressBar "Installing WiFiPhisher (GitHUB)"
+              cd /infosec/wifi && git clone https://github.com/wifiphisher/wifiphisher.git
+              pip install pyric
+              apt install dnsmasq
+              cd /infosec/wifi/wifiphisher && python setup.py build
+              cd /infosec/wifi/wifiphisher && python setup.py install
+              echo "#!/usr/bin/env bash" > $BINFILE # make the script to basically add it to the $PATH
+              echo "cd /infosec/wifi/wifiphisher/bin && ./wifiphisher" >> $BINFILE
+              chmod +x $BINFILE # make this executable
+            killBar
+
         ### GitKraken
         ### Installer, HTTP, CHecksum required
         elif [[ "$app" =~ GitKraken ]]
@@ -1093,6 +1114,7 @@ main () {
     --center \
     $(if [[ $(which autosploit|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "AutoSploit" "$DAS_CAT_PEN" "Automated Mass Exploit Tool" false \
     $(if [[ $(which wifi-pumpkin|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "WiFi-Pumpkin" "$DAS_CAT_PEN" "Rogue AP Framework" false \
+    $(if [[ $(which wifiphisher|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "WiFiPhisher" "$DAS_CAT_PEN" "Rogue AP WiFi Phishing Tool" false \
     $(if [[ $(which EyeWitness.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "EyeWitness" "$DAS_CAT_PEN" "Automated Web Vulnerability Tool" false \
     $(if [[ $(which imsi-catcher|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "IMSI-Catcher" "$DAS_CAT_PEN" "IMSI Catcher Tool" false \
     $(if [[ $(which pixiewps|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PixieWPS" "$DAS_CAT_PEN" "Cracking WPS PIN" false \
