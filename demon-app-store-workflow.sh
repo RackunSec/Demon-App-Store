@@ -725,7 +725,6 @@ installApp () { # All of the blocks of code to install each app individually:
             INSTALLAREA=/opt
             URL=https://download.jetbrains.com/python/pycharm-professional-2019.2.tar.gz
             binFile=/usr/local/bin/pycharm
-
             checksumCheck $LOCALAREA $CHECKSUM $URL $app
             progressBar $progressText
             cd $DAS_APPCACHE
@@ -995,6 +994,28 @@ installApp () { # All of the blocks of code to install each app individually:
               chmod +x $BINFILE
             killBar
 
+        ### WiFi-Pumpkin
+        ### Git, no checksum, compiled with depends
+        elif [[ "$app" == "WiFi-Pumpkin" ]]
+          then
+            URL=https://github.com/P0cL4bs/WiFi-Pumpkin.git
+            progressBar "Installing WiFi-Pumpkin, this may take a while."
+              # Depends from APT:
+              apt install -y pkg-config libnl-3-dev libnl-genl-3-dev libnfnetlink-dev libnetfilter-queue-dev hostapd
+              # Git the repo:
+              cd /opt && git clone $URL
+              cd WiFi-Pumpkin
+              # Depends from Python:
+              pip install -r requirements.txt
+              sed -ir 's/.usr.share./\/opt\//' wifi-pumpkin # remove the share location for something more sane
+              # update the menu icon to fit properly into Demon Menu:
+              echo "Categories=wifihacking" >> wifi-pumpkin.desktop
+              # update the icon: (TODO recommend to the WF-P dev to use standard locations at some point)
+              sed -ir 's/.usr.share.WiFi-Pumpkin.icons.icon.png/\/opt\/WiFi-Pumpkin\/icons\/icon.png/' wifi-pumpkin.desktop
+              cp wifi-pumpkin.desktop $LOCAL_APPS # copy the menu icon into local share
+              cp wifi-pumpkin /usr/local/sbin/ # copy the script that runs the app
+            killBar
+
         ### EyeWitness
         ### Git, no checksum or installer
         elif [[ "$app" =~ EyeWitness ]]
@@ -1050,6 +1071,7 @@ main () {
     --window-icon=$DAS_WINDOWICON \
     --center \
     $(if [[ $(which autosploit|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "AutoSploit" "$DAS_CAT_PEN" "Automated Mass Exploit Tool" false \
+    $(if [[ $(which wifi-pumpkin|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "WiFi-Pumpkin" "$DAS_CAT_PEN" "Rogue AP Framework" false \
     $(if [[ $(which EyeWitness.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "EyeWitness" "$DAS_CAT_PEN" "Automated Web Vulnerability Tool" false \
     $(if [[ $(which imsi-catcher|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "IMSI-Catcher" "$DAS_CAT_PEN" "IMSI Catcher Tool" false \
     $(if [[ $(which pixiewps|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PixieWPS" "$DAS_CAT_PEN" "Cracking WPS PIN" false \
