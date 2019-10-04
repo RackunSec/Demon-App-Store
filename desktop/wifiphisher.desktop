@@ -1,9 +1,9 @@
 [Desktop Entry]
 Name=WiFiPhisher
 Comment=A tool for creating a WiFi-Hotspot and executing MitM-Attacks
-Exec=wifiphisher
+Exec=gnome-terminal -e "bash -c \"wifiphisher --help;bash\""
 Icon=/usr/share/demon/images/icons/wifiphisher.png
-Terminal=false
+Terminal=true
 Type=Application
 StartupNotify=false
 Categories=wifihacking
