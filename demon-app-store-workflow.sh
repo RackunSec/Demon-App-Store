@@ -1012,6 +1012,8 @@ installApp () { # All of the blocks of code to install each app individually:
               cd WiFi-Pumpkin
               # Depends from Python:
               pip install -r requirements.txt
+              # Annnd, we also need to do this:
+              pip install --upgrade pyasn1-modules
               ./installer_wifimode.sh # run the "installer" script
               sed -ir 's/.usr.share./\/opt\//' wifi-pumpkin # remove the share location for something more sane
               # update the menu icon to fit properly into Demon Menu:
