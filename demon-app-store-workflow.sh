@@ -1006,7 +1006,7 @@ installApp () { # All of the blocks of code to install each app individually:
             URL=https://github.com/P0cL4bs/WiFi-Pumpkin.git
             progressBar "Installing WiFi-Pumpkin, this may take a while."
               # Depends from APT:
-              apt install -y pkg-config libnl-3-dev libnl-genl-3-dev libnfnetlink-dev libnetfilter-queue-dev hostapd
+              apt install -y pkg-config libnl-3-dev libnl-genl-3-dev libnfnetlink-dev libnetfilter-queue-dev
               # Git the repo:
               cd /opt && git clone $URL
               cd WiFi-Pumpkin
