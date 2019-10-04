@@ -263,6 +263,11 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
       rm -rf /infosec/exploit/AutoSploit
       rm -rf /usr/local/sbin/autosploit
       rm -rf /usr/share/applications/autosploit.desktop # remove the desktop/menu icon
+  elif [[ "$app" == "WiFi-Pumpkin" ]]
+    then
+      rm -rf /opt/WiFi-Pumpkin # remove install / build directory
+      rm -rf /usr/local/sbin/wifi-pumpkin # remove startup script
+      rm -rf ${LOCAL_APPS}wifi-pumpkin.desktop # remove desktop icon
   elif [[ "$app" =~ MassDNS ]]
     then
       rm -rf /usr/local/sbin/massdns
@@ -1007,11 +1012,14 @@ installApp () { # All of the blocks of code to install each app individually:
               cd WiFi-Pumpkin
               # Depends from Python:
               pip install -r requirements.txt
+              ./installer_wifimode.sh # run the "installer" script
               sed -ir 's/.usr.share./\/opt\//' wifi-pumpkin # remove the share location for something more sane
               # update the menu icon to fit properly into Demon Menu:
               echo "Categories=wifihacking" >> wifi-pumpkin.desktop
               # update the icon: (TODO recommend to the WF-P dev to use standard locations at some point)
               sed -ir 's/.usr.share.WiFi-Pumpkin.icons.icon.png/\/opt\/WiFi-Pumpkin\/icons\/icon.png/' wifi-pumpkin.desktop
+              # allow me ...
+              sed -ir 's/gksudo //' wifi-pumpkin.desktop # c'mon, man.
               cp wifi-pumpkin.desktop $LOCAL_APPS # copy the menu icon into local share
               cp wifi-pumpkin /usr/local/sbin/ # copy the script that runs the app
             killBar
