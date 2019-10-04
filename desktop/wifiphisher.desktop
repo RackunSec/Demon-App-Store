@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=WiFiPhisher
+Comment=A tool for creating a WiFi-Hotspot and executing MitM-Attacks
+Exec=wifiphisher
+Icon=/usr/share/demon/images/icons/wifiphisher.png
+Terminal=false
+Type=Application
+StartupNotify=false
+Categories=wifihacking
