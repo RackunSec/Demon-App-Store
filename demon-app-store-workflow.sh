@@ -19,6 +19,7 @@ export DAS_WIDTH=840
 export DAS_HEIGHT=512
 # These are for application cetegories, see final YAD call at bottom of file
 export DAS_CAT_PEN="Infosec"
+export DAS_CAT_FOR="Digital Forensics"
 export DAS_CAT_SYS="System"
 export DAS_CAT_ENG="Engineering"
 export DAS_CAT_NOT="Note Taking"
@@ -227,10 +228,14 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
   elif [[ "$app" =~ Stacer ]]
     then
       apt -y remove stacer
+  elif [[ "$app" =~ SERT ]] # Spirion EnCase Reporting Tool
+    then
+      rm /usr/local/sbin/sert.py # copy the binary into the $PATH
+      rm ${LOCAL_APPS}/sert.desktop # remove the desktop file
   elif [[ "$app" =~ APKTool ]]
     then
       apt remove apktool -y
-  elif [[ "$app" =~ ApacheDirectoryStudio ]]
+  elif [[ "$app" =~ ApacheDirectoryStudio ]] # LDAP Browser
   then
     rm -rf /opt/ApacheDirectoryStudio
     rm -rf /usr/local/bin/apachedirectorystudio
@@ -1061,11 +1066,21 @@ installApp () { # All of the blocks of code to install each app individually:
               chmod +x $BINFILE
             killBar
 
+        ### SERT.py
+        ### Git, no checksum
+        elif [[ "$app" =~ SERT ]]
+          then
+            progressBar "Installing SERT (GitHUB) ... "
+              mkdir /infosec/forensics && git clone https://github.com/weaknetlabs/SERT.git
+              cp sert.py /usr/local/sbin # copy the binary into the $PATH
+              cp sert.desktop $LOCAL_APPS # copy in the desktop menu file
+            killBar
+
         ### WiFiPhisher
         ### Git, Compile, no checksum required
         elif [[ "$app" =~ WiFiPhisher ]]
           then
-            progressBar "Installing WiFiPhisher (GitHUB)"
+            progressBar "Installing WiFiPhisher (GitHUB) ..."
               cd /infosec/wifi && git clone https://github.com/wifiphisher/wifiphisher.git
               pip install pyric
               apt install dnsmasq
@@ -1126,6 +1141,7 @@ main () {
    $(if [[ $(which beef|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "BeEF" "$DAS_CAT_PEN" "The Browser Exploitation Framework" false \
    $(if [[ $(which socialbox|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "SocialBox" "$DAS_CAT_PEN" "Social Media Bruteforce Attack Framework" false \
    $(if [[ $(which quasar|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "quasar" "$DAS_CAT_PEN" "Information Gathering Framework For Penetration Testers" false \
+   $(if [[ $(which sert.py|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "SERT" "$DAS_CAT_FOR" "Spirion EnCase Reporting Tool" false \
    \
    $(if [[ $(which massdns|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "MassDNS" "$DAS_CAT_NET" "Simple high-performance DNS stub resolver" false \
    \
