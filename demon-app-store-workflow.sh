@@ -1016,8 +1016,9 @@ installApp () { # All of the blocks of code to install each app individually:
               pip install --upgrade pyasn1-modules
               # more bad practices ...
               sed -ir 's/\tclear$//' installer_wifimode.sh
-              # This script ...
+              # This script ... seriously.
               sed -ir 's/^INSTALL_DIR=.*/INSTALL_DIR=\/opt\/WiFi-Pumpkin\/plugins\/bin\/hostapd-mana/' installer_wifimode.sh
+              sed -ir 's/^CURRENT_DIR=.*/CURRENT_DIR=\/opt\/WiFi-Pumpkin\/plugins\/bin\/hostapd-mana/' installer_wifimode.sh
               # now, we can run it safely ...
               ./installer_wifimode.sh # run the "installer" script
               sed -ir 's/.usr.share./\/opt\//' wifi-pumpkin # remove the share location for something more sane
