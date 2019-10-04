@@ -268,6 +268,9 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
       rm -rf /opt/WiFi-Pumpkin # remove install / build directory
       rm -rf /usr/local/sbin/wifi-pumpkin # remove startup script
       rm -rf ${LOCAL_APPS}wifi-pumpkin.desktop # remove desktop icon
+      # I put these two items here, I need to remove them:
+      rm -rf /usr/local/sbin/hostapd_cli
+      rm -rf /usr/local/sbin/hostapd
   elif [[ "$app" =~ MassDNS ]]
     then
       rm -rf /usr/local/sbin/massdns
