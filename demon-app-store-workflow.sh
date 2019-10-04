@@ -1071,7 +1071,8 @@ installApp () { # All of the blocks of code to install each app individually:
         elif [[ "$app" =~ SERT ]]
           then
             progressBar "Installing SERT (GitHUB) ... "
-              mkdir /infosec/forensics && git clone https://github.com/weaknetlabs/SERT.git
+              mkdir -p /infosec/forensics
+              cd /infosec/forensics && git clone https://github.com/weaknetlabs/SERT.git
               cp sert.py /usr/local/sbin # copy the binary into the $PATH
               cp sert.desktop $LOCAL_APPS # copy in the desktop menu file
             killBar
