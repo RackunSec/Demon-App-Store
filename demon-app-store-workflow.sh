@@ -282,7 +282,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
     then
       rm -rf /infosec/wifi/wifiphisher # remove the build directory
       rm -rf /usr/local/sbin/wifiphisher # remove my script
-      apt remove dnsmasq # remove dependency
+      apt remove dnsmasq  -y # remove dependency
   elif [[ "$app" =~ BloodHound ]]
     then
       rm -rf /opt/BloodHound*
