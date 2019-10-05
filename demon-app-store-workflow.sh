@@ -1110,7 +1110,7 @@ installApp () { # All of the blocks of code to install each app individually:
             cp ${LOCALAREA}/demon-updater-workflow.sh /usr/local/sbin/
             chmod +x /usr/local/sbin/demon-updater* # make them executable
             cp ${LOCALAREA}/demon-updater.desktop ${LOCAL_APPS} # copy the menu icon in
-            cp ${LOCALAREA}/images/updater.png /var/demon/images/icons/ # copy in our new icon
+            cp ${LOCALAREA}/images/updater.png /usr/share/demon/images/icons/ # copy in our new icon
 
         ### GitKraken
         ### Installer, HTTP, CHecksum required
