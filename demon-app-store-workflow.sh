@@ -28,6 +28,7 @@ export DAS_CAT_WEB="Web"
 export DAS_CAT_COM="Communication"
 export DAS_CAT_MM="Multimedia"
 export DAS_CAT_NET="Networking"
+export DAS_CAT_DEM="Demon Linux"
 export DAS_NOTIFY_APP="Demon App Store Notification"
 export DAS_NOTIFY_ICON="--icon=/usr/share/demon/images/icons/demon-store-icon.png"
 export DAS_NOTIFY_ICON_GRN="--icon=/usr/share/demon/images/icons/demon-store-icon-green.png"
@@ -144,6 +145,11 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
     then
       rm -rf /infosec/ptf
       rm /usr/local/bin/ptf
+  elif [[ "$app" =~ Demon-Update-Tool ]]
+    then
+      rm -rf /usr/local/sbin/demon-update* # remove the $PATH object
+      rm -rf ${LOCAL_APPS}/demon-updater.desktop # remove the desktop file
+      rm -rf /var/demon/updater # remove staging area
   elif [[ "$app" =~ Burp ]]
     then
       /opt/BurpSuiteCommunity/uninstall
@@ -1092,6 +1098,20 @@ installApp () { # All of the blocks of code to install each app individually:
               cp $DAS_DESKTOP_CACHE/wifiphisher.desktop $LOCAL_APPS
             killBar
 
+        ### Demon Updater Tool
+        ### Git, no checksum required
+        elif [[ "$app" =~ Demon-Update-Tool ]]
+          then
+            LOCALAREA=/var/demon/updater/code/Demon-Update-Tool
+            rm -rf /var/demon/updater # this is okay, since we are "installing" the app.
+            mkdir -p /var/demon/updater/code
+            cd /var/demon/updater/code && git clone https://github.com/weaknetlabs/Demon-Update-Tool.git
+            cp ${LOCALAREA}/demon-updater.sh /usr/local/sbin/
+            cp ${LOCALAREA}/demon-updater-workflow.sh /usr/local/sbin/
+            chmod +x /usr/local/sbin/demon-updater* # make them executable
+            cp ${LOCALAREA}/demon-updater.desktop ${LOCAL_APPS} # copy the menu icon in
+            cp ${LOCALAREA}/images/updater.png /var/demon/images/icons/ # copy in our new icon
+
         ### GitKraken
         ### Installer, HTTP, CHecksum required
         elif [[ "$app" =~ GitKraken ]]
@@ -1178,6 +1198,8 @@ main () {
    $(if [[ $(which slack|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Slack" "$DAS_CAT_COM" "Slack collaboration tool" false \
    $(if [[ $(which franz|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Franz" "$DAS_CAT_COM" "Messaging client app" false \
    $(if [[ $(which discord|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Discord" "$DAS_CAT_COM" "Voice and text chat for gamers" false \
+   \
+   $(if [[ $(which demon-updater.sh |wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Demon-Update-Tool" "$DAS_CAT_DEM" "Demon Linux Update App" false \
    \
    $(if [[ $(which kdenlive|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Kdenlive" "$DAS_CAT_MM" "Video editor program" false \
    $(if [[ $(which shotcut|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Shotcut" "$DAS_CAT_MM" "Video editor program" false \
