@@ -8,7 +8,7 @@ notify () {
   notify-send "$1" "$2" "$3"
 }
 
-export DAS_VERSION=0.10.04.3 # version, mo, day, revision
+export DAS_VERSION=0.10.05.1 # version, mo, day, revision
 
 export -f notify
 export DAS_NOTIFY_APP="Demon App Store Notification"
