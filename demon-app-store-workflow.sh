@@ -317,6 +317,10 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
       rm -rf /infosec/wifi/pixiewps-master # removethe initial build directory
       rm /usr/local/sbin/pixiewps # remove the executable
       rm /usr/share/applications/pixiewps.desktop # remove the desktop/menu icon
+  elif [[ "$app" =~ Bluefruit ]]
+    then
+      rm -rf /infosec/bluetooth/Bluefruit # remove the gitHUB project
+      rm -rf /usr/local/sbin/bluefruit_sniffer.sh # remove our binary file
   else
     printf "[+] Recieved $app\n";
   fi
@@ -989,6 +993,23 @@ installApp () { # All of the blocks of code to install each app individually:
               cd && rm -rf ${INSTALLAREA}/${INSTALLDIR} # remove /infosec/wifi/pixiewps-master
             killBar
 
+        ### BlueFruit Sniffing Software (Adafruit)
+        ### Git, pip, no checksum required
+        elif [[ "$app" =~ Bluefruit ]]
+          then
+            GITURL=https://github.com/adafruit/Adafruit_BLESniffer_Python.git
+            LOCALAREA=/infosec/
+            BINFILE=/usr/local/sbin/bluefruit_sniffer.sh
+            progressBar "Installing Adafruit's Bluetooth (Bluefruit) Sniffer ... "
+              mkdir /infosec/bluetooth 2>/dev/null
+              cd /infosec/bluetooth
+              git clone $GITURL Bluefruit
+              pip install pyserial
+              echo "#!/usr/bin/env bash" > $BINFILE
+              echo "cd /infosec/bluetooth/Bluefruit && python sniffer.py -h" >> $BINFILE
+              chmod +x $BINFILE
+            killBar
+
         ### BloodHound, Dependency Hell, removed
         ### Git, no checksum
         elif [[ "$app" =~ BloodHound ]]
@@ -1150,6 +1171,7 @@ main () {
     --center \
     $(if [[ $(which autosploit|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "AutoSploit" "$DAS_CAT_PEN" "Automated Mass Exploit Tool" false \
     $(if [[ $(which wifi-pumpkin|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "WiFi-Pumpkin" "$DAS_CAT_PEN" "Rogue AP Framework" false \
+    $(if [[ $(which bluefruit_sniffer.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Bluefruit" "$DAS_CAT_PEN" "Adafruit's BLE Sniffer" false \
     $(if [[ $(which wifiphisher|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "WiFiPhisher" "$DAS_CAT_PEN" "Rogue AP WiFi Phishing Tool" false \
     $(if [[ $(which EyeWitness.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "EyeWitness" "$DAS_CAT_PEN" "Automated Web Vulnerability Tool" false \
     $(if [[ $(which imsi-catcher|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "IMSI-Catcher" "$DAS_CAT_PEN" "IMSI Catcher Tool" false \
