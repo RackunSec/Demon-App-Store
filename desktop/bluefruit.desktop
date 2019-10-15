@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Bluefruit
+Comment=Adafruit's BLE Sniffer
+Exec=gnome-terminal -e "bash -c \"bluefruit_sniffer.sh;bash\"";
+Icon=/usr/share/demon/images/icons/adafruit.png
+StartupNotify=false
+Terminal=true
+Categories=wifihacking;protocol

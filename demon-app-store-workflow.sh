@@ -1008,6 +1008,7 @@ installApp () { # All of the blocks of code to install each app individually:
               echo "#!/usr/bin/env bash" > $BINFILE
               echo "cd /infosec/bluetooth/Bluefruit && python sniffer.py -h" >> $BINFILE
               chmod +x $BINFILE
+              cp $DAS_DESKTOP_CACHE/bluefruit.desktop ${LOCAL_APPS} # copy in the desktop / menu icon
             killBar
 
         ### BloodHound, Dependency Hell, removed
