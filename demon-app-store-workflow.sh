@@ -1150,7 +1150,7 @@ installApp () { # All of the blocks of code to install each app individually:
             CHECKSUM=c760ae7359b0fbdef750202d18a9b8aa
             INSTALLAREA=/opt/ghidra
             URL=${DL_PKG_URL}/$FILE
-            BINFILE=/usr/local/sbin/ghidra9
+            BINFILE=/usr/local/sbin/ghidra9.sh
             checksumCheck $LOCALAREA $CHECKSUM $URL "Ghidra 9 (WNL Mirror)" # download Neo4J
             progressBar "Installing $app ... "
               cd $DAS_APPCACHE && unzip $FILE
