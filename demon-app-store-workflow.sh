@@ -1156,7 +1156,7 @@ installApp () { # All of the blocks of code to install each app individually:
               cd $DAS_APPCACHE && unzip $FILE
               mv ghidra_9.1-BETA_DEV $INSTALLAREA # mv locally
               echo "#!/usr/bin/env bash" > $BINFILE
-              echo "cd /opt/ghidra9 && ./ghidraRun" >> $BINFILE
+              echo "cd /opt/ghidra && ./ghidraRun" >> $BINFILE
               chmod +x $BINFILE
               # copy the menu entry into /usr/share/applications:
               cp $DAS_DESKTOP_CACHE/ghidra.desktop $LOCAL_APPS
