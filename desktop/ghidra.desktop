@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Ghidra 9
+Comment=NSA's Reverse Engineering Tool
+Exec=gnome-terminal -e "bash -c \"ghidra9;bash\"";
+Icon=/usr/share/demon/images/icons/ghidra.png
+StartupNotify=false
+Terminal=true
+Categories=exploitation

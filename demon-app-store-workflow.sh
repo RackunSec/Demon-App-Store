@@ -33,6 +33,8 @@ export DAS_NOTIFY_APP="Demon App Store Notification"
 export DAS_NOTIFY_ICON="--icon=/usr/share/demon/images/icons/demon-store-icon.png"
 export DAS_NOTIFY_ICON_GRN="--icon=/usr/share/demon/images/icons/demon-store-icon-green.png"
 export DAS_NOTIFY_ICON_RED="--icon=/usr/share/demon/images/icons/demon-store-icon-red.png"
+export DL_PKG_URL="https://demonlinux.com/download/packages"
+export DAS_DL_ICON="/usr/share/demon/images/icons/store-download.png"
 
 export DAS_DEBUG="False" # chnage to "True" to see debug info during app installation / checking ...
 
@@ -90,7 +92,7 @@ export -f cleanCache # now it's a command, so-to-speak.
 ### Downloading files with progress:
 downloadFile () { # pass to me "URI,Title,OutputFile" :)
   wget $1 --no-check-certificate -U mozilla -O $3  2>&1 | sed -u 's/^[a-zA-Z\-].*//; s/.* \{1,2\}\([0-9]\{1,3\}\)%.*/\1\n#Downloading ...\1%/; s/^20[0-9][0-9].*/#Done./'\
-  | yad --progress --title="Download in Progress" --window-icon=$DAS_WINDOWICON --image=$DAS_WINDOWIMAGE --width=350 --center --text="\nDownloading $2 ... " --auto-close --no-buttons --undecorated
+  | yad --progress --title="Download in Progress" --window-icon=$DAS_WINDOWICON --image=$DAS_DL_ICON --width=350 --center --text="\nDownloading $2 ... " --auto-close --no-buttons --undecorated
 }
 
 ### All done?
@@ -289,6 +291,11 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
     then
       rm -rf /opt/EyeWitness
       rm -rf /usr/local/sbin/EyeWitness.sh
+  elif [[ "$app" =~ Ghidra ]]
+    then
+      rm -rf /opt/ghidra # remove local area
+      rm -rf ${LOCAL_APPS}/ghidra.deskop # remove menu icon
+      rm -rf /usr/local/sbin/ghidra9.sh # remove binary init
   elif [[ "$app" =~ WiFiPhisher ]]
     then
       rm -rf /infosec/wifi/wifiphisher # remove the build directory
@@ -1134,6 +1141,27 @@ installApp () { # All of the blocks of code to install each app individually:
             cp ${LOCALAREA}/demon-updater.desktop ${LOCAL_APPS} # copy the menu icon in
             cp ${LOCALAREA}/images/updater.png /usr/share/demon/images/icons/ # copy in our new icon
 
+        ### Ghidra
+        ### unzip, appimage, checksum required
+        elif [[ "$app" =~ Ghidra ]]
+          then
+            FILE=ghidra9.zip
+            LOCALAREA=$DAS_APPCACHE/$FILE
+            CHECKSUM=c760ae7359b0fbdef750202d18a9b8aa
+            INSTALLAREA=/opt/ghidra
+            URL=${DL_PKG_URL}/$FILE
+            BINFILE=/usr/local/sbin/ghidra9
+            checksumCheck $LOCALAREA $CHECKSUM $URL "Ghidra 9 (WNL Mirror)" # download Neo4J
+            progressBar "Installing $app ... "
+              cd $DAS_APPCACHE && unzip $FILE
+              mv ghidra_9.1-BETA_DEV $INSTALLAREA # mv locally
+              echo "#!/usr/bin/env bash" > $BINFILE
+              echo "cd /opt/ghidra9 && ./ghidraRun" >> $BINFILE
+              chmod +x $BINFILE
+              # copy the menu entry into /usr/share/applications:
+              cp $DAS_DESKTOP_CACHE/ghidra.desktop $LOCAL_APPS
+            killBar
+
         ### GitKraken
         ### Installer, HTTP, CHecksum required
         elif [[ "$app" =~ GitKraken ]]
@@ -1198,6 +1226,7 @@ main () {
    \
    $(if [[ $(which Cutter|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Cutter" "$DAS_CAT_ENG" "Reverse engineering tool" false \
    $(if [[ $(which apktool|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "APKTool" "$DAS_CAT_ENG" "Reverse engineering Android APK tool" false \
+   $(if [[ $(which ghidraRun|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Ghidra" "$DAS_CAT_ENG" "NSA's Reverse engineering Tool" false \
    \
    $(if [[ $(which cherrytree|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "CherryTree" "$DAS_CAT_NOT" "A hierarchical note taking application" false \
    $(if [[ $(which simplenote|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "SimpleNote" "$DAS_CAT_NOT" "The simplest way to keep notes" false \
