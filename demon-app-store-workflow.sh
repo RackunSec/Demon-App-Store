@@ -1226,7 +1226,7 @@ main () {
    \
    $(if [[ $(which Cutter|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Cutter" "$DAS_CAT_ENG" "Reverse engineering tool" false \
    $(if [[ $(which apktool|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "APKTool" "$DAS_CAT_ENG" "Reverse engineering Android APK tool" false \
-   $(if [[ $(which ghidraRun|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Ghidra" "$DAS_CAT_ENG" "NSA's Reverse engineering Tool" false \
+   $(if [[ $(which ghidra9.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Ghidra" "$DAS_CAT_ENG" "NSA's Reverse engineering Tool" false \
    \
    $(if [[ $(which cherrytree|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "CherryTree" "$DAS_CAT_NOT" "A hierarchical note taking application" false \
    $(if [[ $(which simplenote|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "SimpleNote" "$DAS_CAT_NOT" "The simplest way to keep notes" false \
