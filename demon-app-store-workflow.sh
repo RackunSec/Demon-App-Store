@@ -291,10 +291,10 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
     then
       rm -rf /opt/EyeWitness
       rm -rf /usr/local/sbin/EyeWitness.sh
-  elif [[ "$app" =~ Ghidra ]]
+  elif [[ "$app" =~ Ghidra ]] 
     then
       rm -rf /opt/ghidra # remove local area
-      rm -rf ${LOCAL_APPS}/ghidra.deskop # remove menu icon
+      rm -rf ${LOCAL_APPS}/ghidra.desktop # remove menu icon
       rm -rf /usr/local/sbin/ghidra9.sh # remove binary init
   elif [[ "$app" =~ WiFiPhisher ]]
     then
