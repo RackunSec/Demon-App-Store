@@ -291,7 +291,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
     then
       rm -rf /opt/EyeWitness
       rm -rf /usr/local/sbin/EyeWitness.sh
-  elif [[ "$app" =~ Ghidra ]] 
+  elif [[ "$app" =~ Ghidra ]]
     then
       rm -rf /opt/ghidra # remove local area
       rm -rf ${LOCAL_APPS}/ghidra.desktop # remove menu icon
@@ -1251,7 +1251,7 @@ main () {
    $(if [[ $(which franz|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Franz" "$DAS_CAT_COM" "Messaging client app" false \
    $(if [[ $(which discord|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Discord" "$DAS_CAT_COM" "Voice and text chat for gamers" false \
    \
-   $(if [[ $(which demon-updater.sh |wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Demon-Update-Tool" "$DAS_CAT_DEM" "Demon Linux Update App" false \
+   $(if [[ $(which demon-updater.sh |wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Demon-Updater.sh" "$DAS_CAT_DEM" "Demon Linux Update App" false \
    \
    $(if [[ $(which kdenlive|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Kdenlive" "$DAS_CAT_MM" "Video editor program" false \
    $(if [[ $(which shotcut|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Shotcut" "$DAS_CAT_MM" "Video editor program" false \
