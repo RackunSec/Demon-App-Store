@@ -62,7 +62,7 @@ fi
 
 ### Grab a few dependencies and update our Debian repo cache/lists
 apt update 1>&2>/dev/null
-apt install -y xfce4-notifyd
+apt install -y xfce4-notifyd yad
 
 ### Update to the latest workflow app:
 if [ ! -d $APPDEV ]
