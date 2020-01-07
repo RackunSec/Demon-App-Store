@@ -543,13 +543,15 @@ installApp () { # All of the blocks of code to install each app individually:
         ### Copy, HTTP, Checksum required
         elif [ "$app" == "Tor-Browser" ]
           then
-            LOCALAREA="$DAS_APPCACHE/tor-browser-linux64-8.5.4_en-US.tar.xz"
-            URL='https://www.torproject.org/dist/torbrowser/8.5.4/tor-browser-linux64-8.5.4_en-US.tar.xz'
+            FILE=tor-browser-linux64-8.5.4_en-US.tar.xz
+            LOCALAREA="${DAS_APPCACHE}/${FILE}"
+            URL='https://demonlinux.com/download/packages/tor-browser-linux64-9.0.2_en-US.tar.xz'
+            CHECKSUM=255fa2ebbf72710085dfbfc68233be22
             rm -rf $LOCALAREA # just destroy it, the xz shit ruins it's integrity check.
-            downloadFile $URL $app $LOCALAREA
+            checksumCheck $LOCALAREA $CHECKSUM $URL $app
             progressBar $progressText
             cd $DAS_APPCACHE
-            xz -d tor-browser-linux64-8.5.4_en-US.tar.xz && tar vxf tor-browser-linux64-8.5.4_en-US.tar
+            tar vxfJ $FILE
             sed -ie 's/`" -eq 0/`" -ne 0/' tor-browser_en-US/Browser/start-tor-browser # whoopsey daisey!
             # We do the below in lieu of altering the .profile or .bashrc. This process will be used throughout this app:
             echo "cd /opt/tor-browser_en-US/Browser && ./start-tor-browser" > /usr/local/sbin/tor-browser # Create binary pointer for app
