@@ -127,6 +127,7 @@ checksumCheck () {
 
 ### Uninstall code blocks for EACH app.
 uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exists (even "apt remove $app") then run it.
+  echo "DEBUG: LOCAL_APPS \"$LOCAL_APPS\""
   app=$1
   app=$(echo $1 | cut -d \| -f 2) # FALSE|PTF|TrustedSec's Pentester's Framework|TRUE|
   progressText="Removing  $app ... "
@@ -332,6 +333,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
   else
     printf "[+] Recieved $app\n";
   fi
+  echo "DEBUG: DAS_NOTIFY_APP \"$DAS_NOTIFY_APP\" DAS_NOTIFY_ICON_RED: \"$DAS_NOTIFY_ICON_RED\""
   notify $DAS_NOTIFY_APP "$app has been uninstalled" $DAS_NOTIFY_ICON_RED
   killBar
 }
