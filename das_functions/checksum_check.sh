@@ -4,6 +4,7 @@
 # Checksum checker function. This will download files.
 # -------------------
 # Constants:
+echo "DEBUG: $1 $2 $3 $4"
 FILE=$1
 CHECKSUM=$2
 URL=$3
@@ -22,5 +23,5 @@ if [ -f $FILE ]
     fi
 else
   # I am calling the download_file script to do the download
-  ./download_file $URL $APP $LOCALAREA
+  ./das_functions/download_file.sh $URL $APP $LOCALAREA
 fi

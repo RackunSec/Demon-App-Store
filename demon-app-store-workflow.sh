@@ -298,6 +298,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
       rm -rf /opt/ghidra # remove local area
       rm -rf ${LOCAL_APPS}/ghidra.desktop # remove menu icon
       rm -rf /usr/local/sbin/ghidra9.sh # remove binary init
+      rm -rf /usr/local/sbin/ghidra9
   elif [[ "$app" =~ WiFiPhisher ]]
     then
       rm -rf /infosec/wifi/wifiphisher # remove the build directory
@@ -375,7 +376,8 @@ installApp () { # All of the blocks of code to install each app individually:
       && [ $(which $applowerdotsh|wc -l) -ne 1 ] \
       && [ $(which $applowerhyphendotsh | wc -l) -ne 1 ] \
       && [ $(which $applowerhyphen | wc -l) -ne 1 ] \
-      && [ $(which $applower|wc -l) -ne 1 ]
+      && [ $(which $applower|wc -l) -ne 1 ] \
+      && [ $(dkms status | grep -i $app | wc -l) -ne 1 ]
       ### We checked all combinations above for the $PATH object.
       then
         ### Spotify
@@ -1136,42 +1138,29 @@ installApp () { # All of the blocks of code to install each app individually:
         ### Git, no checksum required
         elif [[ "$app" =~ Demon-Update-Tool ]]
           then
-            LOCALAREA=/var/demon/updater/code/Demon-Update-Tool
-            rm -rf /var/demon/updater # this is okay, since we are "installing" the app.
-            mkdir -p /var/demon/updater/code
-            cd /var/demon/updater/code && git clone https://github.com/weaknetlabs/Demon-Update-Tool.git
-            cp ${LOCALAREA}/demon-updater.sh /usr/local/sbin/
-            cp ${LOCALAREA}/demon-updater-workflow.sh /usr/local/sbin/
-            chmod +x /usr/local/sbin/demon-updater* # make them executable
-            cp ${LOCALAREA}/demon-updater.desktop ${LOCAL_APPS} # copy the menu icon in
-            cp ${LOCALAREA}/images/updater.png /usr/share/demon/images/icons/ # copy in our new icon
-
+            progressBar " Installing $app ... "
+              ./installer_scripts/demon_updater_tool.sh
+            killBar
         ### Ghidra
         ### unzip, appimage, checksum required
-        elif [[ "$app" =~ Ghidra ]]
+      elif [[ "$app" =~ Ghidra9 ]]
           then
-            FILE=ghidra9.zip
-            LOCALAREA=$DAS_APPCACHE/$FILE
             CHECKSUM=c760ae7359b0fbdef750202d18a9b8aa
-            INSTALLAREA=/opt/ghidra
-            URL=${DL_PKG_URL}/$FILE
-            BINFILE=/usr/local/sbin/ghidra9.sh
-            checksumCheck $LOCALAREA $CHECKSUM $URL "Ghidra 9 (WNL Mirror)" # download Neo4J
-            progressBar "Installing $app ... "
-              cd $DAS_APPCACHE && unzip $FILE
-              mv ghidra_9.1-BETA_DEV $INSTALLAREA # mv locally
-              echo "#!/usr/bin/env bash" > $BINFILE
-              echo "cd /opt/ghidra && ./ghidraRun" >> $BINFILE
-              chmod +x $BINFILE
-              # copy the menu entry into /usr/share/applications:
-              cp $DAS_DESKTOP_CACHE/ghidra.desktop $LOCAL_APPS
+            DAS_INST_FILE=ghidra9.zip
+            LOCALAREA=$DAS_APPCACHE/$DAS_INST_FILE
+            URL=${DL_PKG_URL}/$DAS_INST_FILE
+            ./das_functions/checksum_check.sh $LOCALAREA $CHECKSUM $URL "Ghidra 9 (WNL Mirror)" # download Neo4J
+            progressBar " Installing $app ... "
+              ./installer_scripts/ghidra.sh
             killBar
 
         ### RTL8812AU
         ### Aircrack-NG GitHUB.com
         elif [[ "$app" =~ RTL8812AU ]]
           then
-            ./installer_scripts/awus1900-driver-dkms.sh
+            progressBar " Installing RTL8812AU Driver with DKMS ... "
+              ./installer_scripts/awus1900-driver-dkms.sh
+            killBar
 
         ### GitKraken
         ### Installer, HTTP, CHecksum required
@@ -1181,9 +1170,10 @@ installApp () { # All of the blocks of code to install each app individually:
             FILE=gitkraken-amd64.deb
             CHECKSUM=6ad71a6e177e4eda2c3252bee4fceaab
             LOCALAREA=$DAS_APPCACHE/$FILE
-            checksumCheck $LOCALAREA $CHECKSUM $URL $app
-            dpkg -i $LOCALAREA
-            apt -f install -y
+            ./das_functions/checksum_check $LOCALAREA $CHECKSUM $URL $app
+            progressBar " Installing GitKraken ... "
+              ./installer_scripts/gitkraken.sh $DAS_APPCACHE/$FILE
+            killBar
 
         ### IDKWTF I GOT LOL
         ### All done.
@@ -1230,7 +1220,7 @@ main () {
    \
    $(if [[ $(which Cutter|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Cutter" "$DAS_CAT_ENG" "Reverse engineering tool" false \
    $(if [[ $(which apktool|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "APKTool" "$DAS_CAT_ENG" "Reverse engineering Android APK tool" false \
-   $(if [[ $(which ghidra9.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Ghidra" "$DAS_CAT_ENG" "NSA's Reverse engineering Tool" false \
+   $(if [[ $(which ghidra9.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Ghidra9" "$DAS_CAT_ENG" "NSA's Reverse engineering Tool" false \
    \
    $(if [[ $(which cherrytree|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "CherryTree" "$DAS_CAT_NOT" "A hierarchical note taking application" false \
    $(if [[ $(which simplenote|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "SimpleNote" "$DAS_CAT_NOT" "The simplest way to keep notes" false \
