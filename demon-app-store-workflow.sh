@@ -1167,6 +1167,12 @@ installApp () { # All of the blocks of code to install each app individually:
               cp $DAS_DESKTOP_CACHE/ghidra.desktop $LOCAL_APPS
             killBar
 
+        ### RTL8812AU
+        ### Aircrack-NG GitHUB.com
+        elif [[ "$app" =~ RTL8812AU ]]
+          then
+            ./installer_scripts/awus1900-driver-dkms.sh
+
         ### GitKraken
         ### Installer, HTTP, CHecksum required
         elif [[ "$app" =~ GitKraken ]]
@@ -1219,6 +1225,8 @@ main () {
    $(if [[ $(which grafana|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Grafana" "$DAS_CAT_SYS" "Open platform for beautiful analytics and monitoring" false \
    $(if [[ $(which anydesk|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "AnyDesk" "$DAS_CAT_SYS" "Remote Desktop App" false \
    $(if [[ $(which terminus|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Terminus" "$DAS_CAT_SYS" "A Terminal for a Modern Age" false \
+   \
+   $(if [[ $(dkms status|grep -i rtl8812au|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "RTL8812AU" "$DAS_CAT_DVR" "Aircrack-NG DKMS Driver for AWUS1900" false \
    \
    $(if [[ $(which Cutter|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Cutter" "$DAS_CAT_ENG" "Reverse engineering tool" false \
    $(if [[ $(which apktool|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "APKTool" "$DAS_CAT_ENG" "Reverse engineering Android APK tool" false \
