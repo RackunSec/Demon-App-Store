@@ -29,3 +29,4 @@ DAS_NOTIFY_ICON_GRN=--icon=/usr/share/demon/images/icons/demon-store-icon-green.
 DAS_NOTIFY_ICON_RED=--icon=/usr/share/demon/images/icons/demon-store-icon-red.png
 DL_PKG_URL=https://demonlinux.com/download/packages
 DAS_DL_ICON=/usr/share/demon/images/icons/store-download.png
+SYS_LOCAL_APPS=/usr/share/applications

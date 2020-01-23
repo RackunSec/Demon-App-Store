@@ -11,6 +11,8 @@
 # Use iw dev <device> set type monitor instead of airmon-ng
 #
 ##### Demon App Store Variables:
+# Example of pulling variable from das_config:
+# $(cat $DAS_CONFIG|grep DAS_APPCACHE|sed -r 's/[^=]+=//')
 DAS_DL_URL=https://github.com/aircrack-ng/rtl8812au
 DAS_BUILD_DIR=rtl8812au
 DAS_BUILD_DEPS="dkms git"

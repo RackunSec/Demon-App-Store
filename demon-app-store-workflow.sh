@@ -1125,13 +1125,7 @@ installApp () { # All of the blocks of code to install each app individually:
         elif [[ "$app" =~ WiFiPhisher ]]
           then
             progressBar "Installing WiFiPhisher (GitHUB) ..."
-              cd /infosec/wifi && git clone https://github.com/wifiphisher/wifiphisher.git
-              pip install pyric
-              apt install dnsmasq
-              cd /infosec/wifi/wifiphisher && python setup.py build
-              cd /infosec/wifi/wifiphisher && python setup.py install
-              # The icon was copied already at init, we need to copy the desktop file into usr/share/applications/
-              cp $DAS_DESKTOP_CACHE/wifiphisher.desktop $LOCAL_APPS
+              ./installer_scripts/wifiphisher.sh
             killBar
 
         ### Demon Updater Tool
