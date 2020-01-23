@@ -1011,18 +1011,8 @@ installApp () { # All of the blocks of code to install each app individually:
         ### Git, pip, no checksum required
         elif [[ "$app" =~ Bluefruit ]]
           then
-            GITURL=https://github.com/adafruit/Adafruit_BLESniffer_Python.git
-            LOCALAREA=/infosec/
-            BINFILE=/usr/local/sbin/bluefruit_sniffer.sh
             progressBar "Installing Adafruit's Bluetooth (Bluefruit) Sniffer ... "
-              mkdir /infosec/bluetooth 2>/dev/null
-              cd /infosec/bluetooth
-              git clone $GITURL Bluefruit
-              pip install pyserial
-              echo "#!/usr/bin/env bash" > $BINFILE
-              echo "cd /infosec/bluetooth/Bluefruit && python sniffer.py -h" >> $BINFILE
-              chmod +x $BINFILE
-              cp $DAS_DESKTOP_CACHE/bluefruit.desktop ${LOCAL_APPS} # copy in the desktop / menu icon
+              ./installer_scripts/bluefruit.sh
             killBar
 
         ### BloodHound, Dependency Hell, removed
