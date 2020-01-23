@@ -1029,65 +1029,16 @@ installApp () { # All of the blocks of code to install each app individually:
         ### Git, no checksum
         elif [[ "$app" =~ BloodHound ]]
           then
-            GITURL=https://github.com/adaptivethreat/Bloodhound
-            NEOCHECKSUM=4f625988b580eacaf7daef1cb8c98622
-            NEO4JURL=https://demonlinux.com/download/packages/neo4j-desktop-offline-1.2.1-x86_64.AppImage
-            NEOFILE=neo4j-desktop-offline-1.2.1-x86_64.AppImage
-            LOCALAREA=${DAS_APPCACHE}/$NEOFILE
-            checksumCheck $LOCALAREA $NEOCHECKSUM $NEO4JURL "Neo4J (WNL Mirror)" # download Neo4J
-            progressBar " Installing Neo4J ... "
-              chmod +x $LOCALAREA
-              cp $LOCALAREA /usr/local/sbin/neo4j-start # copy the binary into the $PATH, keep original for checksum/bandwidth
-              apt install --no-install-recommends gnome-keyring -y # needed for web interface of Neo4J
-            killBar
-              BHFILE=BloodHound-linux-x64.zip
-              URL=https://github.com/BloodHoundAD/BloodHound/releases/download/2.2.1/BloodHound-linux-x64.zip
-              LOCALAREA=${DAS_APPCACHE}/$BHFILE
-              BHCHECKSUM=c0c25df56b7eaaefd8ac2e9214c5fbe6
-              BINFILE=/usr/local/sbin/BloodHound.sh
-              checksumCheck $LOCALAREA $BHCHECKSUM $URL "$app Release (GitHUB)" # git the BloodHound Release
-            progressBar " Installing BloodHound ... "
-              cd /opt/ && git clone $GITURL BloodHoundFiles # git the BloodHound Files
-              cd $DAS_APPCACHE && unzip $BHFILE # unzip the BloodHound "release"
-              mv BloodHound-linux-x64 /opt/
-              echo "#!/usr/bin/env bash" > $BINFILE
-              echo "cd /opt/BloodHound-linux-x64 && ./BloodHound" >> $BINFILE
-              chmod +x $BINFILE
+            progressBar " Installing Neo4J and Bloodhound ... "
+              ./installer_scripts/bloodhound.sh
             killBar
 
         ### WiFi-Pumpkin
         ### Git, no checksum, compiled with depends
         elif [[ "$app" == "WiFi-Pumpkin" ]]
           then
-            URL=https://github.com/P0cL4bs/WiFi-Pumpkin.git
             progressBar "Installing WiFi-Pumpkin, this may take a while."
-              # Depends from APT:
-              apt install -y pkg-config libnl-3-dev libnl-genl-3-dev libnfnetlink-dev libnetfilter-queue-dev isc-dhcp-server
-              # Git the repo:
-              cd /opt && git clone $URL
-              cd WiFi-Pumpkin
-              # Depends from Python:
-              pip install -r requirements.txt
-              # Annnd, we also need to do this:
-              pip install --upgrade pyasn1-modules
-              # more bad practices ...
-              sed -ir 's/\tclear$//' installer_wifimode.sh
-              # This script ... seriously.
-              sed -ir 's/^INSTALL_DIR=.*/INSTALL_DIR=\/opt\/WiFi-Pumpkin\/plugins\/bin\/hostapd-mana/' installer_wifimode.sh
-              sed -ir 's/^CURRENT_DIR=.*/CURRENT_DIR=\/opt\/WiFi-Pumpkin\/plugins\/bin\/hostapd-mana/' installer_wifimode.sh
-              # now, we can run it safely ...
-              ./installer_wifimode.sh # run the "installer" script
-              sed -ir 's/.usr.share./\/opt\//' wifi-pumpkin # remove the share location for something more sane
-              # update the menu icon to fit properly into Demon Menu:
-              echo "Categories=wifihacking" >> wifi-pumpkin.desktop
-              # update the icon: (TODO recommend to the WF-P dev to use standard locations at some point)
-              sed -ir 's/.usr.share.WiFi-Pumpkin.icons.icon.png/\/opt\/WiFi-Pumpkin\/icons\/icon.png/' wifi-pumpkin.desktop
-              # allow me ...
-              sed -ir 's/gksudo //' wifi-pumpkin.desktop # c'mon, man.
-              cp /opt/WiFi-Pumpkin/plugins/bin/hostapd-mana/hostapd /usr/local/sbin/
-              cp /opt/WiFi-Pumpkin/plugins/bin/hostapd-mana/hostapd_cli /usr/local/sbin/
-              cp wifi-pumpkin.desktop $LOCAL_APPS # copy the menu icon into local share
-              cp wifi-pumpkin /usr/local/sbin/ # copy the script that runs the app
+              ./installer_scripts/wifi_pumpkin.sh
             killBar
 
         ### EyeWitness
@@ -1170,6 +1121,7 @@ main () {
   IFS=$'\n'
   readarray selected < <(yad --width=$DAS_WIDTH --height=$DAS_HEIGHT --title=$DAS_APPNAME --button=Help:"bash -c help" --button="Clean Cache:bash -c cleanCache" --button="Exit:1" --button="Check Out:0" --list --checklist --column="Install" --column="App Name" --column=Category --column=Description --column=Uninstall:CHK --image=$DAS_WINDOWLONGIMAGE --window-icon=$DAS_WINDOWICON \
     --center \
+    $(if [[ $(which BloodHound.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "BloodHound" "$DAS_CAT_PEN" "BloodHound Graphing Tool" false \
     $(if [[ $(which autosploit|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "AutoSploit" "$DAS_CAT_PEN" "Automated Mass Exploit Tool" false \
     $(if [[ $(which wifi-pumpkin|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "WiFi-Pumpkin" "$DAS_CAT_PEN" "Rogue AP Framework" false \
     $(if [[ $(which bluefruit_sniffer.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Bluefruit" "$DAS_CAT_PEN" "Adafruit's BLE Sniffer" false \
