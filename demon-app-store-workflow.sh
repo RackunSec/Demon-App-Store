@@ -7,36 +7,37 @@ source ~/.bashrc # Testing this as there seems to be an issue with the $PATH
 
 # I chose "DAS_" as a prefix for exportation purposes, "(D)emon (A)pp (S)tore"
 # This way I don't accidentally overwrite anything else (hoopefully) in the environment.
-export DAS_SPANFONT="<span font='Ubuntu Condensed 11'>"
-export DAS_WINDOWICON="/usr/share/demon/images/icons/demon-64-white.png"
-export DAS_WINDOWIMAGE=/usr/share/demon/images/icons/demon-store-icon-64-padded.png
-export DAS_WINDOWLONGIMAGE="/usr/share/demon/images/icons/demon-store-icon-64-padded-bin.png"
-export DAS_APPNAME="Demon App Store"
-export DAS_APPTEXT="\n\nWelcome to the Demon App Store - where everything's free.\n"
-export DAS_APPCACHE=/var/demon/store/app-cache
-export DAS_DESKTOP_CACHE=/usr/share/demon/desktop/
-export DAS_WIDTH=840
-export DAS_HEIGHT=512
-# These are for application cetegories, see final YAD call at bottom of file
-export DAS_CAT_PEN="Infosec"
-export DAS_CAT_FOR="Digital Forensics"
-export DAS_CAT_SYS="System"
-export DAS_CAT_ENG="Engineering"
-export DAS_CAT_NOT="Note Taking"
-export DAS_CAT_DEV="Developer"
-export DAS_CAT_WEB="Web"
-export DAS_CAT_COM="Communication"
-export DAS_CAT_MM="Multimedia"
-export DAS_CAT_NET="Networking"
-export DAS_CAT_DEM="Demon Linux"
-export DAS_NOTIFY_APP="Demon App Store Notification"
-export DAS_NOTIFY_ICON="--icon=/usr/share/demon/images/icons/demon-store-icon.png"
-export DAS_NOTIFY_ICON_GRN="--icon=/usr/share/demon/images/icons/demon-store-icon-green.png"
-export DAS_NOTIFY_ICON_RED="--icon=/usr/share/demon/images/icons/demon-store-icon-red.png"
-export DL_PKG_URL="https://demonlinux.com/download/packages"
-export DAS_DL_ICON="/usr/share/demon/images/icons/store-download.png"
+DAS_CONFIG=./das_config.txt
+export DAS_SPANFONT=$(cat $DAS_CONFIG|grep DAS_SPANFONT|sed 's/.*=//')
+export DAS_WINDOWICON=$(cat $DAS_CONFIG|grep DAS_WINDOWICON|sed 's/.*=//')
+export DAS_WINDOWIMAGE=$(cat $DAS_CONFIG|grep DAS_WINDOWIMAGE|sed 's/.*=//')
+export DAS_WINDOWLONGIMAGE=$(cat $DAS_CONFIG|grep DAS_WINDOWLONGIMAGE|sed 's/.*=//')
+export DAS_APPNAME=$(cat $DAS_CONFIG|grep DAS_APPNAME|sed 's/.*=//')
+export DAS_APPTEXT=$(cat $DAS_CONFIG|grep DAS_APPTEXT|sed 's/.*=//')
+export DAS_APPCACHE=$(cat $DAS_CONFIG|grep DAS_APPCACHE|sed 's/.*=//')
+export DAS_DESKTOP_CACHE=$(cat $DAS_CONFIG|grep DAS_DESKTOP_CACHE|sed 's/.*=//')
+export DAS_WIDTH=$(cat $DAS_CONFIG|grep DAS_WIDTH|sed 's/.*=//')
+export DAS_HEIGHT=$(cat $DAS_CONFIG|grep DAS_HEIGHT|sed 's/.*=//')
+export DAS_CAT_PEN=$(cat $DAS_CONFIG|grep DAS_CAT_PEN|sed 's/.*=//')
+export DAS_CAT_FOR=$(cat $DAS_CONFIG|grep DAS_CAT_FOR|sed 's/.*=//')
+export DAS_CAT_SYS=$(cat $DAS_CONFIG|grep DAS_CAT_SYS|sed 's/.*=//')
+export DAS_CAT_DVR=$(cat $DAS_CONFIG|grep DAS_CAT_DVR|sed 's/.*=//')
+export DAS_CAT_ENG=$(cat $DAS_CONFIG|grep DAS_CAT_ENG|sed 's/.*=//')
+export DAS_CAT_NOT=$(cat $DAS_CONFIG|grep DAS_CAT_NOT|sed 's/.*=//')
+export DAS_CAT_DEV=$(cat $DAS_CONFIG|grep DAS_CAT_DEV|sed 's/.*=//')
+export DAS_CAT_WEB=$(cat $DAS_CONFIG|grep DAS_CAT_WEB|sed 's/.*=//')
+export DAS_CAT_COM=$(cat $DAS_CONFIG|grep DAS_CAT_COM|sed 's/.*=//')
+export DAS_CAT_MM=$(cat $DAS_CONFIG|grep DAS_CAT_MM|sed 's/.*=//')
+export DAS_CAT_NET=$(cat $DAS_CONFIG|grep DAS_CAT_NET|sed 's/.*=//')
+export DAS_CAT_DEM=$(cat $DAS_CONFIG|grep DAS_CAT_DEM|sed 's/.*=//')
+export DAS_NOTIFY_APP=$(cat $DAS_CONFIG|grep DAS_NOTIFY_APP|sed 's/.*=//')
+export DAS_NOTIFY_ICON=$(cat $DAS_CONFIG|grep DAS_NOTIFY_ICON|sed 's/.*=//')
+export DAS_NOTIFY_ICON_GRN=$(cat $DAS_CONFIG|grep DAS_NOTIFY_ICON_GRN|sed 's/.*=//')
+export DAS_NOTIFY_ICON_RED=$(cat $DAS_CONFIG|grep DAS_NOTIFY_ICON_RED|sed 's/.*=//')
+export DL_PKG_URL=$(cat $DAS_CONFIG|grep DL_PKG_URL|sed 's/.*=//')
+export DAS_DL_ICON=$(cat $DAS_CONFIG|grep DAS_DL_ICON|sed 's/.*=//')
 
-export DAS_DEBUG="False" # chnage to "True" to see debug info during app installation / checking ...
+export DAS_DEBUG="False" # change to "True" to see debug info during app installation / checking ...
 
 export LOCAL_APPS=/usr/share/applications/
 
@@ -1176,7 +1177,7 @@ installApp () { # All of the blocks of code to install each app individually:
             dpkg -i $LOCALAREA
             apt -f install -y
 
-        ### IDKWTF I GOT
+        ### IDKWTF I GOT LOL
         ### All done.
         else
             printf "[!] Unknown app was requested! $app\n\n"
@@ -1188,17 +1189,8 @@ installApp () { # All of the blocks of code to install each app individually:
 }
 
 main () {
-  #     $(if [[ $(which BloodHound.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "BloodHound" "$DAS_CAT_PEN" "Enumerating Relationships in AD Environments" false \
-  # BloodHound Dependency Hell
- # Update Me:
-  #updateMe # This will pull the latest version each time. # comment out during development
-  # This may seem crazy, but it's for the UI/UX sake:
   IFS=$'\n'
-  readarray selected < <(yad --width=$DAS_WIDTH --height=$DAS_HEIGHT --title=$DAS_APPNAME\
-    --button=Help:"bash -c help" --button="Clean Cache:bash -c cleanCache" --button="Exit:1" --button="Check Out:0" \
-    --list --checklist --column="Install" --column="App Name" --column=Category --column=Description --column=Uninstall:CHK\
-    --image=$DAS_WINDOWLONGIMAGE \
-    --window-icon=$DAS_WINDOWICON \
+  readarray selected < <(yad --width=$DAS_WIDTH --height=$DAS_HEIGHT --title=$DAS_APPNAME --button=Help:"bash -c help" --button="Clean Cache:bash -c cleanCache" --button="Exit:1" --button="Check Out:0" --list --checklist --column="Install" --column="App Name" --column=Category --column=Description --column=Uninstall:CHK --image=$DAS_WINDOWLONGIMAGE --window-icon=$DAS_WINDOWICON \
     --center \
     $(if [[ $(which autosploit|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "AutoSploit" "$DAS_CAT_PEN" "Automated Mass Exploit Tool" false \
     $(if [[ $(which wifi-pumpkin|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "WiFi-Pumpkin" "$DAS_CAT_PEN" "Rogue AP Framework" false \

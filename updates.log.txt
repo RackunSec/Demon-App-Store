@@ -1,3 +1,9 @@
+01.23.2020
+-----------
+Exported all static variables to ./das_config.txt and I use $(cat|gre|sed) to extract them
+Exported my first "module" to ./installer_scripts
+Exported a few functions as scripts into ./das_functions
+
 08.29.2019
 -----------
 * w3af (w3af.org) was removed from the Demon App Store. 
