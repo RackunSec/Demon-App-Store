@@ -898,22 +898,8 @@ installApp () { # All of the blocks of code to install each app individually:
         ### Copy, HTTP, Checksum Required
         elif [[ "$app" =~ SonarQube ]]
           then
-            FILE=sonarqube-7.9.1.zip
-            URL=https://binaries.sonarsource.com/Distribution/sonarqube/$FILE
-            LOCALAREA=$DAS_APPCACHE/$FILE
-            CHECKSUM=0
-            BINFILE=/usr/local/sbin/sonarqube
-            INSTALLAREA=/opt/
-            checksumCheck $LOCALAREA $CHECKSUM $URL $app
             progressBar " Installing SonarQube (SonarSource.com) ... "
-              cd $DAS_APPCACHE && unzip $FILE
-              mv sonarqube-7.9.1 /opt/
-              chmod a+rxw -R /opt/sonarqube-7.9.1
-              echo "#!/usr/bin/env bash" > $BINFILE
-              echo 'su postgres -c "/opt/sonarqube-7.9.1/bin/linux-x86-64/sonar.sh console" &' >> $BINFILE
-              echo "sleep 10" >> $BINFILE # this is required because of the overhead of the service ...
-              echo 'firefox-esr http://127.0.0.1:9000' >> $BINFILE
-              chmod +x $BINFILE
+              ./installer_scripts/sonarqube.sh
             killBar
 
         ### MassDNS
@@ -932,18 +918,8 @@ installApp () { # All of the blocks of code to install each app individually:
         ### HTTP, Checksum Required, Installer
         elif [[ "$app" =~ "Nessus" ]]
           then
-            URL=https://demonlinux.com/download/packages/Nessus-8.6.0-debian6_amd64.deb
-            FILE=Nessus-8.6.0-debian6_amd64.deb
-            LOCALAREA=$DAS_APPCACHE/$FILE
-            CHECKSUM=d76a6b3d793e424737746c810991499a
-            BINFILE=/usr/local/sbin/nessus
-            checksumCheck $LOCALAREA $CHECKSUM $URL $app # download the file
             progressBar " Installing Nessus ...   "
-              dpkg -i $LOCALAREA
-              apt -f install -y
-              echo '#!/usr/bin/env bash' > $BINFILE
-              echo "/etc/init.d/nessusd start & sleep 5 && firefox https://127.0.0.1:8834" >> $BINFILE
-              chmod +x $BINFILE # make it executable
+              ./installer_scripts/nessus.sh
             killBar
 
         ### Terminus
@@ -953,7 +929,6 @@ installApp () { # All of the blocks of code to install each app individually:
               progressBar " Installing Terminus (GitHUB) ... "
                 ./installer_scripts/terminus.sh
               killBar
-
 
         ### IMSI-Catcher
         ### GIT with depends

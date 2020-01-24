@@ -5,26 +5,30 @@
 # Installer script, should be called from the workflow app
 # INSTALL:
 # --------------------
-# Terminus
+# Nessus
 # --------------------
 # NOTES:
-#
+#   You'll have to accept the license
 #
 export DAS_CONFIG=./das_config.txt # This is REQUIRED
 ##### ##### ##### ##### #####
 export DAS_DESKTOP_CACHE=$(cat $DAS_CONFIG|grep DAS_DESKTOP_CACHE | sed -r 's/[^=]+=//')
 export DAS_APPCACHE=$(cat $DAS_CONFIG|grep DAS_APPCACHE | sed -r 's/[^=]+=//')
 export SYS_LOCAL_APPS=$(cat $DAS_CONFIG|grep SYS_LOCAL_APPS | sed -r 's/[^=]+=//')
-export GIT_URL=https://github.com/wiire/pixiewps/archive/master.zip
-export DAS_APP_NAME=Terminus
+export DAS_APP_NAME=Nessus
 ##### Demon App Store Variables:
 # Example of pulling variable from das_config:
 # $(cat $DAS_CONFIG|grep DAS_APPCACHE|sed -r 's/[^=]+=//')
-GIT_URL=https://github.com/Eugeny/terminus/releases/download/v1.0.91/terminus-1.0.91-linux.deb
-DAS_CHECKSUM=97d337c59e7d03b474b03e83348898d0
-DAS_FILE=terminus-1.0.91-linux.deb
-LOCALAREA=$DAS_APPCACHE/$DAS_FILE
-./das_functions/checksum_check.sh $LOCALAREA $DAS_CHECKSUM $GIT_URL $DAS_APP_NAME # Download the file ...
+
+export GIT_URL=https://demonlinux.com/download/packages/Nessus-8.6.0-debian6_amd64.deb
+export FILE=Nessus-8.6.0-debian6_amd64.deb
+export LOCALAREA=$DAS_APPCACHE/$FILE
+export DAS_CHECKSUM=d76a6b3d793e424737746c810991499a
+export DAS_BINFILE=/usr/local/sbin/nessus
+./das_functions/checksum_check.sh $LOCALAREA $DAS_CHECKSUM $GIT_URL $DAS_APP_NAME # download the file
+
 dpkg -i $LOCALAREA
-apt -f install -y # clean up after .deb
-sed -ri 's/%U/%U --no-sandbox/g' /usr/share/applications/terminus.desktop # whoopsey daisey!!
+apt -f install -y
+echo '#!/usr/bin/env bash' > $DAS_BINFILE
+echo "/etc/init.d/nessusd start & sleep 5 && firefox https://127.0.0.1:8834" >> $DAS_BINFILE
+chmod +x $DAS_BINFILE # make it executable
