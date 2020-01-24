@@ -950,16 +950,8 @@ installApp () { # All of the blocks of code to install each app individually:
         ### Git Apt Installer, Checksum required
         elif [[ "$app" =~ "Terminus" ]]
             then
-              URL=https://github.com/Eugeny/terminus/releases/download/v1.0.91/terminus-1.0.91-linux.deb
-              CHECKSUM=97d337c59e7d03b474b03e83348898d0
-              FILE=terminus-1.0.91-linux.deb
-              LOCALAREA=$DAS_APPCACHE/$FILE
-              checksumCheck $LOCALAREA $CHECKSUM $URL $app # Download the file ...
               progressBar " Installing Terminus (GitHUB) ... "
-                printf "[i] \$LOCALAREA = $LOCALAREA\n"
-                dpkg -i $LOCALAREA
-                apt -f install -y # clean up after .deb
-                sed -ri 's/%U/%U --no-sandbox/g' /usr/share/applications/terminus.desktop # whoopsey daisey!!
+                ./installer_scripts/terminus.sh
               killBar
 
 
@@ -970,7 +962,6 @@ installApp () { # All of the blocks of code to install each app individually:
               progressBar " Installing IMSI-Catcher (GitHUB) ...   "
                 ./installer_scripts/imsi_catcher.sh
               killBar
-
 
         ### PixieWPS
         ### GIT, Compile, Copy
