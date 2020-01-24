@@ -310,6 +310,9 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
       rm -rf /opt/BloodHound*
       rm -rf /usr/local/sbin/BloodHound.sh # remove our script
       rm -rf /usr/local/sbin/neo4j-start # remove the Neo4J appimage
+  elif [[ "$app" =~ Tilix ]]
+    then
+      apt remove tilix tilix-common -y
   elif [[ "$app" =~ GitKraken ]]
     then
       apt -y remove gitkraken # don't forget about meeeeeeeeeeeeeeeee!!!!!!!!!!!!!!!
@@ -845,6 +848,14 @@ installApp () { # All of the blocks of code to install each app individually:
               chmod +x $BINFILE
               cp $DAS_DESKTOP_CACHE/grafana.desktop $LOCAL_APPS # copy the desktop icon over.
 
+        ### Tilix Terminal Emulator
+        ### APT
+        elif [ "$app" == "Tilix" ]
+          then
+            progressBar " Installing $app ... "
+              ./installer_scripts/tilix.sh
+            killBar
+
         ### AnyDesk
         ### Installer, No apt, HTTP, Checksum Required
         elif [ "$app" == "AnyDesk" ]
@@ -1076,6 +1087,7 @@ main () {
    $(if [[ $(which grafana|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Grafana" "$DAS_CAT_SYS" "Open platform for beautiful analytics and monitoring" false \
    $(if [[ $(which anydesk|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "AnyDesk" "$DAS_CAT_SYS" "Remote Desktop App" false \
    $(if [[ $(which terminus|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Terminus" "$DAS_CAT_SYS" "A Terminal for a Modern Age" false \
+   $(if [[ $(which tilix|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Tilix" "$DAS_CAT_SYS" "A Tiling Terminal Emulator" false \
    \
    $(if [[ $(dkms status|grep -i rtl8812au|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "RTL8812AU" "$DAS_CAT_DVR" "Aircrack-NG DKMS Driver for AWUS1900" false \
    \
