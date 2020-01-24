@@ -833,20 +833,9 @@ installApp () { # All of the blocks of code to install each app individually:
         ### Installer, No apt, HTTP, Checksum Required
         elif [ "$app" == "Grafana" ]
             then
-              FILE=grafana_6.3.3_amd64.deb
-              LOCALAREA=$DAS_APPCACHE/$FILE
-              CHECKSUM=bb2f244c968b9bfca9b6c5763e9df698
-              BINFILE=/usr/local/sbin/grafana
-              URL=https://dl.grafana.com/oss/release/grafana_6.3.3_amd64.deb
-              checksumCheck $LOCALAREA $CHECKSUM $URL $app
-              progressBar $progressText
-              dpkg -i $LOCALAREA
-              apt -f install -y
-              echo "#!/bin/bash" > $BINFILE
-              echo "service grafana-server start" >> $BINFILE
-              echo "firefox http://127.0.0.1:3000" >> $BINFILE
-              chmod +x $BINFILE
-              cp $DAS_DESKTOP_CACHE/grafana.desktop $LOCAL_APPS # copy the desktop icon over.
+              progressBar " Installing $app ... "
+                ./installer_scripts/graphana.sh
+              killBar
 
         ### Tilix Terminal Emulator
         ### APT
