@@ -4,7 +4,6 @@
 # Checksum checker function. This will download files.
 # -------------------
 # Constants:
-echo "DEBUG: $1 $2 $3 $4"
 FILE=$1
 CHECKSUM=$2
 URL=$3
@@ -17,7 +16,7 @@ if [ -f $FILE ]
       then # failed, re-download
         rm -rf $FILE # remove borked version
         printf "[i] $APP Failed checksum check ($CHECKSUM). Re-downloading file: $URL \n"
-        downloadFile $URL $APP $LOCALAREA # download
+        ./das_functions/download_file.sh $URL $APP $LOCALAREA # download
     else
       printf "[+] Checksum ($CHECKSUM) verified, [ OK ]\n"
     fi

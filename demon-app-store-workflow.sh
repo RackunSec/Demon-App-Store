@@ -991,20 +991,8 @@ installApp () { # All of the blocks of code to install each app individually:
         ### GIT, Compile, Copy
         elif [[ "$app" =~ PixieWPS ]]
           then
-            URL=https://github.com/wiire/pixiewps/archive/master.zip
-            FILE=master.zip
-            LOCALAREA=/$DAS_APPCACHE/$FILE # /var/demon/.../master.zip
-            CHECKSUM=75453b8646f28873de05c083a60b6a69 # for master.zip ($FILE)
-            INSTALLAREA=/infosec/wifi/
-            INSTALLDIR=pixiewps-master
-            checksumCheck $LOCALAREA $CHECKSUM $URL $app # download the file
             progressBar " Installing PixieWPS (GitHUB) ... " # let em know you're compiling.
-              cp $LOCALAREA $INSTALLAREA
-              cd $INSTALLAREA && unzip $FILE && rm $FILE
-              apt -y install build-essential # install dependencies
-              cd ${INSTALLAREA}/${INSTALLDIR} && make && cp pixiewps /usr/local/sbin # copy the executable into $PATH
-              cp $DAS_DESKTOP_CACHE/pixiewps.desktop /usr/share/applications # copy menu icon/entry file
-              cd && rm -rf ${INSTALLAREA}/${INSTALLDIR} # remove /infosec/wifi/pixiewps-master
+              ./installer_scripts/pixie_wps.sh
             killBar
 
         ### BlueFruit Sniffing Software (Adafruit)
