@@ -967,25 +967,10 @@ installApp () { # All of the blocks of code to install each app individually:
         ### GIT with depends
         elif [[ "$app" =~ "IMSI-Catcher" ]]
             then
-              URL=https://github.com/Oros42/IMSI-catcher.git
-              BINFILE=/usr/local/sbin/imsi-catcher
               progressBar " Installing IMSI-Catcher (GitHUB) ...   "
-                if [ ! -d /infosec/rf ]
-                  then
-                    mkdir -p /infosec/rf
-                fi
-                if [ ! -d /infosec/rf/IMSI-catcher ] # /infosec/rf/ should be tehre by now
-                  then
-                    cd /infosec/rf && git clone $URL
-                else
-                    cd /infosec/rf/IMSI-catcher && git pull
-                fi
-                apt -y install python-numpy python-scipy python-scapy gr-gsm
-                cp $DAS_DESKTOP_CACHE/imsi-catcher.desktop $LOCAL_APPS
-                echo '#!/usr/bin/env bash' > $BINFILE
-                echo "cd /infosec/rf/IMSI-catcher && ls --color=auto " >> $BINFILE
-                chmod +x $BINFILE # make it executable
+                ./installer_scripts/imsi_catcher.sh
               killBar
+
 
         ### PixieWPS
         ### GIT, Compile, Copy
