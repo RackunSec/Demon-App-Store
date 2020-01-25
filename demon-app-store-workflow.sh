@@ -149,6 +149,10 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
     then
       rm -rf /infosec/ptf
       rm /usr/local/bin/ptf
+  elif [[ "$app" =~ Bluez ]]
+    then
+      # we call the uninstaller (new feature)
+      ./installer_scripts/bluez.sh uninstall
   elif [[ "$app" =~ Demon-Update-Tool ]]
     then
       rm -rf /usr/local/sbin/demon-update* # remove the $PATH object
@@ -837,6 +841,14 @@ installApp () { # All of the blocks of code to install each app individually:
                 ./installer_scripts/graphana.sh
               killBar
 
+        ### Bluez Blutooth Stack
+        ### Checksum required, build, apt involved for deps
+        elif [[ "$app" == "Bluez" ]]
+          then
+            progressBar "Installing $app ... "
+              ./installer_scripts/bluez.sh
+            killBar
+
         ### Tilix Terminal Emulator
         ### APT
         elif [ "$app" == "Tilix" ]
@@ -1079,6 +1091,7 @@ main () {
    $(if [[ $(which tilix|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Tilix" "$DAS_CAT_SYS" "A Tiling Terminal Emulator" false \
    \
    $(if [[ $(dkms status|grep -i rtl8812au|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "RTL8812AU" "$DAS_CAT_DVR" "Aircrack-NG DKMS Driver for AWUS1900" false \
+   $(if [[ $(which bluetoothctl|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Bluez" "$DAS_CAT_DVR" "Default Bluetooth Stack Tools" false \
    \
    $(if [[ $(which Cutter|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Cutter" "$DAS_CAT_ENG" "Reverse engineering tool" false \
    $(if [[ $(which apktool|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "APKTool" "$DAS_CAT_ENG" "Reverse engineering Android APK tool" false \
