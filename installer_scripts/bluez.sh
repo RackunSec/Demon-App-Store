@@ -37,6 +37,7 @@ cd $DAS_DIR
 if [[ "$1" == "uninstall" ]]
   then
     apt remove -y $DAS_BUILD_DEPS
+    rm -rf /usr/local/bin/bluetoothctl # because of hciconfig
     ./configure $DAS_CONFIG_OPTS
     make uninstall
   else
