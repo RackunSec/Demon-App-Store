@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 ## Demon Linux App Store - ^vv^
-## 2019 WeakNet Labs
+## 2020 WeakNet Labs
 ## Douglas Berdeaux
 
 source ~/.bashrc # Testing this as there seems to be an issue with the $PATH
@@ -9,7 +9,7 @@ source ~/.bashrc # Testing this as there seems to be an issue with the $PATH
 # This way I don't accidentally overwrite anything else (hoopefully) in the environment.
 export DAS_LOCAL=/var/demon/store/code/Demon-App-Store/
 export DAS_CONFIG=${DAS_LOCAL}das_config.txt
-
+export DAS_INST_SCRIPTS_DIR=$(cat $DAS_CONFIG|grep DAS_INST_SCRIPTS_DIR|sed -r 's/[^=]+=//')
 export DAS_SPANFONT=$(cat $DAS_CONFIG|grep DAS_SPANFONT|sed -r 's/[^=]+=//')
 export DAS_WINDOWICON=$(cat $DAS_CONFIG|grep DAS_WINDOWICON|sed -r 's/[^=]+=//')
 export DAS_WINDOWIMAGE=$(cat $DAS_CONFIG|grep DAS_WINDOWIMAGE|sed -r 's/[^=]+=//')
@@ -154,7 +154,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
   elif [[ "$app" =~ Bluez ]]
     then
       # we call the uninstaller (new feature)
-      ./installer_scripts/bluez.sh uninstall
+      $DAS_INST_SCRIPTS_DIR/bluez.sh uninstall
   elif [[ "$app" =~ Demon-Update-Tool ]]
     then
       rm -rf /usr/local/sbin/demon-update* # remove the $PATH object
@@ -840,7 +840,7 @@ installApp () { # All of the blocks of code to install each app individually:
         elif [ "$app" == "Grafana" ]
             then
               progressBar " Installing $app ... "
-                ./installer_scripts/graphana.sh
+                $DAS_INST_SCRIPTS_DIR/graphana.sh
               killBar
 
         ### Bluez Blutooth Stack
@@ -848,7 +848,7 @@ installApp () { # All of the blocks of code to install each app individually:
         elif [[ "$app" == "Bluez" ]]
           then
             progressBar "Installing $app ... "
-              ./installer_scripts/bluez.sh
+              $DAS_INST_SCRIPTS_DIR/bluez.sh
             killBar
 
         ### Tilix Terminal Emulator
@@ -856,7 +856,7 @@ installApp () { # All of the blocks of code to install each app individually:
         elif [ "$app" == "Tilix" ]
           then
             progressBar " Installing $app ... "
-              ./installer_scripts/tilix.sh
+              $DAS_INST_SCRIPTS_DIR/tilix.sh
             killBar
 
         ### AnyDesk
@@ -913,7 +913,7 @@ installApp () { # All of the blocks of code to install each app individually:
         elif [[ "$app" =~ SonarQube ]]
           then
             progressBar " Installing SonarQube (SonarSource.com) ... "
-              ./installer_scripts/sonarqube.sh
+              $DAS_INST_SCRIPTS_DIR/sonarqube.sh
             killBar
 
         ### MassDNS
@@ -933,7 +933,7 @@ installApp () { # All of the blocks of code to install each app individually:
         elif [[ "$app" =~ "Nessus" ]]
           then
             progressBar " Installing Nessus ...   "
-              ./installer_scripts/nessus.sh
+              $DAS_INST_SCRIPTS_DIR/nessus.sh
             killBar
 
         ### Terminus
@@ -941,7 +941,7 @@ installApp () { # All of the blocks of code to install each app individually:
         elif [[ "$app" =~ "Terminus" ]]
             then
               progressBar " Installing Terminus (GitHUB) ... "
-                ./installer_scripts/terminus.sh
+                $DAS_INST_SCRIPTS_DIR/terminus.sh
               killBar
 
         ### IMSI-Catcher
@@ -949,7 +949,7 @@ installApp () { # All of the blocks of code to install each app individually:
         elif [[ "$app" =~ "IMSI-Catcher" ]]
             then
               progressBar " Installing IMSI-Catcher (GitHUB) ...   "
-                ./installer_scripts/imsi_catcher.sh
+                $DAS_INST_SCRIPTS_DIR/imsi_catcher.sh
               killBar
 
         ### PixieWPS
@@ -957,7 +957,7 @@ installApp () { # All of the blocks of code to install each app individually:
         elif [[ "$app" =~ PixieWPS ]]
           then
             progressBar " Installing PixieWPS (GitHUB) ... " # let em know you're compiling.
-              ./installer_scripts/pixie_wps.sh
+              $DAS_INST_SCRIPTS_DIR/pixie_wps.sh
             killBar
 
         ### BlueFruit Sniffing Software (Adafruit)
@@ -965,7 +965,7 @@ installApp () { # All of the blocks of code to install each app individually:
         elif [[ "$app" =~ Bluefruit ]]
           then
             progressBar "Installing Adafruit's Bluetooth (Bluefruit) Sniffer ... "
-              ./installer_scripts/bluefruit.sh
+              $DAS_INST_SCRIPTS_DIR/bluefruit.sh
             killBar
 
         ### BloodHound, Dependency Hell, removed
@@ -973,7 +973,7 @@ installApp () { # All of the blocks of code to install each app individually:
         elif [[ "$app" =~ BloodHound ]]
           then
             progressBar " Installing Neo4J and Bloodhound ... "
-              ./installer_scripts/bloodhound.sh
+              $DAS_INST_SCRIPTS_DIR/bloodhound.sh
             killBar
 
         ### WiFi-Pumpkin
@@ -981,7 +981,7 @@ installApp () { # All of the blocks of code to install each app individually:
         elif [[ "$app" == "WiFi-Pumpkin" ]]
           then
             progressBar "Installing WiFi-Pumpkin, this may take a while."
-              ./installer_scripts/wifi_pumpkin.sh
+              $DAS_INST_SCRIPTS_DIR/wifi_pumpkin.sh
             killBar
 
         ### EyeWitness
@@ -989,7 +989,7 @@ installApp () { # All of the blocks of code to install each app individually:
         elif [[ "$app" =~ EyeWitness ]]
           then
             progressBar " Installing EyeWitness (GitHUB) ... "
-              ./installer_scripts/eyewitness.sh
+              $DAS_INST_SCRIPTS_DIR/eyewitness.sh
             killBar
 
         ### SERT.py
@@ -997,7 +997,7 @@ installApp () { # All of the blocks of code to install each app individually:
         elif [[ "$app" =~ SERT ]]
           then
             progressBar "Installing SERT (GitHUB) ... "
-              ./installer_scripts/sert.py.sh
+              $DAS_INST_SCRIPTS_DIR/sert.py.sh
             killBar
 
         ### WiFiPhisher
@@ -1005,7 +1005,7 @@ installApp () { # All of the blocks of code to install each app individually:
         elif [[ "$app" =~ WiFiPhisher ]]
           then
             progressBar "Installing WiFiPhisher (GitHUB) ..."
-              ./installer_scripts/wifiphisher.sh
+              $DAS_INST_SCRIPTS_DIR/wifiphisher.sh
             killBar
 
         ### Demon Updater Tool
@@ -1013,7 +1013,7 @@ installApp () { # All of the blocks of code to install each app individually:
         elif [[ "$app" =~ Demon-Update-Tool ]]
           then
             progressBar " Installing $app ... "
-              ./installer_scripts/demon_updater_tool.sh
+              $DAS_INST_SCRIPTS_DIR/demon_updater_tool.sh
             killBar
         ### Ghidra
         ### unzip, appimage, checksum required
@@ -1025,7 +1025,7 @@ installApp () { # All of the blocks of code to install each app individually:
             URL=${DL_PKG_URL}/$DAS_INST_FILE
             ./das_functions/checksum_check.sh $LOCALAREA $CHECKSUM $URL "Ghidra 9 (WNL Mirror)" # download Neo4J
             progressBar " Installing $app ... "
-              ./installer_scripts/ghidra.sh
+              $DAS_INST_SCRIPTS_DIR/ghidra.sh
             killBar
 
         ### RTL8812AU
@@ -1033,7 +1033,7 @@ installApp () { # All of the blocks of code to install each app individually:
         elif [[ "$app" =~ RTL8812AU ]]
           then
             progressBar " Installing RTL8812AU Driver with DKMS ... "
-              ./installer_scripts/awus1900-driver-dkms.sh
+              $DAS_INST_SCRIPTS_DIR/awus1900-driver-dkms.sh
             killBar
 
         ### GitKraken
@@ -1046,7 +1046,7 @@ installApp () { # All of the blocks of code to install each app individually:
             LOCALAREA=$DAS_APPCACHE/$FILE
             ./das_functions/checksum_check $LOCALAREA $CHECKSUM $URL $app
             progressBar " Installing GitKraken ... "
-              ./installer_scripts/gitkraken.sh $DAS_APPCACHE/$FILE
+              $DAS_INST_SCRIPTS_DIR/gitkraken.sh $DAS_APPCACHE/$FILE
             killBar
 
         ### IDKWTF I GOT LOL
