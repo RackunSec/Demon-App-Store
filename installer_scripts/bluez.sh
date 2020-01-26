@@ -27,6 +27,7 @@ export DAS_CHECKSUM=a33eb9aadf1dd4153420958709d3ce60
 export DAS_LOCALAREA=$DAS_APPCACHE/$DAS_FILE
 export DAS_DIR=$(echo $DAS_FILE|sed -r 's/\.tar.*//')
 export DAS_URL=http://www.kernel.org/pub/linux/bluetooth/$DAS_FILE
+export DAS_CONFIG_OPTS="--enable-deprecated --prefix=/usr --sysconfdir=/etc --localstatedir=/var --enable-library"
 ##### Demon App Store Variables:
 # Example of pulling variable from das_config:
 # $(cat $DAS_CONFIG|grep DAS_APPCACHE|sed -r 's/[^=]+=//')
@@ -36,9 +37,9 @@ cd $DAS_DIR
 if [[ "$1" == "uninstall" ]]
   then
     apt remove -y $DAS_BUILD_DEPS
-    ./configure
+    ./configure $DAS_CONFIG_OPTS
     make uninstall
   else
     apt install -y $DAS_BUILD_DEPS
-    ./configure && make && make install
+    ./configure $DAS_CONFIG_OPTS && make && make install
 fi
