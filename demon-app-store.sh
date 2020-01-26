@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 ## Demon Linux App Store - ^vv^
-## 2019 WeakNet Labs
+## 2020 WeakNet Labs
 ## Douglas Berdeaux
 
 ### XFCE4 Notification
@@ -9,7 +9,7 @@ notify () {
 }
 export -f notify
 export DAS_LOCAL=/var/demon/store/code/Demon-App-Store/
-export DAS_CONFIG=$DAS_LOCAL/das_config.txt
+export DAS_CONFIG=${DAS_LOCAL}das_config.txt
 
 export DAS_NOTIFY_APP="Demon App Store Notification"
 export DAS_NOTIFY_ICON="--icon=/usr/share/demon/images/icons/demon-store-icon.png"
