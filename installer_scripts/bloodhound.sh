@@ -10,6 +10,8 @@
 # NOTES:
 #   This is a HUGE package/module.
 #
+printf "\n[ INFO ]: Installer script initialated for $(echo basename $0)\n"
+#
 export DAS_LOCAL=/var/demon/store/code/Demon-App-Store/
 export DAS_CONFIG=${DAS_LOCAL}das_config.txt # This is required
 export DAS_FUNC_SCRIPT_DIR=$(cat $DAS_FUNC_SCRIPT_DIR|grep DAS_APPCACHE|sed -r 's/[^=]+=//')
@@ -22,7 +24,6 @@ export DAS_BUILD_DEPS="--no-install-recommends gnome-keyring -y"
 export DAS_BUILD_PIP_DEPS=""
 export DAS_PYTHON_VERSION=3
 export BH_GIT_URL=https://github.com/BloodHoundAD/BloodHound/releases/download/2.2.1/BloodHound-linux-x64.zip
-export DAS_FUNC_SCRIPT_DIR=$(cat $DAS_FUNC_SCRIPT_DIR|grep DAS_APPCACHE|sed -r 's/[^=]+=//')
 
 ##### Demon App Store Variables:
 # Example of pulling variable from das_config:
