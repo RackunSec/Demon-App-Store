@@ -2,7 +2,7 @@
 # 2020 Demon App Store
 # WeakNet Labs
 # Version, mo, day, rev:
-DAS_VERSION=1.1.26.8b
+DAS_VERSION=1.1.26.9
 DAS_SPANFONT=<span font='Ubuntu Condensed 11'>
 DAS_WINDOWICON=/usr/share/demon/images/icons/demon-64-white.png
 DAS_WINDOWIMAGE=/usr/share/demon/images/icons/demon-store-icon-64-padded.png

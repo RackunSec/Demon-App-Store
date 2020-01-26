@@ -1100,7 +1100,7 @@ main () {
    $(if [[ $(which tilix|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Tilix" "$DAS_CAT_SYS" "A Tiling Terminal Emulator" false \
    \
    $(if [[ $(dkms status|grep -i rtl8812au|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "RTL8812AU" "$DAS_CAT_DVR" "Aircrack-NG DKMS Driver for AWUS1900" false \
-   $(if [[ $(which bluetoothctl|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Bluez" "$DAS_CAT_DVR" "Default Bluetooth Stack Tools" false \
+   $(if [[ $(which hciconfig|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Bluez" "$DAS_CAT_DVR" "Default Bluetooth Stack Tools" false \
    \
    $(if [[ $(which Cutter|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Cutter" "$DAS_CAT_ENG" "Reverse engineering tool" false \
    $(if [[ $(which apktool|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "APKTool" "$DAS_CAT_ENG" "Reverse engineering Android APK tool" false \
