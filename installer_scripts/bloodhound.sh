@@ -43,7 +43,7 @@ BHCHECKSUM=c0c25df56b7eaaefd8ac2e9214c5fbe6
 BINFILE=/usr/local/sbin/BloodHound.sh
 $DAS_FUNC_SCRIPT_DIR/checksum_check.sh $LOCALAREA $BHCHECKSUM $BH_GIT_URL "$app Release (GitHUB)" # git the BloodHound Release
 cd /opt/ && git clone $GIT_URL BloodHoundFiles # git the BloodHound Files
-cd $DAS_APPCACHE && unzip $BHFILE # unzip the BloodHound "release"
+cd $DAS_APPCACHE && unzip -o $BHFILE # unzip the BloodHound "release"
 mv BloodHound-linux-x64 /opt/
 echo "#!/usr/bin/env bash" > $BINFILE
 echo "cd /opt/BloodHound-linux-x64 && ./BloodHound" >> $BINFILE
