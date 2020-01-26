@@ -64,19 +64,12 @@ fi
 apt update 1>&2>/dev/null
 apt install -y xfce4-notifyd yad
 
-### Update to the latest workflow app:
-if [ ! -d $APPDEV ]
-  then
-    mkdir -p $APPDEV
-fi
-cd $APPDEV
-if [ -d $DAS ]
-  then
-    cd $DAS && git pull
-else
-  git clone https://github.com/weaknetlabs/Demon-App-Store
-fi
-
+### Update to the latest app:
+# Remove the old app files:
+rm -rf $APPDEV
+mkdir $APPDEV
+cd $APPDEV && git clone https://github.com/weaknetlabs/Demon-App-Store
+# remove the old scripts from the $PATH:
 if [ -f /usr/local/sbin/demon-app-store.sh ]
   then
     rm /usr/local/sbin/demon-app-store.sh
@@ -86,9 +79,10 @@ if [ -f /usr/local/sbin/demon-app-store-worklflkow.sh ]
     rm /usr/local/sbin/demon-app-store-workflow.sh
 fi
 
-### Copy the new executable:
+### Copy the new scripts into $PATH:
 cp $APPDEVDAS/demon-app-store.sh /usr/local/sbin/
 cp $APPDEVDAS/demon-app-store-workflow.sh /usr/local/sbin/
+# Make them executable:
 chmod +x /usr/local/sbin/demon-app-store.sh
 chmod +x /usr/local/sbin/demon-app-store-workflow.sh
 
