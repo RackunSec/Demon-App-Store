@@ -36,7 +36,7 @@ export DAS_CONFIG_OPTS="--enable-deprecated --prefix=/usr --sysconfdir=/etc --lo
 ##### Demon App Store Variables:
 # Example of pulling variable from das_config:
 # $(cat $DAS_CONFIG|grep DAS_APPCACHE|sed -r 's/[^=]+=//')
-export DAS_FUNC_SCRIPT_DIR=$(cat $DAS_FUNC_SCRIPT_DIR|grep DAS_APPCACHE|sed -r 's/[^=]+=//')
+export DAS_FUNC_SCRIPT_DIR=$(cat $DAS_CONFIG|grep DAS_APPCACHE|sed -r 's/[^=]+=//')
 
 $DAS_FUNC_SCRIPT_DIR/checksum_check.sh $DAS_LOCALAREA $DAS_CHECKSUM $DAS_URL $DAS_APP_NAME
 cd $DAS_APPCACHE/ && tar vxf $DAS_FILE && cd $DAS_DIR
