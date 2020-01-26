@@ -7,6 +7,13 @@
 notify () {
   notify-send "$1" "$2" "$3"
 }
+### Cleanup after CTRL+C:
+trap ctrl_c INT
+ctrl_c () {
+  killall -9 tail
+  exit
+}
+
 export -f notify
 export DAS_LOCAL=/var/demon/store/code/Demon-App-Store/
 export DAS_CONFIG=${DAS_LOCAL}das_config.txt
