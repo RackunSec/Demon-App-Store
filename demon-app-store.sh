@@ -7,10 +7,10 @@
 notify () {
   notify-send "$1" "$2" "$3"
 }
-
-export DAS_VERSION=$(cat $DAS_CONFIG|grep DAS_VERSION|sed -r 's/[^=]+=//')
-
 export -f notify
+export DAS_LOCAL=/var/demon/store/code/Demon-App-Store/
+export DAS_CONFIG=$DAS_LOCAL/das_config.txt
+
 export DAS_NOTIFY_APP="Demon App Store Notification"
 export DAS_NOTIFY_ICON="--icon=/usr/share/demon/images/icons/demon-store-icon.png"
 export DAS_NOTIFY_ICON_GRN="--icon=/usr/share/demon/images/icons/demon-store-icon-green.png"
@@ -101,7 +101,9 @@ printf "[i] Copying new icon images from ($APPDEVDAS/icons/)... \n"
 cp $APPDEVDAS/icons/* /usr/share/demon/images/icons/ # Add all the icon files
 cp $APPDEVDAS/desktop/* /usr/share/demon/desktop/ # Add all the desktop icons into Demon shared area
 ### Complete
-
+# Get the new version:
+export DAS_VERSION=$(cat $DAS_CONFIG|grep DAS_VERSION|sed -r 's/[^=]+=//')
+# Notify user:
 notify "$DAS_NOTIFY_APP" "The Demon App Store has been updated\nto version: $DAS_VERSION" "$DAS_NOTIFY_ICON_GRN"
 
 ### start Workflow:
