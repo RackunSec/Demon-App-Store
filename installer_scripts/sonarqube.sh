@@ -10,6 +10,9 @@
 # NOTES:
 #   Catch bugs and vulnerabilities in your app, with thousands of automated Static Code Analysis rules.
 #
+# DO NOT INFO:
+printf "\n[INFO] Installer script initiated: $(echo $0)\n"
+#
 export DAS_LOCAL=/var/demon/store/code/Demon-App-Store/
 export DAS_CONFIG=${DAS_LOCAL}das_config.txt # This is REQUIRED for these Scripts
 ##### ##### ##### ##### #####

@@ -10,6 +10,9 @@
 # NOTES:
 #   I think this only works with 2G. I can't find any 2G networks in my city.
 #
+# DO NOT INFO:
+printf "\n[INFO] Installer script initiated: $(echo $0)\n"
+#
 export DAS_LOCAL=/var/demon/store/code/Demon-App-Store/
 export DAS_CONFIG=${DAS_LOCAL}das_config.txt # This is REQUIRED for these Scripts
 ##### ##### ##### ##### #####

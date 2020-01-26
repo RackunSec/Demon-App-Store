@@ -10,4 +10,7 @@
 # NOTES:
 #   Tilix Terminal Emulator is pretty slick.
 #
+# DO NOT INFO:
+printf "\n[INFO] Installer script initiated: $(echo $0)\n"
+#
 apt install -y tilix tilix-common # simple

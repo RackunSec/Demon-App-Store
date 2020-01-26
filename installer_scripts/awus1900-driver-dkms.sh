@@ -10,6 +10,9 @@
 # NOTES:
 # Use iw dev <device> set type monitor instead of airmon-ng
 #
+# DO NOT INFO:
+printf "\n[INFO] Installer script initiated: $(echo $0)\n"
+#
 ##### Demon App Store Variables:
 export DAS_LOCAL=/var/demon/store/code/Demon-App-Store/
 export DAS_CONFIG=${DAS_LOCAL}das_config.txt # This is required

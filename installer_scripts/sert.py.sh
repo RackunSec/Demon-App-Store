@@ -10,6 +10,9 @@
 # NOTES:
 # from GitHUB: https://github.com/weaknetlabs/SERT.git
 #
+# DO NOT INFO:
+printf "\n[INFO] Installer script initiated: $(echo $0)\n"
+#
 export DAS_LOCAL=/var/demon/store/code/Demon-App-Store/
 export DAS_CONFIG=${DAS_LOCAL}das_config.txt # This is REQUIRED for these Scripts
 ##### ##### ##### ##### #####

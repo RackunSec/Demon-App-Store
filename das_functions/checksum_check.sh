@@ -3,6 +3,8 @@
 # WeakNet Labs
 # Checksum checker function. This will download files.
 # -------------------
+#
+printf "[INFO]: Initiated Function Script: $0\n"
 # Constants:
 export DAS_FILE=$1
 export DAS_CHECKSUM=$2

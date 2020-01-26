@@ -10,6 +10,9 @@
 # NOTES:
 #  Should only be used in Demon Linux
 #
+# DO NOT INFO:
+printf "\n[INFO] Installer script initiated: $(echo $0)\n"
+#
 ##### ##### ##### ##### #####
 ##### Demon App Store Variables:
 # Example of pulling variable from das_config:
