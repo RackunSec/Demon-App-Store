@@ -10,13 +10,15 @@
 # NOTES:
 #
 #
-export DAS_CONFIG=./das_config.txt # This is REQUIRED
+export DAS_LOCAL=/var/demon/store/code/Demon-App-Store/
+export DAS_CONFIG=${DAS_LOCAL}das_config.txt # This is REQUIRED for these Scripts
 ##### ##### ##### ##### #####
 export DAS_DESKTOP_CACHE=$(cat $DAS_CONFIG|grep DAS_DESKTOP_CACHE | sed -r 's/[^=]+=//')
 export DAS_APPCACHE=$(cat $DAS_CONFIG|grep DAS_APPCACHE | sed -r 's/[^=]+=//')
 export SYS_LOCAL_APPS=$(cat $DAS_CONFIG|grep SYS_LOCAL_APPS | sed -r 's/[^=]+=//')
 export GIT_URL=https://github.com/wiire/pixiewps/archive/master.zip
 export DAS_APP_NAME=PixieWPS
+export DAS_FUNC_SCRIPT_DIR=$(cat $DAS_FUNC_SCRIPT_DIR|grep DAS_APPCACHE|sed -r 's/[^=]+=//')
 ##### Demon App Store Variables:
 # Example of pulling variable from das_config:
 # $(cat $DAS_CONFIG|grep DAS_APPCACHE|sed -r 's/[^=]+=//')
@@ -25,7 +27,7 @@ export LOCALAREA=$DAS_APPCACHE/$FILE # /var/demon/.../master.zip
 export CHECKSUM=75453b8646f28873de05c083a60b6a69 # for master.zip ($FILE)
 export INSTALLAREA=/infosec/wifi/
 export INSTALLDIR=pixiewps-master
-./das_functions/checksum_check.sh $LOCALAREA $CHECKSUM $GIT_URL $DAS_APP_NAME # download the file
+$DAS_FUNC_SCRIPT_DIR/checksum_check.sh $LOCALAREA $CHECKSUM $GIT_URL $DAS_APP_NAME # download the file
 
 cp $LOCALAREA $INSTALLAREA
 cd $INSTALLAREA && unzip $FILE && rm $FILE

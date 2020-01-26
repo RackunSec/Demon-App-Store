@@ -10,7 +10,8 @@
 # NOTES:
 #
 #
-export DAS_CONFIG=./das_config.txt # This is REQUIRED
+export DAS_LOCAL=/var/demon/store/code/Demon-App-Store/
+export DAS_CONFIG=${DAS_LOCAL}das_config.txt
 ##### ##### ##### ##### #####
 export DAS_DESKTOP_CACHE=$(cat $DAS_CONFIG|grep DAS_DESKTOP_CACHE | sed -r 's/[^=]+=//')
 export SYS_LOCAL_APPS=$(cat $DAS_CONFIG|grep SYS_LOCAL_APPS | sed -r 's/[^=]+=//')

@@ -10,7 +10,9 @@
 # NOTES:
 #   The Python API for Adafruit's Bluefruit LE Sniffer, and our easy to use API wrapper.
 #
-export DAS_CONFIG=./das_config.txt # This is REQUIRED
+export DAS_LOCAL=/var/demon/store/code/Demon-App-Store/
+export DAS_CONFIG=${DAS_LOCAL}das_config.txt # This is required
+export DAS_FUNC_SCRIPT_DIR=$(cat $DAS_FUNC_SCRIPT_DIR|grep DAS_APPCACHE|sed -r 's/[^=]+=//')
 ##### ##### ##### ##### #####
 export DAS_APPCACHE=$(cat $DAS_CONFIG|grep DAS_APPCACHE | sed -r 's/[^=]+=//')
 export SYS_LOCAL_APPS=$(cat $DAS_CONFIG|grep SYS_LOCAL_APPS | sed -r 's/[^=]+=//')

@@ -5,12 +5,11 @@
 # Installer script, should be called from the workflow app
 # INSTALL:
 # --------------------
-# Ghidra NSA Reverse Engineering Tool
+# Demon Updater Tool
 # --------------------
 # NOTES:
+#  Should only be used in Demon Linux
 #
-#
-export DAS_CONFIG=./das_config.txt # This is REQUIRED
 ##### ##### ##### ##### #####
 ##### Demon App Store Variables:
 # Example of pulling variable from das_config:
@@ -22,5 +21,5 @@ cd /var/demon/updater/code && git clone https://github.com/weaknetlabs/Demon-Upd
 cp ${LOCALAREA}/demon-updater.sh /usr/local/sbin/
 cp ${LOCALAREA}/demon-updater-workflow.sh /usr/local/sbin/
 chmod +x /usr/local/sbin/demon-updater* # make them executable
-cp ${LOCALAREA}/demon-updater.desktop ${LOCAL_APPS} # copy the menu icon in
+cp ${LOCALAREA}/demon-updater.desktop /usr/share/applications/ # copy the menu icon in
 cp ${LOCALAREA}/images/updater.png /usr/share/demon/images/icons/ # copy in our new icon

@@ -10,7 +10,8 @@
 # NOTES:
 #
 #
-export DAS_CONFIG=./das_config.txt # This is REQUIRED
+export DAS_LOCAL=/var/demon/store/code/Demon-App-Store/
+export DAS_CONFIG=${DAS_LOCAL}das_config.txt
 ##### ##### ##### ##### #####
 ##### Demon App Store Variables:
 # Example of pulling variable from das_config:

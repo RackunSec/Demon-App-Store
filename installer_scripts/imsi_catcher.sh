@@ -10,7 +10,8 @@
 # NOTES:
 #   I think this only works with 2G. I can't find any 2G networks in my city.
 #
-export DAS_CONFIG=./das_config.txt # This is REQUIRED
+export DAS_LOCAL=/var/demon/store/code/Demon-App-Store/
+export DAS_CONFIG=${DAS_LOCAL}das_config.txt # This is REQUIRED for these Scripts
 ##### ##### ##### ##### #####
 export DAS_BINFILE=/usr/local/sbin/imsi-catcher
 export DAS_DESKTOP_CACHE=$(cat $DAS_CONFIG|grep DAS_DESKTOP_CACHE | sed -r 's/[^=]+=//')

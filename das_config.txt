@@ -32,4 +32,5 @@ DAS_NOTIFY_ICON_RED=--icon=/usr/share/demon/images/icons/demon-store-icon-red.pn
 DL_PKG_URL=https://demonlinux.com/download/packages
 DAS_DL_ICON=/usr/share/demon/images/icons/store-download.png
 DAS_INST_SCRIPTS_DIR=/var/demon/store/code/Demon-App-Store/installer_scripts
+DAS_FUNC_SCRIPT_DIR=/var/demon/store/code/Demon-App-Store/das_functions
 SYS_LOCAL_APPS=/usr/share/applications
