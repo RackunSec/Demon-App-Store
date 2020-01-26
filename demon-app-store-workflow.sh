@@ -5,6 +5,13 @@
 
 source ~/.bashrc # Testing this as there seems to be an issue with the $PATH
 
+### Cleanup after CTRL+C:
+trap ctrl_c INT
+ctrl_c () {
+  killall -9 tail
+  exit
+}
+
 # I chose "DAS_" as a prefix for exportation purposes, "(D)emon (A)pp (S)tore"
 # This way I don't accidentally overwrite anything else (hoopefully) in the environment.
 export DAS_LOCAL=/var/demon/store/code/Demon-App-Store/

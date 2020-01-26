@@ -14,7 +14,8 @@
 printf "\n[INFO] Installer script initiated: $(echo $0)\n"
 #
 export DAS_LOCAL=/var/demon/store/code/Demon-App-Store/
-export DAS_CONFIG=${DAS_LOCAL}das_config.txt
+export DAS_CONFIG=${DAS_LOCAL}das_config.txt # This is required
+export DAS_FUNC_SCRIPT_DIR=$(cat $DAS_CONFIG|grep DAS_FUNC_SCRIPT_DIR|sed -r 's/[^=]+=//')
 ##### ##### ##### ##### #####
 ##### Demon App Store Variables:
 # Example of pulling variable from das_config:
