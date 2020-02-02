@@ -1026,11 +1026,6 @@ installApp () { # All of the blocks of code to install each app individually:
         ### unzip, appimage, checksum required
       elif [[ "$app" =~ Ghidra9 ]]
           then
-            CHECKSUM=c760ae7359b0fbdef750202d18a9b8aa
-            DAS_INST_FILE=ghidra9.zip
-            LOCALAREA=$DAS_APPCACHE/$DAS_INST_FILE
-            URL=${DL_PKG_URL}/$DAS_INST_FILE
-            ./das_functions/checksum_check.sh $LOCALAREA $CHECKSUM $URL "Ghidra 9 (WNL Mirror)" # download Neo4J
             progressBar " Installing $app ... "
               $DAS_INST_SCRIPTS_DIR/ghidra.sh
             killBar
