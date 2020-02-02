@@ -10,7 +10,8 @@ export DAS_FILE=$1
 export DAS_CHECKSUM=$2
 export DAS_URL=$3
 export DAS_APP=$4
-
+export DAS_CONFIG=/var/demon/store/code/Demon-App-Store/das_config.txt
+export DAS_FUNC_SCRIPT_DIR=$(cat $DAS_CONFIG|grep DAS_FUNC_SCRIPT_DIR|sed -r 's/[^=]+=//')
 # Workflow:
 if [ -f $DAS_FILE ]
   then # File exists, check the checksum given:
@@ -19,7 +20,7 @@ if [ -f $DAS_FILE ]
       then # failed, re-download
         rm -rf $DAS_FILE # remove borked version
         printf "[i] $DAS_APP Failed checksum check ($DAS_CHECKSUM). Re-downloading file: $DAS_URL \n"
-        ./das_functions/download_file.sh $DAS_URL $DAS_APP $DAS_FILE # download
+        $DAS_FUNC_SCRIPT_DIR/download_file.sh $DAS_URL $DAS_APP $DAS_FILE # download
     else
       printf "[+] Checksum ($DAS_CHECKSUM) verified, [ OK ]\n"
     fi
