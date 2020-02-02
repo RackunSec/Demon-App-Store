@@ -25,8 +25,14 @@ export DAS_BUILD_DEPS=""
 export DAS_APPCACHE=$(cat $DAS_CONFIG|grep DAS_APPCACHE|sed -r 's/[^=]+=//')
 export DAS_BINFILE=/usr/local/sbin/ghidra9.sh
 export DAS_INSTALL_AREA=/opt/ghidra
+export URL=http://demonlinux.com/download/packages/ghidra9.zip
+export DAS_CHECKSUM=c760ae7359b0fbdef750202d18a9b8aa
+export DAS_FILE=ghidra9.zip
+export LOCALAREA=$DAS_APPCACHE/$DAS_FILE
 
 ##### Demon App Store Functions:
+$DAS_FUNC_SCRIPT_DIR/checksum_check.sh $LOCALAREA $DAS_CHECKSUM $URL $DAS_APP_NAME
+
 cd $DAS_APPCACHE && unzip -o $DAS_INST_FILE
 mv ghidra_9.1-BETA_DEV $DAS_INSTALL_AREA # mv locally
 echo "#!/usr/bin/env bash" > $DAS_BINFILE
