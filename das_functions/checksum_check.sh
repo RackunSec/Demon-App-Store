@@ -26,5 +26,6 @@ if [ -f $DAS_FILE ]
     fi
 else
   # I am calling the download_file script to do the download
+  printf "[INFO] Downloading: $DAS_URL ... "
   $DAS_FUNC_SCRIPT_DIR/download_file.sh $DAS_URL $DAS_APP $DAS_FILE
 fi

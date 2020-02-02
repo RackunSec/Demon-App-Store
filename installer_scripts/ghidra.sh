@@ -20,12 +20,12 @@ export DAS_FUNC_SCRIPT_DIR=$(cat $DAS_CONFIG|grep DAS_FUNC_SCRIPT_DIR|sed -r 's/
 ##### Demon App Store Variables:
 # Example of pulling variable from das_config:
 # $(cat $DAS_CONFIG|grep DAS_APPCACHE|sed -r 's/[^=]+=//')
-export DAS_INST_FILE=ghidra9.zip
+export DAS_INST_FILE=ghidra9.zip`
 export DAS_BUILD_DEPS=""
 export DAS_APPCACHE=$(cat $DAS_CONFIG|grep DAS_APPCACHE|sed -r 's/[^=]+=//')
 export DAS_BINFILE=/usr/local/sbin/ghidra9.sh
 export DAS_INSTALL_AREA=/opt/ghidra
-export URL=http://demonlinux.com/download/packages/ghidra9.zip
+export URL=https://demonlinux.com/download/packages/ghidra9.zip
 export DAS_CHECKSUM=c760ae7359b0fbdef750202d18a9b8aa
 export DAS_FILE=ghidra9.zip
 export LOCALAREA=$DAS_APPCACHE/$DAS_FILE
