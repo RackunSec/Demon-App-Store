@@ -24,7 +24,7 @@ export DAS_APPCACHE=$(cat $DAS_CONFIG|grep DAS_APPCACHE|sed -r 's/[^=]+=//')
 export DAS_APP_NAME=Gitkraken
 export DAS_FILE=gitkraken-amd64.deb
 export LOCALAREA=$DAS_APPCACHE/$DAS_FILE
-export DAS_CHECKSUM=bb2f244c968b9bfca9b6c5763e9df698
+export DAS_CHECKSUM=6ad71a6e177e4eda2c3252bee4fceaab
 export URL=http://demonlinux.com/download/packages/gitkraken-amd64.deb
 $DAS_FUNC_SCRIPT_DIR/checksum_check.sh $LOCALAREA $DAS_CHECKSUM $URL $DAS_APP_NAME
 
