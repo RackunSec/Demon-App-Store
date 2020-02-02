@@ -199,6 +199,9 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
     then
       apt remove -y google-chrome-stable
       rm /usr/bin/google-chrome
+  elif [[ "$app" =~ RTL8812AU ]]
+    then # cal installer script to uninstall the module:
+      $DAS_INST_SCRIPTS_DIR/awus1900-driver-dkms.sh uninstall
   elif [[ "$app" =~ Sublime.Text ]]
     then
       rm -rf /opt/sublime3
@@ -1035,7 +1038,7 @@ installApp () { # All of the blocks of code to install each app individually:
         elif [[ "$app" =~ RTL8812AU ]]
           then
             progressBar " Installing RTL8812AU Driver with DKMS ... "
-              $DAS_INST_SCRIPTS_DIR/awus1900-driver-dkms.sh
+              $DAS_INST_SCRIPTS_DIR/awus1900-driver-dkms.sh install
             killBar
 
         ### GitKraken

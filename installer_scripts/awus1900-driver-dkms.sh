@@ -23,8 +23,15 @@ DAS_DL_URL=https://github.com/aircrack-ng/rtl8812au
 DAS_BUILD_DIR=rtl8812au
 DAS_BUILD_DEPS="dkms git"
 ##### Demon App Store Functions:
-apt -y install $DAS_BUILD_DEPS -y # install all depends
-cd /tmp/ && git clone $DAS_DL_URL
-cd /tmp/$DAS_BUILD_DIR
-./dkms-install.sh # install it with DKMS
-### Complete.
+if [[ "$1" == "install" ]]
+  then
+    apt -y install $DAS_BUILD_DEPS -y # install all depends
+    cd /tmp/ && git clone $DAS_DL_URL
+    cd /tmp/$DAS_BUILD_DIR
+    ./dkms-install.sh # install it with DKMS
+    ### Complete.
+elif [[ "$1" == "uninstall" ]]
+  then
+    cd /tmp && git clone $DAS_DL_URL
+    ./dkms-remove.sh
+fi
