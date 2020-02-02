@@ -20,6 +20,7 @@ if [ -f $DAS_FILE ]
       then # failed, re-download
         rm -rf $DAS_FILE # remove borked version
         printf "[i] $DAS_APP Failed checksum check ($DAS_CHECKSUM). Re-downloading file: $DAS_URL \n"
+        print "[INFO]: DAS_FUNC_SCRIPT_DIR: $DAS_FUNC_SCRIPT_DIR/download_file.sh "
         $DAS_FUNC_SCRIPT_DIR/download_file.sh $DAS_URL $DAS_APP $DAS_FILE # download
     else
       printf "[+] Checksum ($DAS_CHECKSUM) verified, [ OK ]\n"
