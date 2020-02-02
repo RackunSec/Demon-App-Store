@@ -33,5 +33,5 @@ if [[ "$1" == "install" ]]
 elif [[ "$1" == "uninstall" ]]
   then
     cd /tmp && git clone $DAS_DL_URL
-    ./dkms-remove.sh
+    cd /tmp/rtl8812au/ && ./dkms-remove.sh
 fi
