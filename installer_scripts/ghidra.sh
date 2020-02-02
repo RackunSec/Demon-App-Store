@@ -31,6 +31,7 @@ export DAS_FILE=ghidra9.zip
 export LOCALAREA=$DAS_APPCACHE/$DAS_FILE
 export DAS_APP_NAME="Ghidra 9"
 ##### Demon App Store Functions:
+printf "[INFO]: $LOCALAREA $DAS_CHECKSUM $URL $DAS_APP_NAME "
 $DAS_FUNC_SCRIPT_DIR/checksum_check.sh $LOCALAREA $DAS_CHECKSUM $URL $DAS_APP_NAME
 
 cd $DAS_APPCACHE && unzip -o $DAS_INST_FILE
