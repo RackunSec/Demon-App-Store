@@ -29,7 +29,7 @@ export URL=https://demonlinux.com/download/packages/ghidra9.zip
 export DAS_CHECKSUM=c760ae7359b0fbdef750202d18a9b8aa
 export DAS_FILE=ghidra9.zip
 export LOCALAREA=$DAS_APPCACHE/$DAS_FILE
-
+export DAS_APP_NAME="Ghidra 9"
 ##### Demon App Store Functions:
 $DAS_FUNC_SCRIPT_DIR/checksum_check.sh $LOCALAREA $DAS_CHECKSUM $URL $DAS_APP_NAME
 
