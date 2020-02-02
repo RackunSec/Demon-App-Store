@@ -5,8 +5,9 @@
 # -------------------
 printf "[INFO]: Initiated Function Script: $0\n"
 # Constants:
-export DAS_WINDOWICON=$(cat ./das_config.txt|grep DAS_WINDOWICON|sed 's/.*=//')
-export DAS_DL_ICON=$(cat ./das_config.txt|grep DAS_DL_ICON|sed 's/.*=//')
+export DAS_CONFIG=/var/demon/store/code/Demon-App-Store/das_config.txt
+export DAS_WINDOWICON=$(cat $DAS_CONFIG|grep DAS_WINDOWICON|sed 's/.*=//')
+export DAS_DL_ICON=$(cat $DAS_CONFIG|grep DAS_DL_ICON|sed 's/.*=//')
 # Arguments:
 export DAS_URL=$1
 export DAS_APP_NAME=$2
