@@ -26,7 +26,7 @@ export DAS_FUNC_SCRIPT_DIR=$(cat $DAS_FUNC_SCRIPT_DIR|grep DAS_APPCACHE|sed -r '
 # Example of pulling variable from das_config:
 # $(cat $DAS_CONFIG|grep DAS_APPCACHE|sed -r 's/[^=]+=//')
 
-export GIT_URL=https://demonlinux.com/download/packages/Nessus-8.6.0-debian6_amd64.deb
+export GIT_URL=https://demonlinux.com/download/packages/Nessus-8.9.0-debian6_amd64.deb
 export FILE=Nessus-8.6.0-debian6_amd64.deb
 export LOCALAREA=$DAS_APPCACHE/$FILE
 export DAS_CHECKSUM=d76a6b3d793e424737746c810991499a
