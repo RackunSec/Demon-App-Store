@@ -20,6 +20,7 @@ export DAS_FUNC_SCRIPT_DIR=$(cat $DAS_CONFIG|grep DAS_FUNC_SCRIPT_DIR|sed -r 's/
 export DAS_DESKTOP_CACHE=$(cat $DAS_CONFIG|grep DAS_DESKTOP_CACHE | sed -r 's/[^=]+=//')
 export SYS_LOCAL_APPS=$(cat $DAS_CONFIG|grep SYS_LOCAL_APPS | sed -r 's/[^=]+=//')
 export GIT_URL=https://github.com/michenriksen/gitrob
+export GOPATH=/opt/go/projects/ # convoluted garbage like everything else Google makes/steals
 ##### Demon App Store Variables:
 # Example of pulling variable from das_config:
 # $(cat $DAS_CONFIG|grep DAS_APPCACHE|sed -r 's/[^=]+=//')
