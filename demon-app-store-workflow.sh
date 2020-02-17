@@ -1047,7 +1047,7 @@ installApp () { # All of the blocks of code to install each app individually:
       elif [[ "$app" =~ Gitrob ]]
         then
           progressBar " Installing Gitrob ... "
-            $DAS_INST_SCRIPTS_DIR/gitrob.#!/bin/sh
+            $DAS_INST_SCRIPTS_DIR/gitrob.sh
           killBar
 
         ### GitKraken
