@@ -18,6 +18,7 @@ DAS_CAT_FOR=Digital Forensics
 DAS_CAT_SYS=System
 DAS_CAT_ENG=Engineering
 DAS_CAT_NOT=Note Taking
+DAS_CAT_INFO=OSINT
 DAS_CAT_DEV=Developer
 DAS_CAT_WEB=Web
 DAS_CAT_COM=Communication

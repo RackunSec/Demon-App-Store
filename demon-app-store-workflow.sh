@@ -36,6 +36,7 @@ export DAS_CAT_NOT=$(cat $DAS_CONFIG|grep DAS_CAT_NOT|sed -r 's/[^=]+=//')
 export DAS_CAT_DEV=$(cat $DAS_CONFIG|grep DAS_CAT_DEV|sed -r 's/[^=]+=//')
 export DAS_CAT_WEB=$(cat $DAS_CONFIG|grep DAS_CAT_WEB|sed -r 's/[^=]+=//')
 export DAS_CAT_COM=$(cat $DAS_CONFIG|grep DAS_CAT_COM|sed -r 's/[^=]+=//')
+export DAS_CAT_INFO=$(cat $DAS_CONFIG|grep DAS_CAT_INFO|sed -r 's/[^=]+=//')
 export DAS_CAT_MM=$(cat $DAS_CONFIG|grep DAS_CAT_MM|sed -r 's/[^=]+=//')
 export DAS_CAT_NET=$(cat $DAS_CONFIG|grep DAS_CAT_NET|sed -r 's/[^=]+=//')
 export DAS_CAT_DEM=$(cat $DAS_CONFIG|grep DAS_CAT_DEM|sed -r 's/[^=]+=//')
@@ -1041,6 +1042,14 @@ installApp () { # All of the blocks of code to install each app individually:
               $DAS_INST_SCRIPTS_DIR/awus1900-driver-dkms.sh install
             killBar
 
+        ### gitrob
+        ### https://github.com/michenriksen/gitrob
+      elif [[ "$app" =~ Gitrob ]]
+        then
+          progressBar " Installing Gitrob ... "
+            $DAS_INST_SCRIPTS_DIR/gitrob.#!/bin/sh
+          killBar
+
         ### GitKraken
         ### Installer, HTTP, CHecksum required
         elif [[ "$app" =~ GitKraken ]]
@@ -1087,6 +1096,8 @@ main () {
    $(if [[ $(which socialbox|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "SocialBox" "$DAS_CAT_PEN" "Social Media Bruteforce Attack Framework" false \
    $(if [[ $(which quasar|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "quasar" "$DAS_CAT_PEN" "Information Gathering Framework For Penetration Testers" false \
    $(if [[ $(which sert.py|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "SERT" "$DAS_CAT_FOR" "Spirion EnCase Reporting Tool" false \
+   \
+   $(if [[ $(which gitrob|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Gitrob" "$DAS_CAT_INFO" "Put the open source in OSINT" false \
    \
    $(if [[ $(which massdns|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "MassDNS" "$DAS_CAT_NET" "Simple high-performance DNS stub resolver" false \
    \
