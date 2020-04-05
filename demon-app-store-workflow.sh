@@ -830,8 +830,8 @@ installApp () { # All of the blocks of code to install each app individually:
           then
             # 1. get this: python-gtksourceview2
             FILE=python-gtksourceview2_2.10.1-3_amd64.deb
-            URL=http://ftp.de.debian.org/debian/pool/main/p/pygtksourceview/python-gtksourceview2_2.10.1-3_amd64.deb
-            CHECKSUM=2a1446484fcbae1b9e636ebff5990aaf
+            URL=https://demonlinux.com/download/packages/cherrytree_0.39.2-0_all.deb
+            CHECKSUM=6c2703e74b8a0d2bd9ef9f9360682dd3
             LOCALAREA=$DAS_APPCACHE/$FILE
             checksumCheck $LOCALAREA $CHECKSUM $URL $app
             dpkg -i $LOCALAREA
