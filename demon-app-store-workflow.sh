@@ -322,11 +322,6 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
       rm -rf //usr/local/bin/wifiphisher # remove my script
       rm ${LOCAL_APPS}/wifiphisher.desktop # remove the menu icon
       apt remove dnsmasq  -y # remove dependency
-  elif [[ "$app" =~ BloodHound ]]
-    then
-      rm -rf /opt/BloodHound*
-      rm -rf /usr/local/sbin/BloodHound.sh # remove our script
-      rm -rf /usr/local/sbin/neo4j-start # remove the Neo4J appimage
   elif [[ "$app" =~ Tilix ]]
     then
       apt remove tilix tilix-common -y
@@ -979,14 +974,6 @@ installApp () { # All of the blocks of code to install each app individually:
               $DAS_INST_SCRIPTS_DIR/bluefruit.sh
             killBar
 
-        ### BloodHound, Dependency Hell, removed
-        ### Git, no checksum
-        elif [[ "$app" =~ BloodHound ]]
-          then
-            progressBar " Installing Neo4J and Bloodhound ... "
-              $DAS_INST_SCRIPTS_DIR/bloodhound.sh
-            killBar
-
         ### WiFi-Pumpkin
         ### Git, no checksum, compiled with depends
         elif [[ "$app" == "WiFi-Pumpkin" ]]
@@ -1070,7 +1057,6 @@ main () {
   IFS=$'\n'
   readarray selected < <(yad --width=$DAS_WIDTH --height=$DAS_HEIGHT --title=$DAS_APPNAME --button=Help:"bash -c help" --button="Clean Cache:bash -c cleanCache" --button="Exit:1" --button="Check Out:0" --list --checklist --column="Install" --column="App Name" --column=Category --column=Description --column=Uninstall:CHK --image=$DAS_WINDOWLONGIMAGE --window-icon=$DAS_WINDOWICON \
     --center \
-    $(if [[ $(which BloodHound.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "BloodHound" "$DAS_CAT_PEN" "BloodHound Graphing Tool" false \
     $(if [[ $(which autosploit|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "AutoSploit" "$DAS_CAT_PEN" "Automated Mass Exploit Tool" false \
     $(if [[ $(which wifi-pumpkin|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "WiFi-Pumpkin" "$DAS_CAT_PEN" "Rogue AP Framework" false \
     $(if [[ $(which bluefruit_sniffer.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Bluefruit" "$DAS_CAT_PEN" "Adafruit's BLE Sniffer" false \
