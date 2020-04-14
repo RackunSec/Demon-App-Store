@@ -32,7 +32,7 @@ NEOCHECKSUM=4f625988b580eacaf7daef1cb8c98622
 NEO4JURL=https://demonlinux.com/download/packages/neo4j-desktop-offline-1.2.1-x86_64.AppImage
 NEOFILE=neo4j-desktop-offline-1.2.1-x86_64.AppImage
 LOCALAREA=${DAS_APPCACHE}/$NEOFILE
-$DAS_FUNC_SCRIPT_DIR/checksum_check.sh $LOCALAREA $NEOCHECKSUM $NEO4JURL "Neo4J (WNL Mirror)" # download Neo4J
+$DAS_FUNC_SCRIPT_DIR/checksum_check.sh $LOCALAREA $NEOCHECKSUM $NEO4JURL "Neo4J from WNL Mirror" # download Neo4J
 chmod +x $LOCALAREA
 cp $LOCALAREA /usr/local/sbin/neo4j-start # copy the binary into the $PATH, keep original for checksum/bandwidth
 apt install $DAS_BUILD_DEPS # needed for web interface of Neo4J
