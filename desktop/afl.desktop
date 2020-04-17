@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=American Fuzzy Lop
+Comment=American Fuzzy Lop Reverse Engineering and Fuzzing
+Exec=tilix -e "bash -c \"afl-analyze --help;bash\""
+Icon=/usr/share/demon/images/icons/afl.png
+StartupNotify=false
+Categories=exploitation

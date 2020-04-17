@@ -190,6 +190,22 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
   elif [[ "$app" =~ VLC ]]
     then
       apt remove vlc -y
+  elif [[ "$app" =~ AFL ]]
+    then
+      rm -rf /usr/local/bin/afl-analyze
+      rm -rf /usr/local/bin/afl-clang
+      rm -rf /usr/local/bin/afl-clang++
+      rm -rf /usr/local/bin/afl-cmin
+      rm -rf /usr/local/bin/afl-fuzz
+      rm -rf /usr/local/bin/afl-g++
+      rm -rf /usr/local/bin/afl-gcc
+      rm -rf /usr/local/bin/afl-gotcpu
+      rm -rf /usr/local/bin/afl-plot
+      rm -rf /usr/local/bin/afl-showmap
+      rm -rf /usr/local/bin/afl-tmin
+      rm -rf /usr/local/bin/afl-whatsup
+      rm ${LOCAL_APPS}afl.desktop # remove the desktop icon from the menu
+
   elif [[ "$app" =~ Brave.Browser ]]
     then
       apt remove brave-browser -y
@@ -1103,6 +1119,7 @@ main () {
    $(if [[ $(which hciconfig|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Bluez" "$DAS_CAT_DVR" "Default Bluetooth Stack Tools" false \
    \
    $(if [[ $(which Cutter|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Cutter" "$DAS_CAT_ENG" "Reverse engineering tool" false \
+   $(if [[ $(which afl-analyze|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "AFL" "$DAS_CAT_ENG" "American Fuzzy Lop" false \
    $(if [[ $(which apktool|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "APKTool" "$DAS_CAT_ENG" "Reverse engineering Android APK tool" false \
    $(if [[ $(which ghidra9.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Ghidra9" "$DAS_CAT_ENG" "NSA's Reverse engineering Tool" false \
    \
