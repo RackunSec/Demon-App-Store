@@ -24,6 +24,7 @@ export DAS_WINDOWLONGIMAGE=$(cat $DAS_CONFIG|grep DAS_WINDOWLONGIMAGE|sed -r 's/
 export DAS_APPNAME=$(cat $DAS_CONFIG|grep DAS_APPNAME|sed -r 's/[^=]+=//')
 export DAS_APPTEXT=$(cat $DAS_CONFIG|grep DAS_APPTEXT|sed -r 's/[^=]+=//')
 export DAS_APPCACHE=$(cat $DAS_CONFIG|grep DAS_APPCACHE|sed -r 's/[^=]+=//')
+export SYS_LOCAL_APPS=$(cat $DAS_CONFIG|grep SYS_LOCAL_APPS|sed -r 's/[^=]+=//')
 export DAS_DESKTOP_CACHE=$(cat $DAS_CONFIG|grep DAS_DESKTOP_CACHE|sed -r 's/[^=]+=//')
 export DAS_WIDTH=$(cat $DAS_CONFIG|grep DAS_WIDTH|sed -r 's/[^=]+=//')
 export DAS_HEIGHT=$(cat $DAS_CONFIG|grep DAS_HEIGHT|sed -r 's/[^=]+=//')
@@ -316,6 +317,11 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
       rm -rf ${LOCAL_APPS}/ghidra.desktop # remove menu icon
       rm -rf /usr/local/sbin/ghidra9.sh # remove binary init
       rm -rf /usr/local/sbin/ghidra9
+  elif [[ "$app" =~ PWNDrop ]]
+    then
+      rm -rf /usr/local/pwndrop 2>/dev/null # remove install directory
+      rm -rf /usr/local/sbin/pwndrop-start.sh # remove my binary
+      rm -rf $SYS_LOCAL_APPS/pwndrop.desktop # remove the desktop menu icon
   elif [[ "$app" =~ WiFiPhisher ]]
     then
       rm -rf /infosec/wifi/wifiphisher # remove the build directory
@@ -392,7 +398,7 @@ installApp () { # All of the blocks of code to install each app individually:
       && [ $(which $applowerhyphendotsh | wc -l) -ne 1 ] \
       && [ $(which $applowerhyphen | wc -l) -ne 1 ] \
       && [ $(which $applower|wc -l) -ne 1 ] \
-      && [ $(dkms status | grep -i $app | wc -l) -ne 1 ]
+      && [ $(dkms status 2>/dev/null| grep -i $app | wc -l) -ne 1 ]
       ### We checked all combinations above for the $PATH object.
       then
         ### Spotify
@@ -990,6 +996,14 @@ installApp () { # All of the blocks of code to install each app individually:
               $DAS_INST_SCRIPTS_DIR/eyewitness.sh
             killBar
 
+        ### PwnDrop
+        ### Git Self Installer
+      elif  [[ "$app" =~ PWNDrop ]]
+          then
+            progressBar "Installing PWNDrop ... "
+              $DAS_INST_SCRIPTS_DIR/pwndrop.sh
+            killBar
+
         ### SERT.py
         ### Git, no checksum
         elif [[ "$app" =~ SERT ]]
@@ -1058,6 +1072,7 @@ main () {
   readarray selected < <(yad --width=$DAS_WIDTH --height=$DAS_HEIGHT --title=$DAS_APPNAME --button=Help:"bash -c help" --button="Clean Cache:bash -c cleanCache" --button="Exit:1" --button="Check Out:0" --list --checklist --column="Install" --column="App Name" --column=Category --column=Description --column=Uninstall:CHK --image=$DAS_WINDOWLONGIMAGE --window-icon=$DAS_WINDOWICON \
     --center \
     $(if [[ $(which autosploit|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "AutoSploit" "$DAS_CAT_PEN" "Automated Mass Exploit Tool" false \
+    $(if [[ $(which pwndrop-start.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PWNDrop" "$DAS_CAT_PEN" "self-deployable file hosting service for sending out red teaming payloads" false \
     $(if [[ $(which wifi-pumpkin|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "WiFi-Pumpkin" "$DAS_CAT_PEN" "Rogue AP Framework" false \
     $(if [[ $(which bluefruit_sniffer.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Bluefruit" "$DAS_CAT_PEN" "Adafruit's BLE Sniffer" false \
     $(if [[ $(which wifiphisher|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "WiFiPhisher" "$DAS_CAT_PEN" "Rogue AP WiFi Phishing Tool" false \
@@ -1084,7 +1099,7 @@ main () {
    $(if [[ $(which terminus|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Terminus" "$DAS_CAT_SYS" "A Terminal for a Modern Age" false \
    $(if [[ $(which tilix|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Tilix" "$DAS_CAT_SYS" "A Tiling Terminal Emulator" false \
    \
-   $(if [[ $(dkms status|grep -i rtl8812au|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "RTL8812AU" "$DAS_CAT_DVR" "Aircrack-NG DKMS Driver for AWUS1900" false \
+   $(if [[ $(dkms status 2>/dev/null|grep -i rtl8812au|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "RTL8812AU" "$DAS_CAT_DVR" "Aircrack-NG DKMS Driver for AWUS1900" false \
    $(if [[ $(which hciconfig|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Bluez" "$DAS_CAT_DVR" "Default Bluetooth Stack Tools" false \
    \
    $(if [[ $(which Cutter|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Cutter" "$DAS_CAT_ENG" "Reverse engineering tool" false \

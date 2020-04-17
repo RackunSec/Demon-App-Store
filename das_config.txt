@@ -2,7 +2,7 @@
 # 2020 Demon App Store
 # WeakNet Labs
 # Version, mo, day, rev:
-DAS_VERSION=1.2.2.1
+DAS_VERSION=1.4.17.1
 DAS_SPANFONT=<span font='Ubuntu Condensed 11'>
 DAS_WINDOWICON=/usr/share/demon/images/icons/demon-64-white.png
 DAS_WINDOWIMAGE=/usr/share/demon/images/icons/demon-store-icon-64-padded.png
@@ -11,7 +11,7 @@ DAS_APPNAME=Demon App Store
 DAS_APPTEXT=\n\nWelcome to the Demon App Store - where everythings free.\n
 DAS_APPCACHE=/var/demon/store/app-cache
 DAS_DESKTOP_CACHE=/usr/share/demon/desktop/
-DAS_WIDTH=840
+DAS_WIDTH=911
 DAS_HEIGHT=512
 DAS_CAT_PEN=Cybersecurity
 DAS_CAT_FOR=Digital Forensics
