@@ -942,7 +942,7 @@ installApp () { # All of the blocks of code to install each app individually:
         ### Copy, HTTP, Checksum Required
         elif [[ "$app" =~ SonarQube ]]
           then
-            progressBar " Installing SonarQube (SonarSource.com) ... "
+            progressBar " Installing SonarQube ... "
               $DAS_INST_SCRIPTS_DIR/sonarqube.sh
             killBar
 
@@ -970,7 +970,7 @@ installApp () { # All of the blocks of code to install each app individually:
         ### Git Apt Installer, Checksum required
         elif [[ "$app" =~ "Terminus" ]]
             then
-              progressBar " Installing Terminus (GitHUB) ... "
+              progressBar " Installing Terminus ... "
                 $DAS_INST_SCRIPTS_DIR/terminus.sh
               killBar
 
@@ -978,7 +978,7 @@ installApp () { # All of the blocks of code to install each app individually:
         ### GIT with depends
         elif [[ "$app" =~ "IMSI-Catcher" ]]
             then
-              progressBar " Installing IMSI-Catcher (GitHUB) ...   "
+              progressBar " Installing IMSI-Catcher ...   "
                 $DAS_INST_SCRIPTS_DIR/imsi_catcher.sh
               killBar
 
@@ -986,7 +986,7 @@ installApp () { # All of the blocks of code to install each app individually:
         ### GIT, Compile, Copy
         elif [[ "$app" =~ PixieWPS ]]
           then
-            progressBar " Installing PixieWPS (GitHUB) ... " # let em know you're compiling.
+            progressBar " Installing PixieWPS ... " # let em know you're compiling.
               $DAS_INST_SCRIPTS_DIR/pixie_wps.sh
             killBar
 
@@ -994,7 +994,7 @@ installApp () { # All of the blocks of code to install each app individually:
         ### Git, pip, no checksum required
         elif [[ "$app" =~ Bluefruit ]]
           then
-            progressBar "Installing Adafruit's Bluetooth (Bluefruit) Sniffer ... "
+            progressBar "Installing Adafruit\'s Bluetooth Sniffer ... "
               $DAS_INST_SCRIPTS_DIR/bluefruit.sh
             killBar
 
@@ -1010,7 +1010,7 @@ installApp () { # All of the blocks of code to install each app individually:
         ### Git, no checksum or installer
         elif [[ "$app" =~ EyeWitness ]]
           then
-            progressBar " Installing EyeWitness (GitHUB) ... "
+            progressBar " Installing EyeWitness ... "
               $DAS_INST_SCRIPTS_DIR/eyewitness.sh
             killBar
 
@@ -1026,15 +1026,23 @@ installApp () { # All of the blocks of code to install each app individually:
         ### Git, no checksum
         elif [[ "$app" =~ SERT ]]
           then
-            progressBar "Installing SERT (GitHUB) ... "
+            progressBar "Installing SERT ... "
               $DAS_INST_SCRIPTS_DIR/sert.py.sh
+            killBar
+
+        ### America Fuzzy Lop @bunnymeats
+        ### Git, Compile, no checksum required
+      elif [[ "$app" =~ AFL ]]
+          then
+            progressBar "Installing American Fuzzy Lop ..."
+              $DAS_INST_SCRIPTS_DIR/afl.sh
             killBar
 
         ### WiFiPhisher
         ### Git, Compile, no checksum required
         elif [[ "$app" =~ WiFiPhisher ]]
           then
-            progressBar "Installing WiFiPhisher (GitHUB) ..."
+            progressBar "Installing WiFiPhisher ..."
               $DAS_INST_SCRIPTS_DIR/wifiphisher.sh
             killBar
 
