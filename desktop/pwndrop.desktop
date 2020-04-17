@@ -6,5 +6,4 @@ Comment=PWNDrop
 Exec=pwndrop-start.sh
 Icon=/usr/share/demon/images/icons/pwndrop.png
 StartupNotify=false
-Terminal=true
 Categories=exploitation
