@@ -107,5 +107,9 @@ export DAS_VERSION=$(cat $DAS_CONFIG|grep DAS_VERSION|sed -r 's/[^=]+=//')
 # Notify user:
 notify "$DAS_NOTIFY_APP" "The Demon App Store has been updated\nto version: $DAS_VERSION" "$DAS_NOTIFY_ICON_GRN"
 
+### Make sure the installer scripts are executable:
+chmod +x $DAS_INST_SCRIPTS_DIR/* # comes from das_config.txt
+chmod +x $DAS_FUNC_SCRIPT_DIR/* # comes from das_config.txt
+
 ### start Workflow:
 /usr/local/sbin/demon-app-store-workflow.sh
