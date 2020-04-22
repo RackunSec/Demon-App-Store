@@ -206,6 +206,11 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
       rm -rf /usr/local/bin/afl-whatsup
       rm ${LOCAL_APPS}afl.desktop # remove the desktop icon from the menu
 
+    elif [[ "$app" =~ Vulnx ]]
+      then
+        rm ${LOCAL_APPS}vulnx.desktop # remove menu icon
+        rm $(which vulnx) # remove binary
+
   elif [[ "$app" =~ Brave.Browser ]]
     then
       apt remove brave-browser -y
@@ -1048,13 +1053,21 @@ installApp () { # All of the blocks of code to install each app individually:
 
         ### Demon Updater Tool
         ### Git, no checksum required
+      elif [[ "$app" =~ Vulnx ]]
+          then
+            progressBar " Installing $app ... "
+              $DAS_INST_SCRIPTS_DIR/vulnx.sh
+            killBar
+
+        ### Demon Updater Tool
+        ### Git, no checksum required
         elif [[ "$app" =~ Demon-Update-Tool ]]
           then
             progressBar " Installing $app ... "
               $DAS_INST_SCRIPTS_DIR/demon_updater_tool.sh
             killBar
-        ### Ghidra
-        ### unzip, appimage, checksum required
+      ### Ghidra
+      ### unzip, appimage, checksum required
       elif [[ "$app" =~ Ghidra9 ]]
           then
             progressBar " Installing $app ... "
@@ -1115,6 +1128,7 @@ main () {
    $(if [[ $(which socialbox|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "SocialBox" "$DAS_CAT_PEN" "Social Media Bruteforce Attack Framework" false \
    $(if [[ $(which quasar|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "quasar" "$DAS_CAT_PEN" "Information Gathering Framework For Penetration Testers" false \
    $(if [[ $(which sert.py|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "SERT" "$DAS_CAT_FOR" "Spirion EnCase Reporting Tool" false \
+   $(if [[ $(which vulnx|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Vulnx" "$DAS_CAT_FOR" "Vulnx2.0 CMS Vulnerability Scanner" false \
    \
    $(if [[ $(which massdns|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "MassDNS" "$DAS_CAT_NET" "Simple high-performance DNS stub resolver" false \
    \

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=2.0
+Type=Application
+Name=Vulnx v2.0
+Comment=CMS Vulnerability Scanner
+Exec=tilix -e "bash -c \"vulnx;bash\""
+Icon=/usr/share/demon/images/icons/vulnx.png
+StartupNotify=false
+Categories=www
