@@ -422,6 +422,7 @@ installApp () { # All of the blocks of code to install each app individually:
       && [ $(dkms status 2>/dev/null| grep -i $app | wc -l) -ne 1 ] \
       && [ $(which "${app}-start.sh"|wc -l) -ne 1 ] \
       && [ $(which "${applower}-start.sh"|wc -l) -ne 1 ]
+      && [ $(which "${app_lower}-fuzz"|wc -l) -ne 1 ]
       ### We checked all combinations above for the $PATH object.
       then
         ### Spotify
