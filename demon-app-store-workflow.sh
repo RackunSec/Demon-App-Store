@@ -164,6 +164,11 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
     then
       # we call the uninstaller (new feature)
       $DAS_INST_SCRIPTS_DIR/bluez.sh uninstall
+  elif [[ "$app" =~ Neo4j ]]
+	then
+		/etc/init.d/neo4j stop
+		rm -rf /var/lib/neo4j
+		apt purge neo4j -y
   elif [[ "$app" =~ Demon-Update-Tool ]]
     then
       rm -rf /usr/local/sbin/demon-update* # remove the $PATH object
@@ -1074,7 +1079,13 @@ installApp () { # All of the blocks of code to install each app individually:
             progressBar " Installing $app ... "
               $DAS_INST_SCRIPTS_DIR/ghidra.sh
             killBar
-
+	### Neo4j
+	### apt, no checksum
+	elif [[ "$app" =~ "Neo4j" ]]
+	  then
+		progressBar " Installing Neo4j ... "
+	 		$DAS_INST_SCRIPTS_DIR/neo4j.sh
+		killBar
         ### RTL8812AU
         ### Aircrack-NG GitHUB.com
         elif [[ "$app" =~ RTL8812AU ]]
@@ -1162,6 +1173,7 @@ main () {
    $(if [[ $(which intellij-idea-community|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "IntelliJ IDEA Community" "$DAS_CAT_DEV" "Java IDE for Developers"  false \
    \
    $(if [[ $(which dbeaver|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "DBeaver" "$DAS_CAT_DEV" "Database tool for developers" false \
+   $(if [[ $(which neo4j|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Neo4j" "$DAS_CAT_DEV" "Neo4j Graph Database" false \
    \
    $(if [[ $(which brave-browser|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Brave-Browser" "$DAS_CAT_WEB" "Much more than a web browser" false \
    $(if [[ $(which google-chrome|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Google-Chrome" "$DAS_CAT_WEB" "Google's web browser" false \
