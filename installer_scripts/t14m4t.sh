@@ -30,6 +30,7 @@ export DAS_FUNC_SCRIPT_DIR=$(cat $DAS_FUNC_SCRIPT_DIR|grep DAS_APPCACHE|sed -r '
 export GIT_URL=https://github.com/MS-WEB-BN/t14m4t
 cd $DAS_APPCACHE && git clone $GIT_URL
 cd $DAS_APPCACHE/t14m4t && cp t14m4t /usr/local/bin/
+chmod +x /usr/local/bin/t14m4t
 mkdir /usr/share/t14m4t
 cp -R $DAS_APPCACHE/t14m4t/Wordlist /usr/share/t14m4t/
 cp $DAS_DESKTOP_CACHE/t14m4t.desktop $SYS_LOCAL_APPS # copy in the icon into the desktop menu
