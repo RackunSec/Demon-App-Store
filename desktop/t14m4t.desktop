@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=T14m4t
+Comment=Automatic Bruteforce Wrapper to Hydra
+Exec=tilix -e "bash -c \"t14m4t --help;bash\"";
+StartupNotify=false
+Icon=/usr/share/demon/images/icons/force.png
+Categories=bruteforce

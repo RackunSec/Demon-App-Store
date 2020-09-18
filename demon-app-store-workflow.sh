@@ -12,8 +12,15 @@ ctrl_c () {
   exit
 }
 
+# Instructions for adding an application:
+# 1. Add the installer_scripts/installer.sh file - copy the template of another
+# 2. Add it to the YAD dialog at the bottom of this file
+# 3. Add the logic to the installer and uninstaller sections of this file
+# 4. test it, test it, test it, and test it again by running demon-app-store.sh from the terminal to view output.
+# 5. commit/push it.
+
 # I chose "DAS_" as a prefix for exportation purposes, "(D)emon (A)pp (S)tore"
-# This way I don't accidentally overwrite anything else (hoopefully) in the environment.
+# This way I don't accidentally overwrite anything else (hoopefully) in the user's environment.
 export DAS_LOCAL=/var/demon/store/code/Demon-App-Store/
 export DAS_CONFIG=${DAS_LOCAL}das_config.txt
 export DAS_INST_SCRIPTS_DIR=$(cat $DAS_CONFIG|grep DAS_INST_SCRIPTS_DIR|sed -r 's/[^=]+=//')
@@ -365,6 +372,11 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
       rm -rf /infosec/exploit/beef # remove the app
       rm -rf /usr/share/applications/beef.desktop # remove the menu entry
       rm -rf /usr/local/sbin/beef # remove the binary file
+  elif [[ "$app" =~ "t14m4t" ]]
+    then
+      rm -rf /usr/share/t14m4t # remove the app
+      rm -rf /usr/share/applications/t14m4t.desktop # remove the menu entry
+      rm -rf /usr/local/bin/t14m4t # remove the binary file
   elif [[ "$app" =~ "Nessus" ]]
     then
       apt remove nessus -y # using dpkg
@@ -386,6 +398,8 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
   killBar
 }
 
+### INSTALLER LOGIC GOES BELOW HERE
+###
 ### Install code blocks for EACH App:
 installApp () { # All of the blocks of code to install each app individually:
   app=$1
@@ -520,22 +534,22 @@ installApp () { # All of the blocks of code to install each app individually:
 
         ### BeEF
         ### GIT, install script
-      elif [ "$app" == "BeEF" ]
-          then
-            URL=https://github.com/beefproject/beef
-            LOCALAREA=/infosec/exploit/
-            BINFILE=/usr/local/sbin/beef
-            progressBar " Installing BeEF ... "
-              cd $LOCALAREA && git clone $URL
-              cd beef
-              sed -ri 's/\s+get_permission//' install # whoopsey daisey!
-              sed -ri 's/apt-get install/apt-get install -y/' install # whoopsey daisey!
-              ./install
-              cp $DAS_DESKTOP_CACHE/beef.desktop $LOCAL_APPS # copy the desktop icon that I made
-              echo "#!/usr/bin/env bash" > $BINFILE
-              echo "cd /infosec/exploit/beef && ./beef" >> $BINFILE
-              chmod +x $BINFILE # make it executable
-            killBar
+        elif [ "$app" == "BeEF" ]
+            then
+              URL=https://github.com/beefproject/beef
+              LOCALAREA=/infosec/exploit/
+              BINFILE=/usr/local/sbin/beef
+              progressBar " Installing BeEF ... "
+                cd $LOCALAREA && git clone $URL
+                cd beef
+                sed -ri 's/\s+get_permission//' install # whoopsey daisey!
+                sed -ri 's/apt-get install/apt-get install -y/' install # whoopsey daisey!
+                ./install
+                cp $DAS_DESKTOP_CACHE/beef.desktop $LOCAL_APPS # copy the desktop icon that I made
+                echo "#!/usr/bin/env bash" > $BINFILE
+                echo "cd /infosec/exploit/beef && ./beef" >> $BINFILE
+                chmod +x $BINFILE # make it executable
+              killBar
 
         ### OWASP Amass
         ### Installer, No Apt
@@ -1059,10 +1073,18 @@ installApp () { # All of the blocks of code to install each app individually:
 
         ### Demon Updater Tool
         ### Git, no checksum required
-      elif [[ "$app" =~ Vulnx ]]
+        elif [[ "$app" =~ Vulnx ]]
           then
             progressBar " Installing $app ... "
               $DAS_INST_SCRIPTS_DIR/vulnx.sh
+            killBar
+
+        ### t14m4t
+        ### Git, no checksum required
+      elif [[ "$app" =~ t14m4t ]]
+          then
+            progressBar " Installing $app ... "
+              $DAS_INST_SCRIPTS_DIR/t14m4t.sh
             killBar
 
         ### Demon Updater Tool
@@ -1079,13 +1101,14 @@ installApp () { # All of the blocks of code to install each app individually:
             progressBar " Installing $app ... "
               $DAS_INST_SCRIPTS_DIR/ghidra.sh
             killBar
-	### Neo4j
-	### apt, no checksum
-	elif [[ "$app" =~ "Neo4j" ]]
-	  then
-		progressBar " Installing Neo4j ... "
-	 		$DAS_INST_SCRIPTS_DIR/neo4j.sh
-		killBar
+    	### Neo4j
+    	### apt, no checksum
+    	elif [[ "$app" =~ "Neo4j" ]]
+    	  then
+    		progressBar " Installing Neo4j ... "
+    	 		$DAS_INST_SCRIPTS_DIR/neo4j.sh
+    		killBar
+
         ### RTL8812AU
         ### Aircrack-NG GitHUB.com
         elif [[ "$app" =~ RTL8812AU ]]
@@ -1138,6 +1161,7 @@ main () {
    $(if [[ $(which ptf|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PTF" "$DAS_CAT_PEN" "TrustedSec's Pentester's Framework" false \
    $(if [[ $(which beef|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "BeEF" "$DAS_CAT_PEN" "The Browser Exploitation Framework" false \
    $(if [[ $(which socialbox|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "SocialBox" "$DAS_CAT_PEN" "Social Media Bruteforce Attack Framework" false \
+   $(if [[ $(which t14m4t|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "t14m4t" "$DAS_CAT_PEN" "Automatic bruteforce wrapper to Hydra" false \
    $(if [[ $(which quasar|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "quasar" "$DAS_CAT_PEN" "Information Gathering Framework For Penetration Testers" false \
    $(if [[ $(which sert.py|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "SERT" "$DAS_CAT_FOR" "Spirion EnCase Reporting Tool" false \
    $(if [[ $(which vulnx|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Vulnx" "$DAS_CAT_FOR" "Vulnx2.0 CMS Vulnerability Scanner" false \
