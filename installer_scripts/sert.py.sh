@@ -26,8 +26,8 @@ export DAS_PYTHON_VERSION=3
 ##### Demon App Store Variables:
 # Example of pulling variable from das_config:
 # $(cat $DAS_CONFIG|grep DAS_APPCACHE|sed -r 's/[^=]+=//')
-mkdir -p /infosec/forensics
-cd /infosec/forensics && git clone $GIT_URL
-cd /infosec/forensics/SERT
+mkdir -p /cyberpunk/forensics
+cd /cyberpunk/forensics && git clone $GIT_URL
+cd /cyberpunk/forensics/SERT
 cp sert.py /usr/local/sbin # copy the binary into the $PATH
 cp sert.desktop $SYS_LOCAL_APPS # copy in the desktop menu file

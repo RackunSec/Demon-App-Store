@@ -28,18 +28,18 @@ export DAS_BUILD_DEP="python-numpy python-scipy python-scapy gr-gsm"
 # Example of pulling variable from das_config:
 # $(cat $DAS_CONFIG|grep DAS_APPCACHE|sed -r 's/[^=]+=//')
 
-if [ ! -d /infosec/rf ]
+if [ ! -d /cyberpunk/rf ]
   then
-    mkdir -p /infosec/rf
+    mkdir -p /cyberpunk/rf
 fi
-if [ ! -d /infosec/rf/IMSI-catcher ] # /infosec/rf/ should be tehre by now
+if [ ! -d /cyberpunk/rf/IMSI-catcher ] # /cyberpunk/rf/ should be tehre by now
   then
-    cd /infosec/rf && git clone $GIT_URL
+    cd /cyberpunk/rf && git clone $GIT_URL
 else
-    cd /infosec/rf/IMSI-catcher && git pull
+    cd /cyberpunk/rf/IMSI-catcher && git pull
 fi
 apt -y install $DAS_BUILD_DEP
 cp $DAS_DESKTOP_CACHE/imsi-catcher.desktop $SYS_LOCAL_APPS
 echo '#!/usr/bin/env bash' > $DAS_BINFILE
-echo "cd /infosec/rf/IMSI-catcher && ls --color=auto " >> $DAS_BINFILE
+echo "cd /cyberpunk/rf/IMSI-catcher && ls --color=auto " >> $DAS_BINFILE
 chmod +x $DAS_BINFILE # make it executable

@@ -29,7 +29,7 @@ export DAS_FUNC_SCRIPT_DIR=$(cat $DAS_FUNC_SCRIPT_DIR|grep DAS_APPCACHE|sed -r '
 export FILE=master.zip
 export LOCALAREA=$DAS_APPCACHE/$FILE # /var/demon/.../master.zip
 export CHECKSUM=75453b8646f28873de05c083a60b6a69 # for master.zip ($FILE)
-export INSTALLAREA=/infosec/wifi/
+export INSTALLAREA=/cyberpunk/wifi/
 export INSTALLDIR=pixiewps-master
 $DAS_FUNC_SCRIPT_DIR/checksum_check.sh $LOCALAREA $CHECKSUM $GIT_URL $DAS_APP_NAME # download the file
 
@@ -38,4 +38,4 @@ cd $INSTALLAREA && unzip $FILE && rm $FILE
 apt -y install $DAS_BUILD_DEPS # install dependencies
 cd ${INSTALLAREA}/${INSTALLDIR} && make && cp pixiewps /usr/local/sbin # copy the executable into $PATH
 cp $DAS_DESKTOP_CACHE/pixiewps.desktop /usr/share/applications # copy menu icon/entry file
-cd && rm -rf ${INSTALLAREA}/${INSTALLDIR} # remove /infosec/wifi/pixiewps-master
+cd && rm -rf ${INSTALLAREA}/${INSTALLDIR} # remove /cyberpunk/wifi/pixiewps-master

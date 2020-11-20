@@ -24,13 +24,13 @@ export DAS_BUILD_PIP=pyserial
 ##### Demon App Store Variables:
 # Example of pulling variable from das_config:
 # $(cat $DAS_CONFIG|grep DAS_APPCACHE|sed -r 's/[^=]+=//')
-export LOCALAREA=/infosec/
+export LOCALAREA=/cyberpunk/
 export DAS_BIN_FILE=/usr/local/sbin/bluefruit_sniffer.sh
-mkdir /infosec/bluetooth 2>/dev/null
-cd /infosec/bluetooth
+mkdir /cyberpunk/bluetooth 2>/dev/null
+cd /cyberpunk/bluetooth
 git clone $GIT_URL Bluefruit
 pip install $DAS_BUILD_PIP
 echo "#!/usr/bin/env bash" > $DAS_BIN_FILE
-echo "cd /infosec/bluetooth/Bluefruit && python sniffer.py -h" >> $DAS_BIN_FILE
+echo "cd /cyberpunk/bluetooth/Bluefruit && python sniffer.py -h" >> $DAS_BIN_FILE
 chmod +x $DAS_BIN_FILE
 cp $DAS_DESKTOP_CACHE/bluefruit.desktop ${SYS_LOCAL_APPS} # copy in the desktop / menu icon

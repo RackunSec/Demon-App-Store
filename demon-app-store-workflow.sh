@@ -165,7 +165,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
       rm ${LOCAL_APPS}/intellij.desktop
   elif [[ "$app" =~ PTF ]]
     then
-      rm -rf /infosec/ptf
+      rm -rf /cyberpunk/ptf
       rm /usr/local/bin/ptf
   elif [[ "$app" =~ Bluez ]]
     then
@@ -316,7 +316,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
       apt remove glances -y
   elif [[ "$app" =~ IMSI-Catcher ]]
     then
-      rm -rf /infosec/rf/IMSI-catcher # remove local git repo
+      rm -rf /cyberpunk/rf/IMSI-catcher # remove local git repo
       rm -rf /usr/local/sbin/imsi-catcher # remove binary file
       rm -rf ${LOCAL_APPS}imsi-catcher.desktop # remove the desktop icon
       apt remove -y gr-gsm
@@ -326,7 +326,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
       rm -rf /opt/sonarqube-7.9.1
   elif [[ "$app" =~ AutoSploit ]]
     then
-      rm -rf /infosec/exploit/AutoSploit
+      rm -rf /cyberpunk/exploit/AutoSploit
       rm -rf /usr/local/sbin/autosploit
       rm -rf /usr/share/applications/autosploit.desktop # remove the desktop/menu icon
   elif [[ "$app" == "WiFi-Pumpkin" ]]
@@ -357,7 +357,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
       rm -rf $SYS_LOCAL_APPS/pwndrop.desktop # remove the desktop menu icon
   elif [[ "$app" =~ WiFiPhisher ]]
     then
-      rm -rf /infosec/wifi/wifiphisher # remove the build directory
+      rm -rf /cyberpunk/wifi/wifiphisher # remove the build directory
       rm -rf //usr/local/bin/wifiphisher # remove my script
       rm ${LOCAL_APPS}/wifiphisher.desktop # remove the menu icon
       apt remove dnsmasq  -y # remove dependency
@@ -369,7 +369,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
       apt -y remove gitkraken # don't forget about meeeeeeeeeeeeeeeee!!!!!!!!!!!!!!!
   elif [[ "$app" =~ "BeEF" ]]
     then
-      rm -rf /infosec/exploit/beef # remove the app
+      rm -rf /cyberpunk/exploit/beef # remove the app
       rm -rf /usr/share/applications/beef.desktop # remove the menu entry
       rm -rf /usr/local/sbin/beef # remove the binary file
   elif [[ "$app" =~ "t14m4t" ]]
@@ -383,12 +383,12 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
       rm -rf /usr/local/sbin/nessus # remove our script
   elif [[ "$app" =~ "PixieWPS" ]]
     then
-      rm -rf /infosec/wifi/pixiewps-master # removethe initial build directory
+      rm -rf /cyberpunk/wifi/pixiewps-master # removethe initial build directory
       rm /usr/local/sbin/pixiewps # remove the executable
       rm /usr/share/applications/pixiewps.desktop # remove the desktop/menu icon
   elif [[ "$app" =~ Bluefruit ]]
     then
-      rm -rf /infosec/bluetooth/Bluefruit # remove the gitHUB project
+      rm -rf /cyberpunk/bluetooth/Bluefruit # remove the gitHUB project
       rm -rf /usr/local/sbin/bluefruit_sniffer.sh # remove our binary file
   else
     printf "[+] Recieved $app\n";
@@ -520,7 +520,7 @@ installApp () { # All of the blocks of code to install each app individually:
           then
             URL=https://github.com/NullArray/AutoSploit
             FILE=AutoSploit
-            INSTALLAREA=/infosec/exploit
+            INSTALLAREA=/cyberpunk/exploit
             BINFILE=/usr/local/sbin/autosploit
             progressBar "Installing AutoSploit ... "
             cd $INSTALLAREA && git clone $URL
@@ -528,7 +528,7 @@ installApp () { # All of the blocks of code to install each app individually:
             chmod +x install.sh
             ./install.sh
             echo "#!/usr/bin/env bash" > $BINFILE
-            echo "cd /infosec/exploit/AutoSploit && ./runsploit.sh" >> $BINFILE
+            echo "cd /cyberpunk/exploit/AutoSploit && ./runsploit.sh" >> $BINFILE
             chmod +x $BINFILE
             cp $DAS_DESKTOP_CACHE/autosploit.desktop $LOCAL_APPS # set the menu/desktop icon
 
@@ -537,7 +537,7 @@ installApp () { # All of the blocks of code to install each app individually:
         elif [ "$app" == "BeEF" ]
             then
               URL=https://github.com/beefproject/beef
-              LOCALAREA=/infosec/exploit/
+              LOCALAREA=/cyberpunk/exploit/
               BINFILE=/usr/local/sbin/beef
               progressBar " Installing BeEF ... "
                 cd $LOCALAREA && git clone $URL
@@ -547,7 +547,7 @@ installApp () { # All of the blocks of code to install each app individually:
                 ./install
                 cp $DAS_DESKTOP_CACHE/beef.desktop $LOCAL_APPS # copy the desktop icon that I made
                 echo "#!/usr/bin/env bash" > $BINFILE
-                echo "cd /infosec/exploit/beef && ./beef" >> $BINFILE
+                echo "cd /cyberpunk/exploit/beef && ./beef" >> $BINFILE
                 chmod +x $BINFILE # make it executable
               killBar
 
@@ -583,14 +583,14 @@ installApp () { # All of the blocks of code to install each app individually:
           then
             progressBar $progressText
             apt install python-pip python-expect -y
-            if [ -d /infosec/ptf ]
+            if [ -d /cyberpunk/ptf ]
               then
-                cd /infosec/ptf && git pull
+                cd /cyberpunk/ptf && git pull
             else
-              cd /infosec && git clone https://github.com/trustedsec/ptf
+              cd /cyberpunk && git clone https://github.com/trustedsec/ptf
               if [ $(grep ptf ~/.bashrc|wc -l) -eq 0 ]
                 then
-                  echo "PATH=\$PATH:/infosec/ptf" >> ~/.bashrc # update our PATH
+                  echo "PATH=\$PATH:/cyberpunk/ptf" >> ~/.bashrc # update our PATH
               fi
             fi
 
