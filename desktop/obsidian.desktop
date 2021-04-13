@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Obsidian
+Comment=Obsidian Knowledge Base
+GenericName=Obsidian
+Exec=/usr/local/bin/obsidian
+Icon=/usr/share/demon/images/icons/obsidian.png
+Type=Application
+StartupNotify=true
+Categories=Notes;Development;
+MimeType=text/plain;

@@ -5,7 +5,7 @@
 # Installer script, should be called from the workflow app
 # INSTALL:
 # --------------------
-# Vulnx 2.0
+# Obsidian https://obsidian.md/
 # --------------------
 # NOTES:
 #   Vulnx is An Intelligent Bot Auto Shell Injector that detects vulnerabilities in multiple types of Cms,
@@ -35,6 +35,7 @@ if [[ "$1" == "uninstall" ]]
   then
     rm -rf $OBSIDIAN_SCRIPT
     rm -rf /usr/local/bin/$APPFILE
+    rm -rf $SYS_LOCAL_APPS/obsidian.desktop # remove the menu icon
     exit 0
 fi
 $DAS_FUNC_SCRIPT_DIR/checksum_check.sh $LOCALAREA $DAS_CHECKSUM $URL $DAS_APP_NAME # download the file
@@ -43,4 +44,5 @@ cp $DAS_APPCACHE/${APPFILE} /usr/local/bin/ # copy in the icon into the desktop 
 echo "#!/usr/bin/env bash" >> $OBSIDIAN_SCRIPT
 echo "/usr/local/bin/${APPFILE} --no-sandbox" >> $OBSIDIAN_SCRIPT
 chmod +x $OBSIDIAN_SCRIPT
+cp $DAS_DESKTOP_CACHE/obsidian.desktop $SYS_LOCAL_APPS/obsidian.desktop # create menu icon
 exit 0
