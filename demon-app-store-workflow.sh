@@ -370,7 +370,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
       apt remove tilix tilix-common -y
   elif [[ "$app" =~ GitKraken ]]
     then
-      apt -y remove gitkraken # don't forget about meeeeeeeeeeeeeeeee!!!!!!!!!!!!!!!
+      $DAS_INST_SCRIPTS_DIR/gitkraken.sh uninstall # don't forget about meeeeeeeeeeeeeeeee!!!!!!!!!!!!!!!
   elif [[ "$app" =~ "BeEF" ]]
     then
       rm -rf /cyberpunk/exploit/beef # remove the app
@@ -1133,13 +1133,8 @@ installApp () { # All of the blocks of code to install each app individually:
         ### Installer, HTTP, CHecksum required
         elif [[ "$app" =~ GitKraken ]]
           then
-            URL=http://demonlinux.com/download/packages/gitkraken-amd64.deb
-            FILE=gitkraken-amd64.deb
-            CHECKSUM=6ad71a6e177e4eda2c3252bee4fceaab
-            LOCALAREA=$DAS_APPCACHE/$FILE
-            ./das_functions/checksum_check $LOCALAREA $CHECKSUM $URL $app
-            progressBar " Installing GitKraken ... "
-              $DAS_INST_SCRIPTS_DIR/gitkraken.sh $DAS_APPCACHE/$FILE
+            progressBar " Installing $app ... "
+              $DAS_INST_SCRIPTS_DIR/gitkraken.sh install
             killBar
 
         ### IDKWTF I GOT LOL
