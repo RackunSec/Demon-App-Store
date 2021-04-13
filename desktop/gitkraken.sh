@@ -37,6 +37,7 @@ if [[ "$1" == "uninstall" ]]
     exit 0
 fi
 $DAS_FUNC_SCRIPT_DIR/checksum_check.sh $LOCALAREA $DAS_CHECKSUM $URL $DAS_APP_NAME # download the file
+printf "[debug]: ${LOCALAREA}"
 dpkg -i $LOCALAREA
 apt -f install -y # just incake
 echo "#!/usr/bin/env bash" >> $STARTUP_SCRIPT
