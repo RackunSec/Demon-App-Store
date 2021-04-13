@@ -28,7 +28,7 @@ export DAS_APP_NAME="Gitkraken"
 export APPFILE=GitKraken-v7.5.2.deb
 export STARTUP_SCRIPT=/usr/local/bin/gitkraken-start
 export URL=https://demonlinux.com/download/packages/${APPFILE}
-export DAS_CHECKSUM=0f57aaa3e26c4591c489b6fedcdb2730
+export DAS_CHECKSUM=6ad71a6e177e4eda2c3252bee4fceaab
 export LOCALAREA=$DAS_APPCACHE/$APPFILE
 
 ### UNINSTALL:
