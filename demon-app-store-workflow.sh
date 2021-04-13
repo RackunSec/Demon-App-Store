@@ -171,6 +171,10 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
     then
       # we call the uninstaller (new feature)
       $DAS_INST_SCRIPTS_DIR/bluez.sh uninstall
+  elif [[ "$app" =~ Obsidian ]]
+    then
+      # we call the uninstaller (new feature)
+      $DAS_INST_SCRIPTS_DIR/obsidian.sh uninstall
   elif [[ "$app" =~ Neo4j ]]
 	then
 		/etc/init.d/neo4j stop
@@ -898,6 +902,14 @@ installApp () { # All of the blocks of code to install each app individually:
                 $DAS_INST_SCRIPTS_DIR/graphana.sh
               killBar
 
+        ### Obsidian
+        ### Installer, No apt, HTTP, Checksum Required
+        elif [ "$app" == "Obsidian" ]
+              then
+                progressBar " Installing $app ... "
+                  $DAS_INST_SCRIPTS_DIR/obsidian.sh
+                killBar
+
         ### Bluez Blutooth Stack
         ### Checksum required, build, apt involved for deps
         elif [[ "$app" == "Bluez" ]]
@@ -1184,6 +1196,7 @@ main () {
    $(if [[ $(which ghidra9.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Ghidra9" "$DAS_CAT_ENG" "NSA's Reverse engineering Tool" false \
    \
    $(if [[ $(which cherrytree|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "CherryTree" "$DAS_CAT_NOT" "A hierarchical note taking application" false \
+   $(if [[ $(which obsidian|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Obsidian" "$DAS_CAT_NOT" "A powerful knowledge base that works on top of a local folder of plain text Markdown files" false \
    $(if [[ $(which simplenote|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "SimpleNote" "$DAS_CAT_NOT" "The simplest way to keep notes" false \
    \
    $(if [[ $(which pycharm|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PyCharm" "$DAS_CAT_DEV" "The Python IDE for Professional Developers" false \
