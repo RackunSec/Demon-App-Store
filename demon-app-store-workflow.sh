@@ -1128,8 +1128,8 @@ installApp () { # All of the blocks of code to install each app individually:
         ###
       elif [[ "$app" =~ BloodHoundx64 ]]
           then
-            progressBar " Installing RTL8812AU Driver with DKMS ... "
-              $DAS_INST_SCRIPTS_DIR/awus1900-driver-dkms.sh install
+            progressBar " Installing BloodHoundx64 ... "
+              $DAS_INST_SCRIPTS_DIR/bloodhound.sh install
             killBar
 
         ### RTL8812AU
