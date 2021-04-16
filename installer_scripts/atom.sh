@@ -36,4 +36,6 @@ else
   $DAS_FUNC_SCRIPT_DIR/checksum_check.sh $LOCALAREA $DAS_CHECKSUM $URL $DAS_APP_NAME # download the file
   cd $DAS_APPCACHE && dpkg -i $FILE
   apt -f install -y
+  # whoopsey daisy!
+  sed -i 's/atom %F/atom --no-sandbox %F/' /usr/share/applications/atom.desktop
 fi

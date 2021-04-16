@@ -198,7 +198,9 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
       rm /usr/local/sbin/Cutter
   elif [[ "$app" =~ Atom ]]
     then
-      apt remove atom -y
+      progressBar " Installing $app ... "
+        $DAS_INST_SCRIPTS_DIR/atom.sh uninstall
+      killBar
   elif [[ "$app" =~ Eclipse ]]
     then
       rm -rf /opt/eclipse
