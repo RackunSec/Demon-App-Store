@@ -28,13 +28,13 @@ export DAS_APP_NAME="BloodHound x64"
 if [[ "$1" == "uninstall" ]]
 then
   printf "[log] Uninstalling BloodHoundx64 ... \n"
-  rm -rf /cyberpunk/windows-domains/BloodHound-linux-x64
+  rm -rf /cyberpunk/windows-domains/BloodHound-linux-x64*
   rm $LOCAL_APPS/bloodhound.desktop # remove the menu icon
 else
   export FILE=BloodHound-linux-x64.zip
   export URL=https://demonlinux.com/download/packages/$FILE
   export LOCALAREA=$DAS_APPCACHE/$FILE
-  export DAS_CHECKSUM=e8ba29627646dc6455b3ab0a18d30cc5
+  export DAS_CHECKSUM=d433f534d5c1fec71aa3b0084c6da541
   $DAS_FUNC_SCRIPT_DIR/checksum_check.sh $LOCALAREA $DAS_CHECKSUM $URL $DAS_APP_NAME # download the file
   cp $DAS_APPCACHE/$FILE /cyberpunk/windows-domains/
   cd /cyberpunk/windows-domains/ && unzip $FILE && rm $FILE
