@@ -33,6 +33,6 @@ else
   export LOCALAREA=$DAS_APPCACHE/$FILE
   export DAS_CHECKSUM=e8ba29627646dc6455b3ab0a18d30cc5
   $DAS_FUNC_SCRIPT_DIR/checksum_check.sh $LOCALAREA $DAS_CHECKSUM $GIT_URL $DAS_APP_NAME # download the file
-  cd $LOCALAREA && dpkg -i $FILE
+  cd $DAS_APPCACHE && dpkg -i $FILE
   apt -f install -y
 fi
