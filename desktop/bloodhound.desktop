@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=BloodHound Graph
+Comment=BloodHound GUI for the Graphed Data
+Exec=cd /cyberpunk/windows-domains/BloodHoundx64/ && BloodHound --no-sandbox
+StartupNotify=true
+Icon=/usr/share/demon/images/icons/bloodhound.png
+Categories=bloodhound

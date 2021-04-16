@@ -198,7 +198,7 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
       rm /usr/local/sbin/Cutter
   elif [[ "$app" =~ Atom ]]
     then
-      progressBar " Installing $app ... "
+      progressBar " Uninstalling $app ... "
         $DAS_INST_SCRIPTS_DIR/atom.sh uninstall
       killBar
   elif [[ "$app" =~ Eclipse ]]
@@ -387,6 +387,11 @@ uninstall () { # uninstall Apps here. Remove from $PATH and if uninstaller exist
     then
       apt remove nessus -y # using dpkg
       rm -rf /usr/local/sbin/nessus # remove our script
+  elif [[ "$app" =~ "BloodHoundx64" ]]
+    then
+      progressBar " Installing $app ... "
+        $DAS_INST_SCRIPTS_DIR/bloodhound.sh uninstall
+      killBar
   elif [[ "$app" =~ "PixieWPS" ]]
     then
       rm -rf /cyberpunk/wifi/pixiewps-master # removethe initial build directory
@@ -1119,6 +1124,14 @@ installApp () { # All of the blocks of code to install each app individually:
     	 		$DAS_INST_SCRIPTS_DIR/neo4j.sh
     		killBar
 
+        ### BloodHound
+        ###
+      elif [[ "$app" =~ BloodHoundx64 ]]
+          then
+            progressBar " Installing RTL8812AU Driver with DKMS ... "
+              $DAS_INST_SCRIPTS_DIR/awus1900-driver-dkms.sh install
+            killBar
+
         ### RTL8812AU
         ### Aircrack-NG GitHUB.com
         elif [[ "$app" =~ RTL8812AU ]]
@@ -1132,7 +1145,7 @@ installApp () { # All of the blocks of code to install each app individually:
         elif [[ "$app" =~ GitKraken ]]
           then
             progressBar " Installing $app ... "
-              $DAS_INST_SCRIPTS_DIR/gitkraken.sh
+              $DAS_INST_SCRIPTS_DIR/bloodhound.sh
             killBar
 
         ### IDKWTF I GOT LOL
@@ -1152,6 +1165,7 @@ main () {
     --center \
     $(if [[ $(which autosploit|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "AutoSploit" "$DAS_CAT_PEN" "Automated Mass Exploit Tool" false \
     $(if [[ $(which pwndrop-start.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PWNDrop" "$DAS_CAT_PEN" "self-deployable file hosting service for sending out red teaming payloads" false \
+    $(if [[ $(ls /cyberpunk/windows-domains/BloodHoundx64|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "BloodHoundx64" "$DAS_CAT_PEN" "Reveal the hidden and often unintended relationships within an Active Directory environment" false \
     $(if [[ $(which wifi-pumpkin|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "WiFi-Pumpkin" "$DAS_CAT_PEN" "Rogue AP Framework" false \
     $(if [[ $(which bluefruit_sniffer.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Bluefruit" "$DAS_CAT_PEN" "Adafruit's BLE Sniffer" false \
     $(if [[ $(which wifiphisher|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "WiFiPhisher" "$DAS_CAT_PEN" "Rogue AP WiFi Phishing Tool" false \
