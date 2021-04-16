@@ -646,13 +646,9 @@ installApp () { # All of the blocks of code to install each app individually:
         ### Installer, HTTP, Checksum required
         elif [[ "$app" =~ Atom ]]
           then
-            URL='https://github.com/atom/atom/releases/download/v1.40.0/atom-amd64.deb'
-            LOCALAREA="$DAS_APPCACHE/atom-amd64.deb"
-            CHECKSUM=fe3bedd6bec04e6a2ebacb09404c5c9c
-            checksumCheck $LOCALAREA $CHECKSUM $URL $app
-            progressBar $progressText
-            dpkg -i $LOCALAREA
-            apt -f install -y # just in case-icles
+            progressBar " Installing $app ... "
+              $DAS_INST_SCRIPTS_DIR/atom.sh
+            killBar
 
         ### Eclipse for Java Devs
         ### Copy, HTTP, Checksum required
