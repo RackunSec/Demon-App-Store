@@ -1165,7 +1165,7 @@ main () {
     --center \
     $(if [[ $(which autosploit|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "AutoSploit" "$DAS_CAT_PEN" "Automated Mass Exploit Tool" false \
     $(if [[ $(which pwndrop-start.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "PWNDrop" "$DAS_CAT_PEN" "self-deployable file hosting service for sending out red teaming payloads" false \
-    $(if [[ $(ls /cyberpunk/windows-domains/BloodHoundx64|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "BloodHoundx64" "$DAS_CAT_PEN" "Reveal the hidden and often unintended relationships within an Active Directory environment" false \
+    $(if [[ $(ls /cyberpunk/windows-domains/|grep -i BloodHound-linux-x64|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "BloodHoundx64" "$DAS_CAT_PEN" "Reveal the hidden and often unintended relationships within an Active Directory environment" false \
     $(if [[ $(which wifi-pumpkin|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "WiFi-Pumpkin" "$DAS_CAT_PEN" "Rogue AP Framework" false \
     $(if [[ $(which bluefruit_sniffer.sh|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "Bluefruit" "$DAS_CAT_PEN" "Adafruit's BLE Sniffer" false \
     $(if [[ $(which wifiphisher|wc -l) -eq 1 ]]; then printf "true"; else printf "false"; fi) "WiFiPhisher" "$DAS_CAT_PEN" "Rogue AP WiFi Phishing Tool" false \
