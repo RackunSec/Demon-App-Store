@@ -27,6 +27,7 @@ export DAS_APP_NAME="BloodHound x64"
 # $(cat $DAS_CONFIG|grep DAS_APPCACHE|sed -r 's/[^=]+=//')
 if [[ "$1" == "uninstall" ]]
 then
+  printf "[log] Uninstalling BloodHoundx64 ... \n"
   rm -rf /cyberpunk/windows-domains/BloodHound
   rm $LOCAL_APPS/bloodhound.desktop # remove the menu icon
 else
