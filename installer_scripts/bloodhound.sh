@@ -28,7 +28,7 @@ export DAS_APP_NAME="BloodHound x64"
 if [[ "$1" == "uninstall" ]]
 then
   printf "[log] Uninstalling BloodHoundx64 ... \n"
-  rm -rf /cyberpunk/windows-domains/BloodHound
+  rm -rf /cyberpunk/windows-domains/BloodHound-linux-x64
   rm $LOCAL_APPS/bloodhound.desktop # remove the menu icon
 else
   export FILE=BloodHound-linux-x64.zip
