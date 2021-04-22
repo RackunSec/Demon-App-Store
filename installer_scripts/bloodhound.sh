@@ -34,7 +34,7 @@ else
   export FILE=BloodHound-linux-x64.zip
   export URL=https://demonlinux.com/download/packages/$FILE
   export LOCALAREA=$DAS_APPCACHE/$FILE
-  export DAS_CHECKSUM=d433f534d5c1fec71aa3b0084c6da541
+  export DAS_CHECKSUM=10a90643338662b56b19e99d7cbf27ab
   $DAS_FUNC_SCRIPT_DIR/checksum_check.sh $LOCALAREA $DAS_CHECKSUM $URL $DAS_APP_NAME # download the file
   cp $DAS_APPCACHE/$FILE /cyberpunk/windows-domains/
   cd /cyberpunk/windows-domains/ && unzip $FILE && rm $FILE
