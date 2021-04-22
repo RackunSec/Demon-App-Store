@@ -1145,7 +1145,7 @@ installApp () { # All of the blocks of code to install each app individually:
         elif [[ "$app" =~ GitKraken ]]
           then
             progressBar " Installing $app ... "
-              $DAS_INST_SCRIPTS_DIR/bloodhound.sh
+              $DAS_INST_SCRIPTS_DIR/gitkraken.sh.sh
             killBar
 
         ### IDKWTF I GOT LOL
