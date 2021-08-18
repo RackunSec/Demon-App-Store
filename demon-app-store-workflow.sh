@@ -472,7 +472,7 @@ installApp () { # All of the blocks of code to install each app individually:
         ### Copy, HTTP, Checksum Required
         elif [ "$app" == "ApacheDirectoryStudio" ]
           then
-            URL=http://mirrors.gigenet.com/apache/directory/studio/2.0.0.v20180908-M14/ApacheDirectoryStudio-2.0.0.v20180908-M14-linux.gtk.x86_64.tar.gz
+            URL=https://dlcdn.apache.org/directory/studio/2.0.0.v20210717-M17/ApacheDirectoryStudio-2.0.0.v20210717-M17-linux.gtk.x86_64.tar.gz
             FILE=ApacheDirectoryStudio-2.0.0.v20180908-M14-linux.gtk.x86_64.tar.gz
             CHECKSUM=f9915592978c0b7e1a2f64c80b756a1d
             BINFILE=/usr/local/bin/apachedirectorystudio
